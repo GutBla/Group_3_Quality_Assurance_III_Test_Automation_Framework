@@ -1,7 +1,8 @@
 import pytest
 from services.github_issues_api import GitHubIssuesAPI
 from data.issue_data import CREATE_ISSUE_PAYLOAD
-
+from services.github_repositories_api import GitHubRepositoriesAPI
+from data.repository_data import CREATE_REPO_PAYLOAD
 
 @pytest.fixture
 def github_api():
@@ -16,3 +17,14 @@ def issue(github_api):
     yield issue_number
 
     github_api.close_issue(issue_number)
+
+@pytest.fixture
+def github_api():
+    return GitHubIssuesAPI()
+
+
+@pytest.fixture
+def repo_api():
+    return GitHubRepositoriesAPI()
+
+
