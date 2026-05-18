@@ -1,0 +1,3229 @@
+{
+  "info": {
+    "_postman_id": "5db81d9b-7ee1-423b-ad5f-62c7da0254ad",
+    "name": "Github API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54543395",
+    "_collection_link": "https://go.postman.co/collection/54543203-5db81d9b-7ee1-423b-ad5f-62c7da0254ad?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Repositories (Matias)",
+      "item": [
+        {
+          "name": "HLTC-11 Crear repositorio con nombre y descripción válidos Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is not empty\", function () {",
+                  "    pm.expect(jsonData).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.test(\"Repository name is correct\", function () {",
+                  "    pm.expect(jsonData.name).to.eql(\"mi-repo-de-prueba\");",
+                  "});",
+                  "",
+                  "pm.test(\"Repository description is correct\", function () {",
+                  "    pm.expect(jsonData.description)",
+                  "        .to.eql(\"Repositorio creado desde Postman para testing\");",
+                  "});",
+                  "",
+                  "pm.test(\"Repository is public\", function () {",
+                  "    pm.expect(jsonData.private).to.eql(false);",
+                  "    pm.expect(jsonData.visibility).to.eql(\"public\");",
+                  "});",
+                  "",
+                  "pm.test(\"Repository has issues enabled\", function () {",
+                  "    pm.expect(jsonData.has_issues).to.eql(true);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains required fields\", function () {",
+                  "",
+                  "    pm.expect(jsonData).to.have.property(\"id\");",
+                  "    pm.expect(jsonData).to.have.property(\"name\");",
+                  "    pm.expect(jsonData).to.have.property(\"full_name\");",
+                  "    pm.expect(jsonData).to.have.property(\"description\");",
+                  "    pm.expect(jsonData).to.have.property(\"private\");",
+                  "    pm.expect(jsonData).to.have.property(\"owner\");",
+                  "    pm.expect(jsonData).to.have.property(\"html_url\");",
+                  "    pm.expect(jsonData).to.have.property(\"created_at\");",
+                  "    pm.expect(jsonData).to.have.property(\"updated_at\");",
+                  "});",
+                  "",
+                  "pm.test(\"Owner object contains required fields\", function () {",
+                  "",
+                  "    pm.expect(jsonData.owner).to.have.property(\"login\");",
+                  "    pm.expect(jsonData.owner).to.have.property(\"id\");",
+                  "    pm.expect(jsonData.owner).to.have.property(\"type\");",
+                  "});",
+                  "",
+                  "pm.test(\"Validate response schema\", function () {",
+                  "",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "        required: [",
+                  "            \"id\",",
+                  "            \"name\",",
+                  "            \"full_name\",",
+                  "            \"private\",",
+                  "            \"owner\"",
+                  "        ],",
+                  "        properties: {",
+                  "",
+                  "            id: { type: \"number\" },",
+                  "",
+                  "            name: { type: \"string\" },",
+                  "",
+                  "            full_name: { type: \"string\" },",
+                  "",
+                  "            private: { type: \"boolean\" },",
+                  "",
+                  "            description: {",
+                  "                type: [\"string\", \"null\"]",
+                  "            },",
+                  "",
+                  "            owner: {",
+                  "                type: \"object\",",
+                  "                required: [\"login\", \"id\"],",
+                  "                properties: {",
+                  "",
+                  "                    login: { type: \"string\" },",
+                  "",
+                  "                    id: { type: \"number\" }",
+                  "                }",
+                  "            }",
+                  "        }",
+                  "    };",
+                  "",
+                  "    pm.response.to.have.jsonSchema(schema);",
+                  "});",
+                  "",
+                  "",
+                  "pm.collectionVariables.set( \"username\", jsonData.owner.login );",
+                  "",
+                  "pm.collectionVariables.set( \"repo_name\", jsonData.name );",
+                  "",
+                  "pm.collectionVariables.set( \"repo_id\", jsonData.id);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const start = Date.now();",
+                  "",
+                  "while (Date.now() - start < 2000) {",
+                  "    ",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"mi-repo-de-prueba\",\n  \"description\": \"Repositorio creado desde Postman para testing\",\n  \"private\": false,\n  \"has_issues\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user/repos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "repos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Repository(Integrity)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const start = Date.now();",
+                  "",
+                  "while (Date.now() - start < 2000) {",
+                  "    ",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Repository name is correct\", function () {",
+                  "    pm.expect(json.name).to.eql(\"mi-repo-de-prueba\");",
+                  "});",
+                  "",
+                  "pm.test(\"Repository owner is correct\", function () {",
+                  "    pm.expect(json.owner.login).to.eql(",
+                  "        pm.collectionVariables.get(\"username\")",
+                  "    );",
+                  "});",
+                  "",
+                  "pm.test(\"Repository visibility is public\", function () {",
+                  "    pm.expect(json.private).to.eql(false);",
+                  "    pm.expect(json.visibility).to.eql(\"public\");",
+                  "});",
+                  "",
+                  "pm.test(\"Repository has issues enabled\", function () {",
+                  "    pm.expect(json.has_issues).to.eql(true);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains required fields\", function () {",
+                  "",
+                  "    pm.expect(json).to.have.property(\"id\");",
+                  "    pm.expect(json).to.have.property(\"name\");",
+                  "    pm.expect(json).to.have.property(\"full_name\");",
+                  "    pm.expect(json).to.have.property(\"description\");",
+                  "    pm.expect(json).to.have.property(\"private\");",
+                  "    pm.expect(json).to.have.property(\"owner\");",
+                  "    pm.expect(json).to.have.property(\"html_url\");",
+                  "    pm.expect(json).to.have.property(\"created_at\");",
+                  "    pm.expect(json).to.have.property(\"updated_at\");",
+                  "});",
+                  "",
+                  "pm.test(\"Owner object contains required fields\", function () {",
+                  "",
+                  "    pm.expect(json.owner).to.have.property(\"login\");",
+                  "    pm.expect(json.owner).to.have.property(\"id\");",
+                  "    pm.expect(json.owner).to.have.property(\"type\");",
+                  "});",
+                  "",
+                  "pm.test(\"Validate response schema\", function () {",
+                  "",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "        required: [",
+                  "            \"id\",",
+                  "            \"name\",",
+                  "            \"full_name\",",
+                  "            \"private\",",
+                  "            \"owner\"",
+                  "        ],",
+                  "        properties: {",
+                  "            id: { type: \"number\" },",
+                  "            name: { type: \"string\" },",
+                  "            full_name: { type: \"string\" },",
+                  "            private: { type: \"boolean\" },",
+                  "            visibility: { type: \"string\" },",
+                  "",
+                  "            owner: {",
+                  "                type: \"object\",",
+                  "                required: [\"login\", \"id\"],",
+                  "                properties: {",
+                  "                    login: { type: \"string\" },",
+                  "                    id: { type: \"number\" }",
+                  "                }",
+                  "            }",
+                  "        }",
+                  "    };",
+                  "",
+                  "    pm.response.to.have.jsonSchema(schema);",
+                  "});",
+                  "",
+                  "pm.test(\"Validate data integrity\", function () {",
+                  "",
+                  "    pm.expect(json.id).to.be.a(\"number\");",
+                  "    pm.expect(json.name).to.not.be.empty;",
+                  "    pm.expect(json.owner.login).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set(\"repo_id\", json.id);",
+                  "pm.collectionVariables.set(\"repo_name\", json.name);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/mi-repo-de-prueba",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "mi-repo-de-prueba"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-12 Actualizar descripción de un repositorio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is not empty\", function () {",
+                  "    pm.expect(jsonData).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.test(\"Repository description updated correctly\", function () {",
+                  "    pm.expect(jsonData.description)",
+                  "        .to.eql(\"Descripción actualizada desde Postman\");",
+                  "});",
+                  "",
+                  "pm.test(\"Repository is public\", function () {",
+                  "    pm.expect(jsonData.private).to.eql(false);",
+                  "});",
+                  "",
+                  "pm.test(\"Wiki is disabled\", function () {",
+                  "    pm.expect(jsonData.has_wiki).to.eql(false);",
+                  "});",
+                  "",
+                  "pm.test(\"Repository name is correct\", function () {",
+                  "    pm.expect(jsonData.name).to.eql(\"mi-repo-de-prueba\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains important fields\", function () {",
+                  "",
+                  "    pm.expect(jsonData).to.have.property(\"id\");",
+                  "    pm.expect(jsonData).to.have.property(\"name\");",
+                  "    pm.expect(jsonData).to.have.property(\"full_name\");",
+                  "    pm.expect(jsonData).to.have.property(\"description\");",
+                  "    pm.expect(jsonData).to.have.property(\"private\");",
+                  "    pm.expect(jsonData).to.have.property(\"updated_at\");",
+                  "    pm.expect(jsonData).to.have.property(\"owner\");",
+                  "    pm.expect(jsonData).to.have.property(\"visibility\");",
+                  "});",
+                  "",
+                  "pm.test(\"Owner contains required fields\", function () {",
+                  "",
+                  "    pm.expect(jsonData.owner).to.have.property(\"login\");",
+                  "    pm.expect(jsonData.owner).to.have.property(\"id\");",
+                  "    pm.expect(jsonData.owner).to.have.property(\"type\");",
+                  "});",
+                  "",
+                  "pm.test(\"Validate response schema\", function () {",
+                  "",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "",
+                  "        required: [",
+                  "            \"id\",",
+                  "            \"name\",",
+                  "            \"private\",",
+                  "            \"description\",",
+                  "            \"owner\"",
+                  "        ],",
+                  "",
+                  "        properties: {",
+                  "",
+                  "            id: { type: \"number\" },",
+                  "",
+                  "            name: { type: \"string\" },",
+                  "",
+                  "            private: { type: \"boolean\" },",
+                  "",
+                  "            visibility: { type: \"string\" },",
+                  "",
+                  "            description: {",
+                  "                type: [\"string\", \"null\"]",
+                  "            },",
+                  "",
+                  "            has_wiki: { type: \"boolean\" },",
+                  "",
+                  "            owner: {",
+                  "                type: \"object\",",
+                  "",
+                  "                required: [\"login\", \"id\"],",
+                  "",
+                  "                properties: {",
+                  "",
+                  "                    login: { type: \"string\" },",
+                  "",
+                  "                    id: { type: \"number\" }",
+                  "                }",
+                  "            }",
+                  "        }",
+                  "    };",
+                  "",
+                  "    pm.response.to.have.jsonSchema(schema);",
+                  "});",
+                  "",
+                  "pm.test(\"Validate data integrity\", function () {",
+                  "",
+                  "    pm.expect(jsonData.id).to.be.a(\"number\");",
+                  "",
+                  "    pm.expect(jsonData.name).to.not.be.empty;",
+                  "",
+                  "    pm.expect(jsonData.owner.login)",
+                  "        .to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set( \"repo_visibility\", jsonData.visibility );",
+                  "",
+                  "pm.collectionVariables.set( \"repo_private\", jsonData.private );"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const start = Date.now();",
+                  "",
+                  "while (Date.now() - start < 2000) {",
+                  "    ",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Descripción actualizada desde Postman\",\n  \"private\": false,\n  \"has_wiki\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/mi-repo-de-prueba",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "mi-repo-de-prueba"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Repository(Integrity)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const start = Date.now();",
+                  "",
+                  "while (Date.now() - start < 2000) {",
+                  "    ",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Repository name is correct\", function () {",
+                  "    pm.expect(json.name).to.eql(\"mi-repo-de-prueba\");",
+                  "});",
+                  "",
+                  "pm.test(\"Repository owner is correct\", function () {",
+                  "    pm.expect(json.owner.login).to.eql(",
+                  "        pm.collectionVariables.get(\"username\")",
+                  "    );",
+                  "});",
+                  "",
+                  "pm.test(\"Repository visibility is public\", function () {",
+                  "    pm.expect(json.private).to.eql(false);",
+                  "    pm.expect(json.visibility).to.eql(\"public\");",
+                  "});",
+                  "",
+                  "pm.test(\"Repository has issues enabled\", function () {",
+                  "    pm.expect(json.has_issues).to.eql(true);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains required fields\", function () {",
+                  "",
+                  "    pm.expect(json).to.have.property(\"id\");",
+                  "    pm.expect(json).to.have.property(\"name\");",
+                  "    pm.expect(json).to.have.property(\"full_name\");",
+                  "    pm.expect(json).to.have.property(\"description\");",
+                  "    pm.expect(json).to.have.property(\"private\");",
+                  "    pm.expect(json).to.have.property(\"owner\");",
+                  "    pm.expect(json).to.have.property(\"html_url\");",
+                  "    pm.expect(json).to.have.property(\"created_at\");",
+                  "    pm.expect(json).to.have.property(\"updated_at\");",
+                  "});",
+                  "",
+                  "pm.test(\"Owner object contains required fields\", function () {",
+                  "",
+                  "    pm.expect(json.owner).to.have.property(\"login\");",
+                  "    pm.expect(json.owner).to.have.property(\"id\");",
+                  "    pm.expect(json.owner).to.have.property(\"type\");",
+                  "});",
+                  "",
+                  "pm.test(\"Validate response schema\", function () {",
+                  "",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "        required: [",
+                  "            \"id\",",
+                  "            \"name\",",
+                  "            \"full_name\",",
+                  "            \"private\",",
+                  "            \"owner\"",
+                  "        ],",
+                  "        properties: {",
+                  "            id: { type: \"number\" },",
+                  "            name: { type: \"string\" },",
+                  "            full_name: { type: \"string\" },",
+                  "            private: { type: \"boolean\" },",
+                  "            visibility: { type: \"string\" },",
+                  "",
+                  "            owner: {",
+                  "                type: \"object\",",
+                  "                required: [\"login\", \"id\"],",
+                  "                properties: {",
+                  "                    login: { type: \"string\" },",
+                  "                    id: { type: \"number\" }",
+                  "                }",
+                  "            }",
+                  "        }",
+                  "    };",
+                  "",
+                  "    pm.response.to.have.jsonSchema(schema);",
+                  "});",
+                  "",
+                  "pm.test(\"Validate data integrity\", function () {",
+                  "",
+                  "    pm.expect(json.id).to.be.a(\"number\");",
+                  "    pm.expect(json.name).to.not.be.empty;",
+                  "    pm.expect(json.owner.login).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set(\"repo_id\", json.id);",
+                  "pm.collectionVariables.set(\"repo_name\", json.name);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/mi-repo-de-prueba",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "mi-repo-de-prueba"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-13: Cambiar visibilidad de repositorio a privado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is not empty\", function () {",
+                  "    pm.expect(jsonData).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.test(\"Repository description updated correctly\", function () {",
+                  "    pm.expect(jsonData.description)",
+                  "        .to.eql(\"Descripción actualizada desde Postman\");",
+                  "});",
+                  "",
+                  "pm.test(\"Repository visibility changed to private\", function () {",
+                  "",
+                  "    pm.expect(jsonData.private).to.eql(true);",
+                  "",
+                  "    pm.expect(jsonData.visibility)",
+                  "        .to.eql(\"private\");",
+                  "});",
+                  "",
+                  "pm.test(\"Wiki is disabled\", function () {",
+                  "    pm.expect(jsonData.has_wiki).to.eql(false);",
+                  "});",
+                  "",
+                  "pm.test(\"Repository name is correct\", function () {",
+                  "    pm.expect(jsonData.name)",
+                  "        .to.eql(\"mi-repo-de-prueba\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains important fields\", function () {",
+                  "",
+                  "    pm.expect(jsonData).to.have.property(\"id\");",
+                  "    pm.expect(jsonData).to.have.property(\"name\");",
+                  "    pm.expect(jsonData).to.have.property(\"full_name\");",
+                  "    pm.expect(jsonData).to.have.property(\"description\");",
+                  "    pm.expect(jsonData).to.have.property(\"private\");",
+                  "    pm.expect(jsonData).to.have.property(\"visibility\");",
+                  "    pm.expect(jsonData).to.have.property(\"updated_at\");",
+                  "    pm.expect(jsonData).to.have.property(\"owner\");",
+                  "});",
+                  "",
+                  "pm.test(\"Owner object contains required fields\", function () {",
+                  "",
+                  "    pm.expect(jsonData.owner)",
+                  "        .to.have.property(\"login\");",
+                  "",
+                  "    pm.expect(jsonData.owner)",
+                  "        .to.have.property(\"id\");",
+                  "",
+                  "    pm.expect(jsonData.owner)",
+                  "        .to.have.property(\"type\");",
+                  "});",
+                  "",
+                  "pm.test(\"Validate response schema\", function () {",
+                  "",
+                  "    const schema = {",
+                  "",
+                  "        type: \"object\",",
+                  "",
+                  "        required: [",
+                  "            \"id\",",
+                  "            \"name\",",
+                  "            \"private\",",
+                  "            \"visibility\",",
+                  "            \"owner\"",
+                  "        ],",
+                  "",
+                  "        properties: {",
+                  "",
+                  "            id: {",
+                  "                type: \"number\"",
+                  "            },",
+                  "",
+                  "            name: {",
+                  "                type: \"string\"",
+                  "            },",
+                  "",
+                  "            private: {",
+                  "                type: \"boolean\"",
+                  "            },",
+                  "",
+                  "            visibility: {",
+                  "                type: \"string\"",
+                  "            },",
+                  "",
+                  "            has_wiki: {",
+                  "                type: \"boolean\"",
+                  "            },",
+                  "",
+                  "            description: {",
+                  "                type: [\"string\", \"null\"]",
+                  "            },",
+                  "",
+                  "            owner: {",
+                  "",
+                  "                type: \"object\",",
+                  "",
+                  "                required: [",
+                  "                    \"login\",",
+                  "                    \"id\"",
+                  "                ],",
+                  "",
+                  "                properties: {",
+                  "",
+                  "                    login: {",
+                  "                        type: \"string\"",
+                  "                    },",
+                  "",
+                  "                    id: {",
+                  "                        type: \"number\"",
+                  "                    }",
+                  "                }",
+                  "            }",
+                  "        }",
+                  "    };",
+                  "",
+                  "    pm.response.to.have.jsonSchema(schema);",
+                  "});",
+                  "",
+                  "pm.test(\"Validate data integrity\", function () {",
+                  "",
+                  "    pm.expect(jsonData.id)",
+                  "        .to.be.a(\"number\");",
+                  "",
+                  "    pm.expect(jsonData.name)",
+                  "        .to.not.be.empty;",
+                  "",
+                  "    pm.expect(jsonData.owner.login)",
+                  "        .to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set( \"repo_visibility\", jsonData.visibility );",
+                  "",
+                  "pm.collectionVariables.set( \"repo_private\", jsonData.private );",
+                  "",
+                  "pm.collectionVariables.set( \"updated_at\", jsonData.updated_at );"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const start = Date.now();",
+                  "",
+                  "while (Date.now() - start < 2000) {",
+                  "    ",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Descripción actualizada desde Postman\",\n  \"private\": true,\n  \"has_wiki\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/mi-repo-de-prueba",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "mi-repo-de-prueba"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Repository(Integrity)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const start = Date.now();",
+                  "",
+                  "while (Date.now() - start < 2000) {",
+                  "    ",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Repository name is correct\", function () {",
+                  "    pm.expect(json.name).to.eql(\"mi-repo-de-prueba\");",
+                  "});",
+                  "",
+                  "pm.test(\"Repository owner is correct\", function () {",
+                  "    pm.expect(json.owner.login).to.eql(",
+                  "        pm.collectionVariables.get(\"username\")",
+                  "    );",
+                  "});",
+                  "",
+                  "pm.test(\"Repository visibility is private\", function () {",
+                  "    pm.expect(json.private).to.eql(true);",
+                  "    pm.expect(json.visibility).to.eql(\"private\");",
+                  "});",
+                  "",
+                  "pm.test(\"Repository has issues enabled\", function () {",
+                  "    pm.expect(json.has_issues).to.eql(true);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains required fields\", function () {",
+                  "",
+                  "    pm.expect(json).to.have.property(\"id\");",
+                  "    pm.expect(json).to.have.property(\"name\");",
+                  "    pm.expect(json).to.have.property(\"full_name\");",
+                  "    pm.expect(json).to.have.property(\"description\");",
+                  "    pm.expect(json).to.have.property(\"private\");",
+                  "    pm.expect(json).to.have.property(\"owner\");",
+                  "    pm.expect(json).to.have.property(\"html_url\");",
+                  "    pm.expect(json).to.have.property(\"created_at\");",
+                  "    pm.expect(json).to.have.property(\"updated_at\");",
+                  "});",
+                  "",
+                  "pm.test(\"Owner object contains required fields\", function () {",
+                  "",
+                  "    pm.expect(json.owner).to.have.property(\"login\");",
+                  "    pm.expect(json.owner).to.have.property(\"id\");",
+                  "    pm.expect(json.owner).to.have.property(\"type\");",
+                  "});",
+                  "",
+                  "pm.test(\"Validate response schema\", function () {",
+                  "",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "        required: [",
+                  "            \"id\",",
+                  "            \"name\",",
+                  "            \"full_name\",",
+                  "            \"private\",",
+                  "            \"owner\"",
+                  "        ],",
+                  "        properties: {",
+                  "            id: { type: \"number\" },",
+                  "            name: { type: \"string\" },",
+                  "            full_name: { type: \"string\" },",
+                  "            private: { type: \"boolean\" },",
+                  "            visibility: { type: \"string\" },",
+                  "",
+                  "            owner: {",
+                  "                type: \"object\",",
+                  "                required: [\"login\", \"id\"],",
+                  "                properties: {",
+                  "                    login: { type: \"string\" },",
+                  "                    id: { type: \"number\" }",
+                  "                }",
+                  "            }",
+                  "        }",
+                  "    };",
+                  "",
+                  "    pm.response.to.have.jsonSchema(schema);",
+                  "});",
+                  "",
+                  "pm.test(\"Validate data integrity\", function () {",
+                  "",
+                  "    pm.expect(json.id).to.be.a(\"number\");",
+                  "    pm.expect(json.name).to.not.be.empty;",
+                  "    pm.expect(json.owner.login).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set(\"repo_id\", json.id);",
+                  "pm.collectionVariables.set(\"repo_name\", json.name);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/mi-repo-de-prueba",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "mi-repo-de-prueba"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-15: Validar error al crear repositorio duplicado",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const start = Date.now();",
+                  "",
+                  "while (Date.now() - start < 2000) {",
+                  "    ",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "",
+                  "pm.test(\"Status code is 422\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is not empty\", function () {",
+                  "    pm.expect(jsonData).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.test(\"Error message is correct\", function () {",
+                  "",
+                  "    pm.expect(jsonData.message)",
+                  "        .to.eql(\"Repository creation failed.\");",
+                  "});",
+                  "",
+                  "pm.test(\"Status field is 422\", function () {",
+                  "",
+                  "    pm.expect(jsonData.status)",
+                  "        .to.eql(\"422\");",
+                  "});",
+                  "",
+                  "pm.test(\"Errors array exists\", function () {",
+                  "",
+                  "    pm.expect(jsonData.errors)",
+                  "        .to.be.an(\"array\");",
+                  "",
+                  "    pm.expect(jsonData.errors.length)",
+                  "        .to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Repository name duplication error exists\", function () {",
+                  "",
+                  "    const error = jsonData.errors[0];",
+                  "",
+                  "    pm.expect(error.resource)",
+                  "        .to.eql(\"Repository\");",
+                  "",
+                  "    pm.expect(error.field)",
+                  "        .to.eql(\"name\");",
+                  "",
+                  "    pm.expect(error.code)",
+                  "        .to.eql(\"custom\");",
+                  "",
+                  "    pm.expect(error.message)",
+                  "        .to.include(\"already exists\");",
+                  "});",
+                  "",
+                  "pm.test(\"Documentation URL exists\", function () {",
+                  "",
+                  "    pm.expect(jsonData)",
+                  "        .to.have.property(\"documentation_url\");",
+                  "});",
+                  "",
+                  "pm.test(\"Validate response schema\", function () {",
+                  "",
+                  "    const schema = {",
+                  "",
+                  "        type: \"object\",",
+                  "",
+                  "        required: [",
+                  "            \"message\",",
+                  "            \"errors\",",
+                  "            \"documentation_url\",",
+                  "            \"status\"",
+                  "        ],",
+                  "",
+                  "        properties: {",
+                  "",
+                  "            message: {",
+                  "                type: \"string\"",
+                  "            },",
+                  "",
+                  "            status: {",
+                  "                type: \"string\"",
+                  "            },",
+                  "",
+                  "            documentation_url: {",
+                  "                type: \"string\"",
+                  "            },",
+                  "",
+                  "            errors: {",
+                  "",
+                  "                type: \"array\",",
+                  "",
+                  "                items: {",
+                  "",
+                  "                    type: \"object\",",
+                  "",
+                  "                    required: [",
+                  "                        \"resource\",",
+                  "                        \"field\",",
+                  "                        \"code\",",
+                  "                        \"message\"",
+                  "                    ],",
+                  "",
+                  "                    properties: {",
+                  "",
+                  "                        resource: {",
+                  "                            type: \"string\"",
+                  "                        },",
+                  "",
+                  "                        field: {",
+                  "                            type: \"string\"",
+                  "                        },",
+                  "",
+                  "                        code: {",
+                  "                            type: \"string\"",
+                  "                        },",
+                  "",
+                  "                        message: {",
+                  "                            type: \"string\"",
+                  "                        }",
+                  "                    }",
+                  "                }",
+                  "            }",
+                  "        }",
+                  "    };",
+                  "",
+                  "    pm.response.to.have.jsonSchema(schema);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"mi-repo-de-prueba\",\n  \"description\": \"Repositorio creado desde Postman para testing\",\n  \"private\": false,\n  \"has_issues\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user/repos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "repos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-14: Eliminar un repositorio existente Copy",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const start = Date.now();",
+                  "",
+                  "while (Date.now() - start < 2000) {",
+                  "    ",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/mi-repo-de-prueba",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "mi-repo-de-prueba"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Issues (Andrés)",
+      "item": [
+        {
+          "name": "Autenticación de usuario",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.github.com/user",
+              "protocol": "https",
+              "host": [
+                "api",
+                "github",
+                "com"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-01- Verificar creación de un issue con datos válidos mediante POST",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "// 1. STATUS CODE",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// 2. RESPONSE BODY",
+                  "pm.test(\"Response contains correct title and body\", function () {",
+                  "    pm.expect(jsonData.title).to.eql(\"Test issue from Postman\");",
+                  "    pm.expect(jsonData.body).to.eql(\"This issue was created for API testing.\");",
+                  "});",
+                  "",
+                  "// 3. SCHEMA VALIDATION",
+                  "pm.test(\"Response schema is valid\", function () {",
+                  "",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "        required: [",
+                  "            \"id\",",
+                  "            \"number\",",
+                  "            \"title\",",
+                  "            \"body\",",
+                  "            \"state\",",
+                  "            \"url\",",
+                  "            \"repository_url\",",
+                  "            \"created_at\",",
+                  "            \"updated_at\"",
+                  "        ],",
+                  "        properties: {",
+                  "            id: { type: \"number\" },",
+                  "            number: { type: \"number\" },",
+                  "            title: { type: \"string\" },",
+                  "            body: { type: \"string\" },",
+                  "            state: { type: \"string\" },",
+                  "            url: { type: \"string\" },",
+                  "            repository_url: { type: \"string\" },",
+                  "            created_at: { type: \"string\" },",
+                  "            updated_at: { type: \"string\" },",
+                  "",
+                  "            labels: { type: \"array\" },",
+                  "            assignees: { type: \"array\" },",
+                  "            user: { type: \"object\" }",
+                  "        },",
+                  "        additionalProperties: true",
+                  "    };",
+                  "",
+                  "    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+                  "});",
+                  "",
+                  "// 4. DATA INTEGRITY",
+                  "pm.sendRequest({",
+                  "    url: pm.environment.get(\"base_url\") +",
+                  "        \"/repos/\" +",
+                  "        pm.environment.get(\"username\") +",
+                  "        \"/\" +",
+                  "        pm.environment.get(\"repo\") +",
+                  "        \"/issues/\" +",
+                  "        jsonData.number,",
+                  "",
+                  "    method: \"GET\",",
+                  "    header: {",
+                  "        \"Authorization\": \"Bearer \" + pm.environment.get(\"token\"),",
+                  "        \"Accept\": \"application/vnd.github+json\"",
+                  "    }",
+                  "}, function (err, res) {",
+                  "",
+                  "    const getData = res.json();",
+                  "",
+                  "    pm.test(\"Integrity check via GET (issue persisted correctly)\", function () {",
+                  "        pm.expect(getData.title).to.eql(\"Test issue from Postman\");",
+                  "        pm.expect(getData.body).to.eql(\"This issue was created for API testing.\");",
+                  "        pm.expect(getData.state).to.eql(\"open\");",
+                  "    });",
+                  "});",
+                  "",
+                  "// 5. DEFAULT VALUES CHECK",
+                  "pm.test(\"Default values are correctly assigned\", function () {",
+                  "    pm.expect(jsonData.state).to.eql(\"open\");",
+                  "    pm.expect(jsonData.labels).to.be.an(\"array\");",
+                  "    pm.expect(jsonData.assignees).to.be.an(\"array\");",
+                  "});",
+                  "",
+                  "// 6. SAVE VARIABLE",
+                  "pm.environment.set(\"issue_number\", jsonData.number);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test issue from Postman\",\n  \"body\": \"This issue was created for API testing.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/{{repo}}/issues",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "{{repo}}",
+                "issues"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-02: crear issue con campos obligatorios faltantes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "// 1. STATUS CODE",
+                  "pm.test(\"Status code es 422\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});",
+                  "",
+                  "// 2. RESPONSE BODY ",
+                  "pm.test(\"Error de validación válido\", function () {",
+                  "",
+                  "    pm.expect(jsonData.message).to.exist;",
+                  "    if (jsonData.errors) {",
+                  "        pm.expect(jsonData.errors).to.be.an(\"array\");",
+                  "    }",
+                  "    pm.expect(jsonData.message.toLowerCase()).to.match(/invalid|validation|request|title/i);",
+                  "});",
+                  "",
+                  "// 3. SCHEMA VALIDATION ",
+                  "pm.test(\"Schema de error válido \", function () {",
+                  "",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "        required: [\"message\"],",
+                  "        properties: {",
+                  "            message: { type: \"string\" },",
+                  "            errors: {",
+                  "                type: \"array\",",
+                  "                items: {",
+                  "                    type: \"object\",",
+                  "                    properties: {",
+                  "                        field: { type: \"string\" },",
+                  "                        code: { type: \"string\" },",
+                  "                        resource: { type: \"string\" },",
+                  "                        message: { type: \"string\" }",
+                  "                    }",
+                  "                }",
+                  "            }",
+                  "        },",
+                  "        additionalProperties: true",
+                  "    };",
+                  "",
+                  "    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+                  "});",
+                  "",
+                  "// 4. DATA INTEGRITY",
+                  "pm.sendRequest({",
+                  "    url: pm.environment.get(\"base_url\") +",
+                  "        \"/repos/\" +",
+                  "        pm.environment.get(\"username\") +",
+                  "        \"/\" +",
+                  "        pm.environment.get(\"repo\") +",
+                  "        \"/issues\",",
+                  "",
+                  "    method: \"GET\",",
+                  "    header: {",
+                  "        \"Authorization\": \"Bearer \" + pm.environment.get(\"token\"),",
+                  "        \"Accept\": \"application/vnd.github+json\"",
+                  "    }",
+                  "}, function (err, res) {",
+                  "",
+                  "    const issues = res.json();",
+                  "",
+                  "    pm.test(\"Integridad: no se creó issue inválido\", function () {",
+                  "",
+                  "        const existsInvalid = issues.some(i =>",
+                  "            !i.title ||",
+                  "            i.title === \"\" ||",
+                  "            typeof i.title === \"undefined\"",
+                  "        );",
+                  "",
+                  "        pm.expect(existsInvalid).to.be.false;",
+                  "    });",
+                  "});",
+                  "",
+                  "// 5. NEGATIVE VALIDATION",
+                  "pm.test(\"No se crea recurso (sin ID)\", function () {",
+                  "    pm.expect(jsonData.id).to.be.undefined;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"body\": \"Issue sin título\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/{{repo}}/issues",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "{{repo}}",
+                "issues"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-03: Actualizar título o contenido de un issue mediante PATCH",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "",
+                  "// 1. STATUS CODE",
+                  "pm.test(\"Status code es 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "",
+                  "",
+                  "// 2. RESPONSE BODY",
+                  "pm.test(\"Datos actualizados correctamente\", function () {",
+                  "",
+                  "    pm.expect(jsonData.title).to.eql(pm.collectionVariables.get(\"updated_issue_title\"));",
+                  "    pm.expect(jsonData.body).to.eql(pm.collectionVariables.get(\"updated_issue_body\"));",
+                  "});",
+                  "",
+                  "// 3. SCHEMA VALIDATION ",
+                  "pm.test(\"Schema completo de issue válido \", function () {",
+                  "",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "        required: [",
+                  "            \"id\",",
+                  "            \"number\",",
+                  "            \"title\",",
+                  "            \"body\",",
+                  "            \"state\",",
+                  "            \"url\",",
+                  "            \"repository_url\",",
+                  "            \"created_at\",",
+                  "            \"updated_at\"",
+                  "        ],",
+                  "        properties: {",
+                  "            id: { type: \"number\" },",
+                  "            number: { type: \"number\" },",
+                  "            title: { type: \"string\" },",
+                  "            body: { type: \"string\" },",
+                  "            state: { type: \"string\" },",
+                  "            url: { type: \"string\" },",
+                  "            repository_url: { type: \"string\" },",
+                  "            created_at: { type: \"string\" },",
+                  "            updated_at: { type: \"string\" },",
+                  "",
+                  "            labels: { type: \"array\" },",
+                  "            assignees: { type: \"array\" },",
+                  "            user: { type: \"object\" }",
+                  "        },",
+                  "        additionalProperties: true",
+                  "    };",
+                  "",
+                  "    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+                  "});",
+                  "",
+                  "// 4. DATA INTEGRITY",
+                  "pm.sendRequest({",
+                  "    url: pm.environment.get(\"base_url\") +",
+                  "        \"/repos/\" +",
+                  "        pm.environment.get(\"username\") +",
+                  "        \"/\" +",
+                  "        pm.environment.get(\"repo\") +",
+                  "        \"/issues/\" +",
+                  "        pm.environment.get(\"issue_number\"),",
+                  "",
+                  "    method: \"GET\",",
+                  "    header: {",
+                  "        \"Authorization\": \"Bearer \" + pm.environment.get(\"token\"),",
+                  "        \"Accept\": \"application/vnd.github+json\"",
+                  "    }",
+                  "}, function (err, res) {",
+                  "",
+                  "    const getData = res.json();",
+                  "",
+                  "    pm.test(\"Integridad: PATCH persistido correctamente en backend\", function () {",
+                  "",
+                  "        pm.expect(getData.title).to.eql(pm.collectionVariables.get(\"updated_issue_title\"));",
+                  "        pm.expect(getData.body).to.eql(pm.collectionVariables.get(\"updated_issue_body\"));",
+                  "        pm.expect(getData.number).to.eql(parseInt(pm.environment.get(\"issue_number\")));",
+                  "    });",
+                  "});",
+                  "",
+                  "// 5. DEFAULT VALUE CONSISTENCY",
+                  "pm.test(\"Valores por defecto y estado son consistentes\", function () {",
+                  "",
+                  "    pm.expect(jsonData.state).to.be.oneOf([\"open\", \"closed\"]);",
+                  "",
+                  "    pm.expect(jsonData.labels).to.be.an(\"array\").that.is.empty;",
+                  "    pm.expect(jsonData.assignees).to.be.an(\"array\").that.is.empty;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"{{updated_issue_title}}\",\n  \"body\": \"{{updated_issue_body}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/{{repo}}/issues/{{issue_number}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "{{repo}}",
+                "issues",
+                "{{issue_number}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-04: actualizar issue inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "",
+                  "// 1. STATUS CODE",
+                  "pm.test(\"Status code es 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "// 2. RESPONSE BODY",
+                  "pm.test(\"Error indica recurso inexistente\", function () {",
+                  "    pm.expect(jsonData.message).to.include(\"Not Found\");",
+                  "});",
+                  "",
+                  "",
+                  "",
+                  "// 3. SCHEMA VALIDATION ",
+                  "pm.test(\"Schema de error 404 es válido\", function () {",
+                  "",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "        required: [\"message\"],",
+                  "        properties: {",
+                  "            message: { type: \"string\" },",
+                  "            documentation_url: { type: \"string\" }",
+                  "        },",
+                  "        additionalProperties: true",
+                  "    };",
+                  "",
+                  "    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+                  "});",
+                  "",
+                  "",
+                  "",
+                  "// 4. DATA INTEGRITY ",
+                  "pm.sendRequest({",
+                  "    url: pm.environment.get(\"base_url\") +",
+                  "        \"/repos/\" +",
+                  "        pm.environment.get(\"username\") +",
+                  "        \"/\" +",
+                  "        pm.environment.get(\"repo\") +",
+                  "        \"/issues/\" +",
+                  "        pm.environment.get(\"issue_number_invalid\"),",
+                  "",
+                  "    method: \"GET\",",
+                  "    header: {",
+                  "        \"Authorization\": \"Bearer \" + pm.environment.get(\"token\"),",
+                  "        \"Accept\": \"application/vnd.github+json\"",
+                  "    }",
+                  "}, function (err, res) {",
+                  "",
+                  "    pm.test(\"Integridad: recurso no existe en backend\", function () {",
+                  "        pm.expect(res.code).to.eql(404);",
+                  "",
+                  "        const data = res.json();",
+                  "        pm.expect(data.message).to.include(\"Not Found\");",
+                  "    });",
+                  "});",
+                  "",
+                  "// 5. VALIDACIÓN NEGATIVA ",
+                  "pm.test(\"No se modifica ni crea recurso inexistente\", function () {",
+                  "    pm.expect(jsonData).to.not.have.property(\"state\");",
+                  "    pm.expect(jsonData).to.not.have.property(\"id\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"state\": \"closed\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/{{repo}}/issues/{{issue_number_invalid}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "{{repo}}",
+                "issues",
+                "{{issue_number_invalid}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-05: cambiar estado de abierto a cerrado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();",
+                  "",
+                  "// 1. STATUS CODE",
+                  "pm.test(\"Status code es 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// 2. RESPONSE BODY",
+                  "pm.test(\"El issue fue cerrado correctamente\", function () {",
+                  "    pm.expect(jsonData.state).to.eql(\"closed\");",
+                  "    pm.expect(jsonData.number).to.eql(parseInt(pm.environment.get(\"issue_number\")));",
+                  "});",
+                  "",
+                  "// 3. SCHEMA VALIDATION ",
+                  "pm.test(\"Schema de issue es válido \", function () {",
+                  "",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "        required: [",
+                  "            \"id\",",
+                  "            \"number\",",
+                  "            \"title\",",
+                  "            \"body\",",
+                  "            \"state\",",
+                  "            \"url\",",
+                  "            \"repository_url\",",
+                  "            \"created_at\",",
+                  "            \"updated_at\"",
+                  "        ],",
+                  "        properties: {",
+                  "            id: { type: \"number\" },",
+                  "            number: { type: \"number\" },",
+                  "            title: { type: \"string\" },",
+                  "            body: { type: \"string\" },",
+                  "            state: { type: \"string\" },",
+                  "            url: { type: \"string\" },",
+                  "            repository_url: { type: \"string\" },",
+                  "            created_at: { type: \"string\" },",
+                  "            updated_at: { type: \"string\" },",
+                  "",
+                  "            labels: { type: \"array\" },",
+                  "            assignees: { type: \"array\" },",
+                  "            user: { type: \"object\" }",
+                  "        },",
+                  "        additionalProperties: true",
+                  "    };",
+                  "",
+                  "    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+                  "});",
+                  "",
+                  "// 4. DATA INTEGRITY ",
+                  "pm.sendRequest({",
+                  "    url: pm.environment.get(\"base_url\") +",
+                  "        \"/repos/\" +",
+                  "        pm.environment.get(\"username\") +",
+                  "        \"/\" +",
+                  "        pm.environment.get(\"repo\") +",
+                  "        \"/issues/\" +",
+                  "        pm.environment.get(\"issue_number\"),",
+                  "",
+                  "    method: \"GET\",",
+                  "    header: {",
+                  "        \"Authorization\": \"Bearer \" + pm.environment.get(\"token\"),",
+                  "        \"Accept\": \"application/vnd.github+json\"",
+                  "    }",
+                  "}, function (err, res) {",
+                  "",
+                  "    const getData = res.json();",
+                  "",
+                  "    pm.test(\"Integridad: estado persistido correctamente en backend\", function () {",
+                  "",
+                  "        pm.expect(res.code).to.eql(200);",
+                  "        pm.expect(getData.state).to.eql(\"closed\");",
+                  "        pm.expect(getData.number).to.eql(parseInt(pm.environment.get(\"issue_number\")));",
+                  "    });",
+                  "});",
+                  "",
+                  "// 5. DEFAULT VALUE CONSISTENCY ",
+                  "pm.test(\"Valores del issue se mantienen consistentes\", function () {",
+                  "",
+                  "    pm.expect(jsonData.state).to.eql(\"closed\");",
+                  "",
+                  "    pm.expect(jsonData.title).to.not.be.null;",
+                  "    pm.expect(jsonData.body).to.not.be.null;",
+                  "",
+                  "    pm.expect(jsonData.labels).to.be.an(\"array\").that.is.empty;",
+                  "    pm.expect(jsonData.assignees).to.be.an(\"array\").that.is.empty;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"state\": \"closed\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/{{repo}}/issues/{{issue_number}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "{{repo}}",
+                "issues",
+                "{{issue_number}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Close Issues (Clean up)- HLTC-01 & 03",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"state\": \"closed\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{username}}/{{repo}}/issues/{{issue_number}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{username}}",
+                "{{repo}}",
+                "issues",
+                "{{issue_number}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Issues/Labels (Sergio)",
+      "item": [
+        {
+          "name": "HLTC-06: Crear una etiqueta con nombre y color válidos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Status code",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// 2. Response body",
+                  "pm.test(\"Response body contains label name and color\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.name).to.be.a(\"string\").and.not.empty;",
+                  "    pm.expect(json.color).to.be.a(\"string\").and.not.empty;",
+                  "});",
+                  "",
+                  "// 3. Schema validation",
+                  "pm.test(\"Schema contains required fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property(\"id\");",
+                  "    pm.expect(json).to.have.property(\"name\");",
+                  "    pm.expect(json).to.have.property(\"color\");",
+                  "    pm.expect(json).to.have.property(\"url\");",
+                  "    pm.expect(json).to.have.property(\"default\");",
+                  "});",
+                  "",
+                  "// 4. Data integrity + store label_name for later",
+                  "pm.test(\"Data integrity: label is not default and is active\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json[\"default\"]).to.be.false;",
+                  "    pm.expect(json.name).to.be.a(\"string\").and.not.empty;",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set(\"label_name\", pm.response.json().name);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{label_name}}\",\n  \"color\": \"{{label_color}}\",\n  \"description\": \"Label created via Postman API test\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{owner}}/{{repo}}/labels",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{owner}}",
+                "{{repo}}",
+                "labels"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-07: Validar error al crear etiqueta sin nombre",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Status code",
+                  "pm.test(\"Status code is 422 Validation Failed\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});",
+                  "",
+                  "// 2. Response body contains error",
+                  "pm.test(\"Response body contains error message\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property(\"message\");",
+                  "    pm.expect(json.message).to.be.a(\"string\").and.not.empty;",
+                  "});",
+                  "",
+                  "// 3. Schema validation",
+                  "pm.test(\"Error schema contains required fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property(\"message\");",
+                  "    pm.expect(json).to.have.property(\"documentation_url\");",
+                  "});",
+                  "",
+                  "// 4. Data integrity",
+                  "pm.test(\"Data integrity: error confirms missing required field\", function () {",
+                  "    const json = pm.response.json();",
+                  "    const msg = json.message.toLowerCase();",
+                  "    pm.expect(msg).to.satisfy(m => m.includes(\"validation\") || m.includes(\"invalid\") || m.includes(\"missing\"));",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"color\": \"ff0000\",\n  \"description\": \"Label without name - should fail\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{owner}}/{{repo}}/labels",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{owner}}",
+                "{{repo}}",
+                "labels"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-08: Actualizar nombre y color de una etiqueta existente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// 2. Response body contains updated values",
+                  "pm.test(\"Response body reflects updated name and color\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.name).to.eql(\"updated-label-sergio\");",
+                  "    pm.expect(json.color).to.eql(\"00ff88\");",
+                  "});",
+                  "",
+                  "// 3. Schema validation",
+                  "pm.test(\"Schema contains required fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property(\"id\");",
+                  "    pm.expect(json).to.have.property(\"name\");",
+                  "    pm.expect(json).to.have.property(\"color\");",
+                  "    pm.expect(json).to.have.property(\"url\");",
+                  "});",
+                  "",
+                  "// 4. Data integrity",
+                  "pm.test(\"Data integrity: updated name is stored for cleanup\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.name).to.be.a(\"string\").and.not.empty;",
+                  "    pm.collectionVariables.set(\"label_name\", json.name);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"new_name\": \"updated-label-sergio\",\n  \"color\": \"00ff88\",\n  \"description\": \"Updated via PATCH in Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{owner}}/{{repo}}/labels/{{label_name}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{owner}}",
+                "{{repo}}",
+                "labels",
+                "{{label_name}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-09: Eliminar una etiqueta existente del repositorio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Status code",
+                  "pm.test(\"Status code is 204 No Content\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "// 2. Response body is empty",
+                  "pm.test(\"Response body is empty on successful delete\", function () {",
+                  "    pm.expect(pm.response.text()).to.be.empty;",
+                  "});",
+                  "",
+                  "// 3. Schema validation (via headers)",
+                  "pm.test(\"Response headers confirm GitHub API response\", function () {",
+                  "    pm.expect(pm.response.headers.get(\"x-github-request-id\")).to.exist;",
+                  "});",
+                  "",
+                  "// 4. Data integrity: confirm label no longer exists",
+                  "pm.test(\"Data integrity: DELETE is idempotent and final\", function () {",
+                  "    pm.expect(pm.response.code).to.equal(204);",
+                  "    pm.collectionVariables.unset(\"label_name\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/repos/{{owner}}/{{repo}}/labels/{{label_name}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{owner}}",
+                "{{repo}}",
+                "labels",
+                "{{label_name}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-10: Asignar etiqueta existente a un issue",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 1. Status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// 2. Response body contains the assigned label",
+                  "pm.test(\"Response body includes the assigned label\", function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.be.an(\"array\");",
+                  "    const labelNames = json.map(l => l.name);",
+                  "    pm.expect(labelNames).to.include(pm.collectionVariables.get(\"label_name\"));",
+                  "});",
+                  "",
+                  "// 3. Schema validation",
+                  "pm.test(\"Each label in response has required fields\", function () {",
+                  "    const json = pm.response.json();",
+                  "    json.forEach(label => {",
+                  "        pm.expect(label).to.have.property(\"id\");",
+                  "        pm.expect(label).to.have.property(\"name\");",
+                  "        pm.expect(label).to.have.property(\"color\");",
+                  "        pm.expect(label).to.have.property(\"url\");",
+                  "    });",
+                  "});",
+                  "",
+                  "// 4. Data integrity",
+                  "pm.test(\"Data integrity: label linked to correct issue\", function () {",
+                  "    const json = pm.response.json();",
+                  "    const match = json.find(l => l.name === pm.collectionVariables.get(\"label_name\"));",
+                  "    pm.expect(match).to.not.be.undefined;",
+                  "    pm.expect(match.default).to.be.false;",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"labels\": [\n    \"{{label_name}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/repos/{{owner}}/{{repo}}/issues/{{issue_number}}/labels",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "repos",
+                "{{owner}}",
+                "{{repo}}",
+                "issues",
+                "{{issue_number}}",
+                "labels"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users (Andrea)",
+      "item": [
+        {
+          "name": "HLTC-16 Obtener usuario autenticado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains required fields\", function () {\r",
+                  "    pm.expect(json).to.have.property(\"login\");\r",
+                  "    pm.expect(json).to.have.property(\"id\");\r",
+                  "    pm.expect(json).to.have.property(\"email\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Validate response schema\", function () {\r",
+                  "    const schema = {\r",
+                  "        type: \"object\",\r",
+                  "        required: [\"login\", \"id\"],\r",
+                  "        properties: {\r",
+                  "            login: { type: \"string\" },\r",
+                  "            id: { type: \"number\" },\r",
+                  "            email: { type: [\"string\", \"null\"] }\r",
+                  "        }\r",
+                  "    };\r",
+                  "\r",
+                  "    pm.response.to.have.jsonSchema(schema);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Validate data integrity\", function () {\r",
+                  "    pm.expect(json.login).to.not.be.empty;\r",
+                  "    pm.expect(json.id).to.be.a(\"number\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Save username variable\", function () {\r",
+                  "    pm.collectionVariables.set(\"username\", json.login);\r",
+                  "    pm.expect(pm.collectionVariables.get(\"username\")).to.eql(json.login);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.github+json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-17 Acceso no autorizado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 401 or 403\", function () {\r",
+                  "    pm.expect([401,403]).to.include(pm.response.code);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains error message\", function () {\r",
+                  "    pm.expect(json).to.have.property(\"message\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Validate error schema\", function () {\r",
+                  "    const schema = {\r",
+                  "        type: \"object\",\r",
+                  "        required: [\"message\"],\r",
+                  "        properties: {\r",
+                  "            message: { type: \"string\" }\r",
+                  "        }\r",
+                  "    };\r",
+                  "\r",
+                  "    pm.response.to.have.jsonSchema(schema);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Validate message integrity\", function () {\r",
+                  "    pm.expect(json.message).to.not.be.empty;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Access denied correctly\", function () {\r",
+                  "    pm.expect(json.message.toLowerCase()).to.include(\"bad credentials\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token_invalid}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.github+json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-18 Actualizar perfil",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 or 204\", function () {\r",
+                  "    pm.expect([200,204]).to.include(pm.response.code);\r",
+                  "});\r",
+                  "\r",
+                  "if (pm.response.code === 200) {\r",
+                  "\r",
+                  "    const json = pm.response.json();\r",
+                  "\r",
+                  "    pm.test(\"Bio updated correctly\", function () {\r",
+                  "        pm.expect(json.bio).to.eql(\"Nueva API\");\r",
+                  "    });\r",
+                  "\r",
+                  "    pm.test(\"Location updated correctly\", function () {\r",
+                  "        pm.expect(json.location).to.eql(\"Bolivia\");\r",
+                  "    });\r",
+                  "\r",
+                  "    pm.test(\"Validate response schema\", function () {\r",
+                  "        const schema = {\r",
+                  "            type: \"object\",\r",
+                  "            properties: {\r",
+                  "                bio: { type: \"string\" },\r",
+                  "                location: { type: \"string\" }\r",
+                  "            }\r",
+                  "        };\r",
+                  "\r",
+                  "        pm.response.to.have.jsonSchema(schema);\r",
+                  "    });\r",
+                  "\r",
+                  "    pm.test(\"Validate data integrity\", function () {\r",
+                  "        pm.expect(json.bio).to.not.be.empty;\r",
+                  "        pm.expect(json.location).to.not.be.empty;\r",
+                  "    });\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.github+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-GitHub-Api-Version",
+                "value": "2026-03-10",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"bio\": \"Nueva API\",\r\n  \"location\": \"Bolivia\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-19 Actualizar perfil  Datos invalidos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Protected field login was NOT modified\", function () {\r",
+                  "    pm.expect(json.login).to.not.eql(\"Nuevo Nombre Andrea\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Protected field id was NOT modified\", function () {\r",
+                  "    pm.expect(json.id).to.not.eql(123456);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Valid field bio WAS updated correctly\", function () {\r",
+                  "    pm.expect(json.bio).to.eql(\"Nueva API QA\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Validate response schema\", function () {\r",
+                  "    const schema = {\r",
+                  "        type: \"object\",\r",
+                  "        required: [\"login\", \"id\"],\r",
+                  "        properties: {\r",
+                  "            login: { type: \"string\" },\r",
+                  "            id: { type: \"number\" },\r",
+                  "            bio: { type: [\"string\", \"null\"] }\r",
+                  "        }\r",
+                  "    };\r",
+                  "\r",
+                  "    pm.response.to.have.jsonSchema(schema);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.github+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-GitHub-Api-Version",
+                "value": "2026-03-10",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"login\": \"Nuevo Nombre Andrea\",\r\n  \"id\": 123456,\r\n  \"bio\": \"Nueva API QA\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HLTC-20: Obtener información perfil público",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains public fields\", function () {\r",
+                  "    pm.expect(json).to.have.property(\"login\");\r",
+                  "    pm.expect(json).to.have.property(\"id\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Validate response schema\", function () {\r",
+                  "    const schema = {\r",
+                  "        type: \"object\",\r",
+                  "        required: [\"login\", \"id\"],\r",
+                  "        properties: {\r",
+                  "            login: { type: \"string\" },\r",
+                  "            id: { type: \"number\" }\r",
+                  "        }\r",
+                  "    };\r",
+                  "\r",
+                  "    pm.response.to.have.jsonSchema(schema);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Validate data integrity\", function () {\r",
+                  "    pm.expect(json.login).to.not.be.empty;\r",
+                  "    pm.expect(json.id).to.be.a(\"number\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Username matches requested user\", function () {\r",
+                  "    pm.expect(json.login.toLowerCase())\r",
+                  "        .to.eql(pm.collectionVariables.get(\"username\").toLowerCase());\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/{{username}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{username}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar campos editables del perfil autenticado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains required identity fields\", function () {",
+                  "    pm.expect(json).to.have.property(\"login\");",
+                  "    pm.expect(json).to.have.property(\"id\");",
+                  "    pm.expect(json.login).to.not.be.empty;",
+                  "    pm.expect(json.id).to.be.a(\"number\");",
+                  "});",
+                  "",
+                  "pm.test(\"Editable field company was updated\", function () {",
+                  "    pm.expect(json.company).to.eql(\"QA Testing Team\");",
+                  "});",
+                  "",
+                  "pm.test(\"Editable field location was updated\", function () {",
+                  "    pm.expect(json.location).to.eql(\"Cochabamba, Bolivia\");",
+                  "});",
+                  "",
+                  "pm.test(\"Validate response schema for user profile\", function () {",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "        required: [\"login\", \"id\", \"type\"],",
+                  "        properties: {",
+                  "            login:    { type: \"string\" },",
+                  "            id:       { type: \"number\" },",
+                  "            type:     { type: \"string\" },",
+                  "            company:  { type: [\"string\", \"null\"] },",
+                  "            location: { type: [\"string\", \"null\"] },",
+                  "            hireable: { type: [\"boolean\", \"null\"] },",
+                  "            bio:      { type: [\"string\", \"null\"] }",
+                  "        }",
+                  "    };",
+                  "    pm.response.to.have.jsonSchema(schema);",
+                  "});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.github+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-GitHub-Api-Version",
+                "value": "2022-11-28",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company\": \"QA Testing Team\",\n  \"location\": \"Cochabamba, Bolivia\",\n  \"hireable\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Seguir a un usuario autenticado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204 No Content\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is empty\", function () {",
+                  "    pm.expect(pm.response.text()).to.eql(\"\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is acceptable\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+                  "});",
+                  "",
+                  "pm.test(\"X-GitHub-Request-Id header is present\", function () {",
+                  "    pm.expect(pm.response.headers.has(\"X-GitHub-Request-Id\")).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test(\"Request was authorized - no 401 or 403 returned\", function () {",
+                  "    pm.expect(pm.response.code).to.not.eql(401);",
+                  "    pm.expect(pm.response.code).to.not.eql(403);",
+                  "});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.github+json",
+                "type": "text"
+              },
+              {
+                "key": "X-GitHub-Api-Version",
+                "value": "2022-11-28",
+                "type": "text"
+              },
+              {
+                "key": "Content-Length",
+                "value": "0",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/user/following/{{owner}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "following",
+                "{{owner}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verificar si el usuario sigue a otro",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204 - authenticated user follows target\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is empty for HEAD request\", function () {",
+                  "    pm.expect(pm.response.text()).to.eql(\"\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is acceptable\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+                  "});",
+                  "",
+                  "pm.test(\"X-RateLimit-Limit header is present\", function () {",
+                  "    pm.expect(pm.response.headers.has(\"X-RateLimit-Limit\")).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test(\"X-GitHub-Request-Id header is present\", function () {",
+                  "    pm.expect(pm.response.headers.has(\"X-GitHub-Request-Id\")).to.be.true;",
+                  "});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "HEAD",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.github+json",
+                "type": "text"
+              },
+              {
+                "key": "X-GitHub-Api-Version",
+                "value": "2022-11-28",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/following/{{owner}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "following",
+                "{{owner}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Dejar de seguir a un usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204 No Content\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Response body is empty after DELETE\", function () {",
+                  "    pm.expect(pm.response.text()).to.eql(\"\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response time is acceptable\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+                  "});",
+                  "",
+                  "pm.test(\"X-GitHub-Request-Id header is present\", function () {",
+                  "    pm.expect(pm.response.headers.has(\"X-GitHub-Request-Id\")).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test(\"Request was authorized - no 401 or 403 returned\", function () {",
+                  "    pm.expect(pm.response.code).to.not.eql(401);",
+                  "    pm.expect(pm.response.code).to.not.eql(403);",
+                  "});"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.github+json",
+                "type": "text"
+              },
+              {
+                "key": "X-GitHub-Api-Version",
+                "value": "2022-11-28",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/following/{{owner}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "following",
+                "{{owner}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar email con dominio desechable debe ser rechazado",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "",
+                  "pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains error message field\", function () {",
+                  "    pm.expect(json).to.have.property(\"message\");",
+                  "    pm.expect(json.message).to.not.be.empty;",
+                  "});",
+                  "",
+                  "pm.test(\"Error message indicates domain verification failure\", function () {",
+                  "    pm.expect(json.message).to.eql(\"Email domain could not be verified\");",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains documentation_url for reference\", function () {",
+                  "    pm.expect(json).to.have.property(\"documentation_url\");",
+                  "    pm.expect(json.documentation_url).to.include(\"github.com\");",
+                  "});",
+                  "",
+                  "pm.test(\"Validate error response schema\", function () {",
+                  "    const schema = {",
+                  "        type: \"object\",",
+                  "        required: [\"message\", \"documentation_url\", \"status\"],",
+                  "        properties: {",
+                  "            message:           { type: \"string\" },",
+                  "            documentation_url: { type: \"string\" },",
+                  "            status:            { type: \"string\" }",
+                  "        }",
+                  "    };",
+                  "    pm.response.to.have.jsonSchema(schema);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.github+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "X-GitHub-Api-Version",
+                "value": "2022-11-28",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emails\": [\n    \"andrea.qa.test@test.com\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/user/emails",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "emails"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "updated_issue_title",
+      "value": "updated_issue_title"
+    },
+    {
+      "key": "updated_issue_body",
+      "value": "updated_issue_body"
+    },
+    {
+      "key": "label_color",
+      "value": "e11d48"
+    },
+    {
+      "key": "repo_id",
+      "value": ""
+    },
+    {
+      "key": "repo_name",
+      "value": ""
+    },
+    {
+      "key": "username",
+      "value": ""
+    },
+    {
+      "key": "repo_visibility",
+      "value": ""
+    },
+    {
+      "key": "repo_private",
+      "value": ""
+    },
+    {
+      "key": "updated_at",
+      "value": ""
+    },
+    {
+      "key": "test_email",
+      "value": ""
+    },
+    {
+      "key": "social_url",
+      "value": ""
+    }
+  ]
+}
