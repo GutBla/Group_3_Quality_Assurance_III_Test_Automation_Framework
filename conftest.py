@@ -1,0 +1,18 @@
+import pytest
+from services.github_issues_api import GitHubIssuesAPI
+from data.issue_data import CREATE_ISSUE_PAYLOAD
+
+
+@pytest.fixture
+def github_api():
+    return GitHubIssuesAPI()
+
+
+@pytest.fixture
+def issue(github_api):
+    response = github_api.create_issue(CREATE_ISSUE_PAYLOAD)
+    issue_number = response.json()["number"]
+
+    yield issue_number
+
+    github_api.close_issue(issue_number)
