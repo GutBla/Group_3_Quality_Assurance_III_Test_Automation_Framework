@@ -1,118 +1,137 @@
-# Group_3_Quality_Assurance_III_Test_Automation_Framework
-API automation testing framework using Python and Pytest
+# Group 3 — Quality Assurance III: Test Automation Framework
 
-Tecnologías utilizadas
+Framework de automatización de pruebas de API usando Python y Pytest sobre la GitHub REST API.
 
-Python 3.14+
+## Tecnologías utilizadas
 
-Pytest
+- Python 3.12+
+- Pytest
+- Requests
+- JSONSchema
+- python-dotenv
+- GitHub REST API
 
-Requests
+---
 
-JSONSchema
+## Instalación
 
-python-dotenv
+### 1. Clonar el repositorio
 
-GitHub REST API
-
-Instalación
-
-1. Clonar el repositorio
-
-git clone <URL_DEL_REPO>
+```bash
+git clone "https://github.com/GutBla/Group_3_Quality_Assurance_III_Test_Automation_Framework.git"
 
 cd Group_3_Quality_Assurance_III_Test_Automation_Framework
+```
 
-2. Crear entorno virtual
+### 2. Crear entorno virtual
 
-python3 -m venv venv
+```bash
+python -m venv .venv
+```
 
-source venv/bin/activate
+**Activar en Windows:**
+```bash
+.venv\Scripts\activate
+```
 
-3. Instalar dependencias
+**Activar en macOS/Linux:**
+```bash
+source .venv/bin/activate
+```
 
-pip install -r requirements.txt
+### 3. Instalar dependencias
 
-Configuración del proyecto
+```bash
+python -m pip install -r requirements.txt
+```
 
+---
 
+## Configuración del proyecto
 
-Crear un archivo .env en la raíz del proyecto:
+Crear un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
-
-
+```env
 BASE_URL=https://api.github.com
+GITHUB_USERNAME=tu_usuario_github
+GITHUB_REPO=tu_repositorio
+GITHUB_TOKEN=tu_github_token
+```
 
-USERNAME=tu_usuario_github
+---
 
-REPO=tu_repositorio
+## Estructura del proyecto
 
-TOKEN=tu_github_token
-
-Estructura del proyecto
-
+```
 Group_3_Quality_Assurance_III_Test_Automation_Framework/
-
 │
-
 ├── config/
-
-│   └── config.py              # Variables de entorno y configuración
-
+│   └── config.py                      # Variables de entorno y configuración
 │
-
 ├── data/
-
-│   └── issue_data.py         # Payloads de pruebas
-
+│   ├── issue_data.py                  # Payloads para pruebas de issues
+│   └── user_data.py                   # Payloads para pruebas de usuarios
 │
-
 ├── services/
-
-│   └── github_issues_api.py  # API Client (Requests wrapper)
-
+│   ├── github_api.py                  # Cliente general de la API
+│   ├── github_issues_api.py           # Cliente para endpoints de issues
+│   └── github_user_api.py             # Cliente para endpoints de usuarios
 │
-
 ├── tests/
-
 │   ├── issues/
-
-│   │   └── test_create_issue.py
-
+│   │   └── test_create_issue.py       # HLTC-01: Crear issue con datos válidos
 │   └── users/
-
-│       └── test_get_user.py
-
+│       ├── test_get_user.py           # Obtener usuario público
+│       └── test_hltc18_update_profile.py  # HLTC-18: Actualizar perfil autenticado
 │
-
 ├── utils/
-
-│   └── schemas.py            # JSON Schemas para validación
-
+│   └── schemas.py                     # JSON Schemas para validación de respuestas
 │
+├── conftest.py                        # Fixtures globales (setup/teardown)
+├── pytest.ini                         # Configuración de Pytest
+├── requirements.txt                   # Dependencias del proyecto
+└── .env                               # Variables de entorno (no subir al repo)
+```
 
-├── conftest.py               # Fixtures globales (setup/teardown)
+---
 
-│
+## Cómo ejecutar las pruebas
 
-├── pytest.ini
+> Siempre usar `python -m pytest` para asegurar que se usa el entorno virtual activo.
 
-└── requirements.txt
+**Ejecutar todos los tests:**
+```bash
+python -m pytest -v
+```
 
-Cómo ejecutar las pruebas
+**Ejecutar un archivo específico:**
+```bash
+python -m pytest tests/issues/test_create_issue.py -v
+python -m pytest tests/users/test_hltc18_update_profile.py -v
+```
 
+**Ejecutar por rama de feature:**
+```bash
+git checkout feature/HLTC-18-actualizar-perfil-github-api
+python -m pytest tests/users/test_hltc18_update_profile.py -v
+```
 
+---
 
-Ejecutar todos los tests:
+## Ramas del proyecto
 
+| Rama | Descripción |
+|------|-------------|
+| `main` | Rama principal estable |
+| `feature/HLTC-18-actualizar-perfil-github-api` | Prueba automatizada HLTC-18: actualizar perfil de usuario |
 
+---
 
-pytest -v
+## Convención de commits
 
-
-
-Ejecutar un archivo específico:
-
-
-
-pytest tests/issues/test_create_issue.py -v
+```
+feat: descripción del feature agregado
+fix: descripción del bug corregido
+test: nueva prueba automatizada
+docs: actualización de documentación
+```
