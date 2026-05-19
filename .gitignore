@@ -217,3 +217,14 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+# Node.js
+node_modules/
+package-lock.json
+package.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
