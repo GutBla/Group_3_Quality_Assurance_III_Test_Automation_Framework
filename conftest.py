@@ -14,7 +14,7 @@ def pytest_sessionstart(session):
     print("\n[SETUP] Starting test session")
 
 
-def pytest_sessionend(session, exitstatus):
+def pytest_sessionfinish(session, exitstatus):
     print(f"\n[TEARDOWN] Test session ended with status: {exitstatus}")
 
 
