@@ -127,3 +127,57 @@ def test_should_assign_label_to_issue(label, labels_api, issue):
     assert get_response.status_code == 200
     issue_label_names = [lbl["name"] for lbl in get_body["labels"]]
     assert LABEL_UPDATED_NAME in issue_label_names
+
+
+def test_should_get_existing_label_successfully(label, labels_api):
+    """HLTC-06 integrity: Obtener una etiqueta existente por nombre"""
+
+    # Arrange
+    label_name = label
+
+    # Act
+    response = labels_api.get_label(label_name)
+    body = response.json()
+
+    # Assert 1 — Status Code
+    assert response.status_code == 200
+
+    # Assert 2 — Response Body
+    assert body["name"] == label_name
+    assert body["color"] == CREATE_LABEL_PAYLOAD["color"]
+
+    # Assert 3 — Schema Validation
+    validate(instance=body, schema=LABEL_SCHEMA)
+
+    # Assert 4 — Data Integrity
+    assert body["default"] is False
+    assert "description" in body
+
+    # Assert 5 — Default Values
+    assert isinstance(body["id"], int)
+    assert body["id"] > 0
+
+
+def test_should_delete_label_successfully(label, labels_api):
+    """HLTC-09: Eliminar una etiqueta existente del repositorio"""
+
+    # Arrange
+    label_name = label
+
+    # Act
+    response = labels_api.delete_label(label_name)
+
+    # Assert 1 — Status Code
+    assert response.status_code == 204
+
+    # Assert 2 — Response Body vacío
+    assert response.text == ""
+
+    # Assert 3 — Data Integrity via GET (debe retornar 404)
+    get_response = labels_api.get_label(label_name)
+    assert get_response.status_code == 404
+
+    # Assert 4 — Error body confirma que la etiqueta no existe
+    get_body = get_response.json()
+    assert "message" in get_body
+    assert get_body["message"] == "Not Found"
