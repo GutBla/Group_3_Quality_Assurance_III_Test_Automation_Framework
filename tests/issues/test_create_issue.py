@@ -4,7 +4,7 @@ from utils.schemas import CREATE_ISSUE_SCHEMA
 from data.issue_data import CREATE_ISSUE_PAYLOAD
 
 
-def test_should_create_issue_successfully(github_api):
+def test_should_create_issue_successfully(github_api, request):
 
     # Arrange
     payload = CREATE_ISSUE_PAYLOAD
@@ -14,6 +14,9 @@ def test_should_create_issue_successfully(github_api):
     response_body = response.json()
 
     issue_number = response_body["number"]
+
+    # Postcondition: close issue regardless of test outcome
+    request.addfinalizer(lambda: github_api.close_issue(issue_number))
 
     # Assert 1 — Status Code
     assert response.status_code == 201
@@ -39,5 +42,3 @@ def test_should_create_issue_successfully(github_api):
     # Assert 5 — Default Values
     assert response_body["labels"] == []
     assert response_body["assignees"] == []
-
-    

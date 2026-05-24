@@ -85,7 +85,8 @@ Group_3_Quality_Assurance_III_Test_Automation_Framework/
 │   ├── github_issues_api.py           # Cliente para endpoints de issues
 │   ├── github_labels_api.py           # Cliente para endpoints de labels
 │   ├── github_repositories_api.py     # Cliente para endpoints de repositorios
-│   └── github_user_api.py             # Cliente para endpoints de usuarios
+│   ├── github_user_api.py             # Cliente para endpoints de usuarios
+│   └── request_manager.py             # Singleton — gestor de peticiones HTTP
 │
 ├── tests/
 │   ├── issues/
