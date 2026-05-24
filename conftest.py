@@ -1,11 +1,14 @@
+import logging
 import pytest
-from services.github_issues_api import GitHubIssuesAPI
-from services.github_labels_api import GitHubLabelsAPI
-from services.github_user_api import GitHubUserAPI
-from services.github_repositories_api import GitHubRepositoriesAPI
+
 from data.issue_data import CREATE_ISSUE_PAYLOAD
 from data.label_data import CREATE_LABEL_PAYLOAD, LABEL_NAME, LABEL_UPDATED_NAME
 from data.repository_data import CREATE_REPO_PAYLOAD
+from services.github_issues_api import GitHubIssuesAPI
+from services.github_labels_api import GitHubLabelsAPI
+from services.github_repositories_api import GitHubRepositoriesAPI
+from services.github_user_api import GitHubUserAPI
+from utils.logger import logger
 
 
 # --- Session-level hooks (before all / after all) ---
@@ -16,6 +19,23 @@ def pytest_sessionstart(session):
 
 def pytest_sessionfinish(session, exitstatus):
     print(f"\n[TEARDOWN] Test session ended with status: {exitstatus}")
+
+
+# --- Per-test logging hooks ---
+
+def pytest_runtest_setup(item):
+    logger.info(f"START  {item.nodeid}")
+
+
+def pytest_runtest_logreport(report):
+    if report.when != "call":
+        return
+    if report.passed:
+        logger.info(f"PASSED {report.nodeid}")
+    elif report.failed:
+        logger.error(f"FAILED {report.nodeid}\n{report.longreprtext}")
+    elif report.skipped:
+        logger.warning(f"SKIPPED {report.nodeid}")
 
 
 # --- API client fixtures ---

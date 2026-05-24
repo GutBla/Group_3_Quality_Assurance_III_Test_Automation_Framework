@@ -79,6 +79,8 @@ Group_3_Quality_Assurance_III_Test_Automation_Framework/
 │   ├── environments/
 │   └── reports/
 │
+├── logs/                              # Archivos de log generados por cada ejecución
+│
 ├── services/
 │   ├── github_issues_api.py           # Cliente para endpoints de issues
 │   ├── github_labels_api.py           # Cliente para endpoints de labels
@@ -98,11 +100,13 @@ Group_3_Quality_Assurance_III_Test_Automation_Framework/
 │       └── test_hltc18_update_profile.py
 │
 ├── utils/
+│   ├── logger.py                      # Logger centralizado (genera archivos .log)
 │   └── schemas.py                     # JSON Schemas para validación de respuestas
 │
-├── conftest.py                        # Fixtures globales (setup/teardown)
+├── conftest.py                        # Fixtures globales + hooks de logging
 ├── pytest.ini                         # Configuración de Pytest
 ├── requirements.txt                   # Dependencias del proyecto
+├── show_logs.py                       # Script para ejecutar tests y visualizar logs
 └── .env                               # Variables de entorno (no subir al repo)
 ```
 
