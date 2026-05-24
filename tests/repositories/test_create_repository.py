@@ -3,7 +3,7 @@ from utils.schemas import CREATE_REPO_SCHEMA
 from data.repository_data import CREATE_REPO_PAYLOAD
 
 
-def test_should_create_repository_successfully(repo_api):
+def test_should_create_repository_successfully(repo_api, repository):
 
     # Arrange
     payload = CREATE_REPO_PAYLOAD
@@ -11,8 +11,6 @@ def test_should_create_repository_successfully(repo_api):
     # Act
     response = repo_api.create_repo(payload)
     response_body = response.json()
-
-    repo_name = response_body["name"]
 
     # Assert 1 — Status Code
     assert response.status_code == 201
@@ -30,7 +28,7 @@ def test_should_create_repository_successfully(repo_api):
     )
 
     # Assert 4 — Integrity Check via GET
-    get_response = repo_api.get_repo(repo_name)
+    get_response = repo_api.get_repo(response_body["name"])
     get_body = get_response.json()
 
     assert get_body["name"] == payload["name"]
@@ -40,7 +38,3 @@ def test_should_create_repository_successfully(repo_api):
     # Assert 5 — Default Values
     assert response_body["fork"] is False
     assert response_body["owner"]["login"] == response_body["full_name"].split("/")[0]
-
-    # Cleanup
-    delete_response = repo_api.delete_repo(repo_name)
-    assert delete_response.status_code == 204
