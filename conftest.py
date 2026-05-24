@@ -1,4 +1,4 @@
-import logging
+# import logging
 import pytest
 
 from data.issue_data import CREATE_ISSUE_PAYLOAD

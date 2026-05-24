@@ -2,6 +2,7 @@ from jsonschema import validate
 from data.user_data import UPDATE_PROFILE_PAYLOAD
 from utils.schemas import UPDATE_PROFILE_SCHEMA
 
+
 def test_should_update_authenticated_user_profile_successfully(github_user_api):
     payload = UPDATE_PROFILE_PAYLOAD
 
