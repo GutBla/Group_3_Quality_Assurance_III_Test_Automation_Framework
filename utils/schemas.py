@@ -37,9 +37,7 @@ ASSIGN_LABELS_SCHEMA = {
 }
 
 CREATE_ISSUE_SCHEMA = {
-    
     "type": "object",
-    
     "required": [
         "id",
         "number",
@@ -51,9 +49,7 @@ CREATE_ISSUE_SCHEMA = {
         "created_at",
         "updated_at"
     ],
-    
     "properties": {
-        
         "id": {"type": "number"},
         "number": {"type": "number"},
         "title": {"type": "string"},

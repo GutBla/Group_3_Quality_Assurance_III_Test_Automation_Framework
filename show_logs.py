@@ -26,7 +26,9 @@ def show_latest_log():
         return
 
     latest = log_files[-1]
-    console.print(Rule(f"[bold green]Log file: {os.path.basename(latest)}[/bold green]"))
+    console.print(
+        Rule(f"[bold green]Log file: {os.path.basename(latest)}[/bold green]")
+    )
 
     with open(latest, encoding="utf-8") as f:
         lines = f.readlines()
@@ -44,7 +46,9 @@ def show_latest_log():
         else:
             output.append(line, style="white")
 
-    console.print(Panel(output, title="[bold]Test Run Logs[/bold]", border_style="blue"))
+    console.print(
+        Panel(output, title="[bold]Test Run Logs[/bold]", border_style="blue")
+    )
 
 
 if __name__ == "__main__":

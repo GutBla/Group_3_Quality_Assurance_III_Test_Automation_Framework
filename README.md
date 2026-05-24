@@ -152,3 +152,25 @@ fix: descripción del bug corregido
 test: nueva prueba automatizada
 docs: actualización de documentación
 ```
+
+##  Calidad de Código (Linter)
+
+Este proyecto utiliza **Flake8** para garantizar que todo el código del framework cumpla con las buenas prácticas de Python (PEP 8).
+
+### Ejecución
+
+Para analizar el código, activa tu entorno virtual y ejecuta en la raíz del proyecto:
+
+```bash
+flake8 .
+
+Códigos de Advertencia Comunes
+Si el comando no devuelve ningún mensaje, el código está limpio. De lo contrario, podrías ver:
+
+F401: Librería importada que no se está usando.
+
+E501: Línea demasiado larga (Límite del proyecto: 88 caracteres).
+
+W292: Falta una línea en blanco al final del archivo.
+
+W291/W293: Espacios en blanco fantasmas o invisibles al final de las líneas.
