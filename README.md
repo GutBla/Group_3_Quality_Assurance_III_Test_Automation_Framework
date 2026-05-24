@@ -70,19 +70,32 @@ Group_3_Quality_Assurance_III_Test_Automation_Framework/
 │
 ├── data/
 │   ├── issue_data.py                  # Payloads para pruebas de issues
+│   ├── label_data.py                  # Payloads para pruebas de labels
+│   ├── repository_data.py             # Payloads para pruebas de repositorios
 │   └── user_data.py                   # Payloads para pruebas de usuarios
 │
+├── documentation/
+│   ├── collections/
+│   ├── environments/
+│   └── reports/
+│
 ├── services/
-│   ├── github_api.py                  # Cliente general de la API
 │   ├── github_issues_api.py           # Cliente para endpoints de issues
-│   └── github_user_api.py             # Cliente para endpoints de usuarios
+│   ├── github_labels_api.py           # Cliente para endpoints de labels
+│   ├── github_repositories_api.py     # Cliente para endpoints de repositorios
+│   ├── github_user_api.py             # Cliente para endpoints de usuarios
+│   └── request_manager.py             # Singleton — gestor de peticiones HTTP
 │
 ├── tests/
 │   ├── issues/
-│   │   └── test_create_issue.py       # HLTC-01: Crear issue con datos válidos
+│   │   └── test_create_issue.py
+│   ├── labels/
+│   │   └── test_labels.py
+│   ├── repositories/
+│   │   └── test_create_repository.py
 │   └── users/
-│       ├── test_get_user.py           # Obtener usuario público
-│       └── test_hltc18_update_profile.py  # HLTC-18: Actualizar perfil autenticado
+│       ├── test_get_user.py
+│       └── test_hltc18_update_profile.py
 │
 ├── utils/
 │   └── schemas.py                     # JSON Schemas para validación de respuestas

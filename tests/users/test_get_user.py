@@ -1,14 +1,14 @@
-from services.github_api import get_user
+from services.github_user_api import GitHubUserAPI
 
 
 def test_should_get_existing_github_user_successfully():
 
     # Arrange
     username = "octocat"
+    client = GitHubUserAPI()
 
     # Act
-    response = get_user(username)
-
+    response = client.get_user(username)
     body = response.json()
 
     # Assert 1
