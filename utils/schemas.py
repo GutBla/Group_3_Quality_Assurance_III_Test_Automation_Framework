@@ -104,27 +104,65 @@ CREATE_REPO_SCHEMA = {
         "name":           {"type": "string"},
         "full_name":      {"type": "string"},        # "matsan201/mi-repo-de-prueba"
         "private":        {"type": "boolean"},
-        "description":    {"type": ["string", "null"]},  # puede ser null
+        "description":    {"type": ["string", "null"]},
         "html_url":       {"type": "string"},
         "url":            {"type": "string"},
         "has_issues":     {"type": "boolean"},
         "visibility":     {"type": "string", "enum": ["public", "private", "internal"]},
         "created_at":     {"type": "string"},
-        "default_branch": {"type": "string"},        # "main"
+        "default_branch": {"type": "string"},
         "fork":           {"type": "boolean"},
 
         "owner": {
             "type": "object",
             "required": ["login", "id"],
             "properties": {
-                "login": {"type": "string"},         # "matsan201"
-                "id":    {"type": "integer"}         # 115159231
+                "login": {"type": "string"},
+                "id":    {"type": "integer"}
             }
         }
     },
 
     "additionalProperties": True
 }
+
+UPDATE_REPO_SCHEMA = {
+    "type": "object",
+    "required": ["id", "name", "full_name", "private", "description", "visibility"],
+    "properties": {
+        "id":          {"type": "integer"},
+        "name":        {"type": "string"},
+        "full_name":   {"type": "string"},
+        "private":     {"type": "boolean"},
+        "description": {"type": ["string", "null"]},
+        "visibility":  {"type": "string", "enum": ["public", "private", "internal"]},
+        "html_url":    {"type": "string"},
+        "updated_at":  {"type": "string"},
+    },
+    "additionalProperties": True
+}
+
+ERROR_REPO_SCHEMA = {
+    "type": "object",
+    "required": ["message", "errors"],
+    "properties": {
+        "message": {"type": "string"},
+        "errors": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "resource": {"type": "string"},
+                    "code":     {"type": "string"},
+                    "field":    {"type": "string"},
+                    "message":  {"type": "string"}
+                }
+            }
+        }
+    },
+    "additionalProperties": True
+}
+
 ERROR_VALIDATION_ISSUE_SCHEMA = {
     "type": "object",
     "required": ["message"],

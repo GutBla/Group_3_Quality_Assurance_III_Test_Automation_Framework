@@ -15,5 +15,8 @@ class GitHubRepositoriesAPI:
     def get_repo(self, repo_name):
         return self.client.get(f"{self.base_url}/repos/{self.username}/{repo_name}")
 
+    def update_repo(self, repo_name, payload):
+        return self.client.patch(f"{self.base_url}/repos/{self.username}/{repo_name}", json=payload)
+    
     def delete_repo(self, repo_name):
         return self.client.delete(f"{self.base_url}/repos/{self.username}/{repo_name}")
