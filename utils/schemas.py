@@ -100,6 +100,7 @@ CREATE_REPO_SCHEMA = {
         "created_at",
         "default_branch"
     ],
+
     "properties": {
         "id": {"type": "integer"},
         "name": {"type": "string"},
@@ -224,6 +225,7 @@ EMAIL_ERROR_SCHEMA = {
     }
 }
 
+
 ERROR_VALIDATION_ISSUE_SCHEMA = {
     "type": "object",
     "required": ["message"],
@@ -244,7 +246,6 @@ ERROR_VALIDATION_ISSUE_SCHEMA = {
     },
     "additionalProperties": True
 }
-
 UPDATE_ISSUE_SCHEMA = {
     "type": "object",
     "required": [
