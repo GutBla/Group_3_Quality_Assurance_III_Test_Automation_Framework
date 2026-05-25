@@ -19,3 +19,9 @@ class GitHubIssuesAPI:
             f"{self.base_url}/issues/{issue_number}",
             json={"state": "closed"}
         )
+
+    def update_issue(self, issue_number, payload):
+        return self.client.patch(
+            f"{self.base_url}/issues/{issue_number}",
+            json=payload
+        )
