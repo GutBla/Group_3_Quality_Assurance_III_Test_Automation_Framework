@@ -70,19 +70,6 @@ CREATE_ISSUE_SCHEMA = {
     "additionalProperties": True
 }
 
-UPDATE_PROFILE_SCHEMA = {
-    "type": "object",
-    "required": ["login", "id"],
-    "properties": {
-        "login": {"type": "string"},
-        "id": {"type": "number"},
-        "bio": {"type": ["string", "null"]},
-        "location": {"type": ["string", "null"]},
-        "type": {"type": "string"}
-    },
-    "additionalProperties": True
-}
-
 CREATE_REPO_SCHEMA = {
 
     "type": "object",
@@ -127,5 +114,50 @@ CREATE_REPO_SCHEMA = {
         }
     },
 
+    "additionalProperties": True
+}
+
+AUTH_USER_SCHEMA = {
+    "type": "object",
+    "required": ["login", "id", "email"],
+    "properties": {
+        "login": {"type": "string"},
+        "id": {"type": "number"},
+        "email": {"type": ["string", "null"]}
+    },
+    "additionalProperties": True
+}
+
+UNAUTHORIZED_ERROR_SCHEMA = {
+    "type": "object",
+    "required": ["message"],
+    "properties": {
+        "message": {"type": "string"},
+        "documentation_url": {"type": "string"}
+    },
+    "additionalProperties": True
+}
+
+UPDATE_PROFILE_SCHEMA = {
+    "type": "object",
+    "required": ["login", "id"],
+    "properties": {
+        "login": {"type": "string"},
+        "id": {"type": "number"},
+        "bio": {"type": ["string", "null"]},
+        "location": {"type": ["string", "null"]}
+    },
+    "additionalProperties": True
+}
+
+PUBLIC_USER_SCHEMA = {
+    "type": "object",
+    "required": ["login", "id"],
+    "properties": {
+        "login": {"type": "string"},
+        "id": {"type": "number"},
+        "name": {"type": ["string", "null"]},
+        "bio": {"type": ["string", "null"]}
+    },
     "additionalProperties": True
 }

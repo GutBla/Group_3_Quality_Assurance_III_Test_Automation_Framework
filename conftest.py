@@ -42,3 +42,19 @@ def label(labels_api):
 
     labels_api.delete_label(LABEL_NAME)
     labels_api.delete_label(LABEL_UPDATED_NAME)
+
+@pytest.fixture
+def profile_restore(github_user_api):
+    original = github_user_api.get_authenticated_user().json()
+    original_bio = original.get("bio", "")
+    original_location = original.get("location", "")
+
+    yield
+
+    restore_payload = {}
+    if original_bio != "":
+        restore_payload["bio"] = original_bio if original_bio else None
+    if original_location != "":
+        restore_payload["location"] = original_location if original_location else None
+    if restore_payload:
+        github_user_api.update_profile(restore_payload)
