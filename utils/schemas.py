@@ -100,25 +100,27 @@ CREATE_REPO_SCHEMA = {
         "created_at",
         "default_branch"
     ],
+
     "properties": {
-        "id": {"type": "integer"},
-        "name": {"type": "string"},
-        "full_name": {"type": "string"},
-        "private": {"type": "boolean"},
-        "description": {"type": ["string", "null"]},
-        "html_url": {"type": "string"},
-        "url": {"type": "string"},
-        "has_issues": {"type": "boolean"},
-        "visibility": {"type": "string", "enum": ["public", "private", "internal"]},
-        "created_at": {"type": "string"},
+
+        "id":             {"type": "integer"},
+        "name":           {"type": "string"},
+        "full_name":      {"type": "string"},
+        "private":        {"type": "boolean"},
+        "description":    {"type": ["string", "null"]},
+        "html_url":       {"type": "string"},
+        "url":            {"type": "string"},
+        "has_issues":     {"type": "boolean"},
+        "visibility":     {"type": "string", "enum": ["public", "private", "internal"]},
+        "created_at":     {"type": "string"},
         "default_branch": {"type": "string"},
-        "fork": {"type": "boolean"},
+        "fork":           {"type": "boolean"},
         "owner": {
             "type": "object",
             "required": ["login", "id"],
             "properties": {
                 "login": {"type": "string"},
-                "id": {"type": "integer"}
+                "id":    {"type": "integer"}
             }
         }
     },
@@ -196,6 +198,7 @@ EMAIL_ERROR_SCHEMA = {
     }
 }
 
+
 ERROR_VALIDATION_ISSUE_SCHEMA = {
     "type": "object",
     "required": ["message"],
@@ -216,7 +219,6 @@ ERROR_VALIDATION_ISSUE_SCHEMA = {
     },
     "additionalProperties": True
 }
-
 UPDATE_ISSUE_SCHEMA = {
     "type": "object",
     "required": [
@@ -246,7 +248,6 @@ UPDATE_ISSUE_SCHEMA = {
     },
     "additionalProperties": True
 }
-
 NOT_FOUND_ISSUE_SCHEMA = {
     "type": "object",
     "required": ["message"],
@@ -316,3 +317,4 @@ CREATE_COMMENT_SCHEMA = {
     "required": ["id", "body", "user", "created_at"],
     "additionalProperties": True
 }
+
