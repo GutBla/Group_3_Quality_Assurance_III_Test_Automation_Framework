@@ -125,3 +125,39 @@ CREATE_REPO_SCHEMA = {
 
     "additionalProperties": True
 }
+
+AUTH_USER_SCHEMA = {
+    "type": "object",
+    "required": ["login", "id"],
+    "properties": {
+        "login": {"type": "string"},
+        "id": {"type": "number"},
+        "email": {"type": ["string", "null"]},
+        "name": {"type": ["string", "null"]},
+        "bio": {"type": ["string", "null"]},
+        "location": {"type": ["string", "null"]}
+    },
+    "additionalProperties": True
+}
+
+PUBLIC_USER_SCHEMA = {
+    "type": "object",
+    "required": ["login", "id"],
+    "properties": {
+        "login": {"type": "string"},
+        "id": {"type": "number"},
+        "type": {"type": "string"}
+    },
+    "additionalProperties": True
+}
+
+EMAIL_ERROR_SCHEMA = {
+    "type": "object",
+    "required": ["message", "documentation_url", "status"],
+    "properties": {
+        "message": {"type": "string"},
+        "documentation_url": {"type": "string"},
+        "status": {"type": "string"}
+    },
+    "additionalProperties": True
+}

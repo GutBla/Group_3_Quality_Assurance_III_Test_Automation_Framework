@@ -1,9 +1,7 @@
 from config.config import BASE_URL
 from services.request_manager import RequestManager
 
-
 class GitHubUserAPI:
-
     def __init__(self):
         self.base_url = BASE_URL
         self.client = RequestManager()
@@ -16,3 +14,15 @@ class GitHubUserAPI:
 
     def get_user(self, username):
         return self.client.get(f"{self.base_url}/users/{username}")
+
+    def follow_user(self, username: str):
+        return self.client.put(f"{self.base_url}/user/following/{username}")
+
+    def unfollow_user(self, username: str):
+        return self.client.delete(f"{self.base_url}/user/following/{username}")
+
+    def check_following(self, username: str):
+        return self.client.head(f"{self.base_url}/user/following/{username}")
+
+    def add_emails(self, emails: list):
+        return self.client.post(f"{self.base_url}/user/emails", json={"emails": emails})

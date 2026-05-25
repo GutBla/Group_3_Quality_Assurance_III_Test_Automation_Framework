@@ -1,8 +1,6 @@
 import threading
-
 import requests
 from config.config import TOKEN
-
 
 class RequestManager:
     _instance = None
@@ -30,8 +28,14 @@ class RequestManager:
     def post(self, url, **kwargs):
         return self.session.post(url, **kwargs)
 
+    def put(self, url, **kwargs):
+        return self.session.put(url, **kwargs)
+
     def patch(self, url, **kwargs):
         return self.session.patch(url, **kwargs)
 
     def delete(self, url, **kwargs):
         return self.session.delete(url, **kwargs)
+
+    def head(self, url, **kwargs):
+        return self.session.head(url, **kwargs)
