@@ -134,6 +134,23 @@ AUTH_USER_SCHEMA = {
     "additionalProperties": True
 }
 
+
+UPDATE_REPO_SCHEMA = {
+    "type": "object",
+    "required": ["id", "name", "full_name", "private", "description", "visibility"],
+    "properties": {
+        "id":          {"type": "integer"},
+        "name":        {"type": "string"},
+        "full_name":   {"type": "string"},
+        "private":     {"type": "boolean"},
+        "description": {"type": ["string", "null"]},
+        "visibility":  {"type": "string", "enum": ["public", "private", "internal"]},
+        "html_url":    {"type": "string"},
+        "updated_at":  {"type": "string"},
+    },
+    "additionalProperties": True
+}
+
 PUBLIC_USER_SCHEMA = {
     "type": "object",
     "required": ["login", "id"],
@@ -141,6 +158,26 @@ PUBLIC_USER_SCHEMA = {
         "login": {"type": "string"},
         "id": {"type": "number"},
         "type": {"type": "string"}
+    }
+}
+
+ERROR_REPO_SCHEMA = {
+    "type": "object",
+    "required": ["message", "errors"],
+    "properties": {
+        "message": {"type": "string"},
+        "errors": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "resource": {"type": "string"},
+                    "code":     {"type": "string"},
+                    "field":    {"type": "string"},
+                    "message":  {"type": "string"}
+                }
+            }
+        }
     },
     "additionalProperties": True
 }
@@ -152,9 +189,9 @@ EMAIL_ERROR_SCHEMA = {
         "message": {"type": "string"},
         "documentation_url": {"type": "string"},
         "status": {"type": "string"}
-    },
-    "additionalProperties": True
+    }
 }
+
 
 ERROR_VALIDATION_ISSUE_SCHEMA = {
     "type": "object",
