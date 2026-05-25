@@ -80,9 +80,7 @@ UPDATE_PROFILE_SCHEMA = {
 }
 
 CREATE_REPO_SCHEMA = {
-
     "type": "object",
-
     "required": [
         "id",
         "name",
@@ -97,34 +95,67 @@ CREATE_REPO_SCHEMA = {
         "created_at",
         "default_branch"
     ],
-
     "properties": {
-
         "id":             {"type": "integer"},
         "name":           {"type": "string"},
-        "full_name":      {"type": "string"},        # "matsan201/mi-repo-de-prueba"
+        "full_name":      {"type": "string"},
         "private":        {"type": "boolean"},
-        "description":    {"type": ["string", "null"]},  # puede ser null
+        "description":    {"type": ["string", "null"]},
         "html_url":       {"type": "string"},
         "url":            {"type": "string"},
         "has_issues":     {"type": "boolean"},
         "visibility":     {"type": "string", "enum": ["public", "private", "internal"]},
         "created_at":     {"type": "string"},
-        "default_branch": {"type": "string"},        # "main"
+        "default_branch": {"type": "string"},
         "fork":           {"type": "boolean"},
-
         "owner": {
             "type": "object",
             "required": ["login", "id"],
             "properties": {
-                "login": {"type": "string"},         # "matsan201"
-                "id":    {"type": "integer"}         # 115159231
+                "login": {"type": "string"},
+                "id":    {"type": "integer"}
             }
         }
     },
-
     "additionalProperties": True
 }
+
+AUTH_USER_SCHEMA = {
+    "type": "object",
+    "required": ["login", "id"],
+    "properties": {
+        "login": {"type": "string"},
+        "id": {"type": "number"},
+        "email": {"type": ["string", "null"]},
+        "name": {"type": ["string", "null"]},
+        "bio": {"type": ["string", "null"]},
+        "location": {"type": ["string", "null"]}
+    },
+    "additionalProperties": True
+}
+
+PUBLIC_USER_SCHEMA = {
+    "type": "object",
+    "required": ["login", "id"],
+    "properties": {
+        "login": {"type": "string"},
+        "id": {"type": "number"},
+        "type": {"type": "string"}
+    },
+    "additionalProperties": True
+}
+
+EMAIL_ERROR_SCHEMA = {
+    "type": "object",
+    "required": ["message", "documentation_url", "status"],
+    "properties": {
+        "message": {"type": "string"},
+        "documentation_url": {"type": "string"},
+        "status": {"type": "string"}
+    },
+    "additionalProperties": True
+}
+
 ERROR_VALIDATION_ISSUE_SCHEMA = {
     "type": "object",
     "required": ["message"],
@@ -145,6 +176,7 @@ ERROR_VALIDATION_ISSUE_SCHEMA = {
     },
     "additionalProperties": True
 }
+
 UPDATE_ISSUE_SCHEMA = {
     "type": "object",
     "required": [
@@ -174,6 +206,7 @@ UPDATE_ISSUE_SCHEMA = {
     },
     "additionalProperties": True
 }
+
 NOT_FOUND_ISSUE_SCHEMA = {
     "type": "object",
     "required": ["message"],

@@ -3,7 +3,6 @@ import requests
 from config.config import TOKEN
 from utils.logger import logger
 
-
 class RequestManager:
     _instance = None
     _lock = threading.Lock()
@@ -50,6 +49,9 @@ class RequestManager:
         self._log_response(response)
         return response
 
+    def put(self, url, **kwargs):
+        return self.session.put(url, **kwargs)
+
     def patch(self, url, **kwargs):
         self._log_request("PATCH", url, **kwargs)
         response = self.session.patch(url, **kwargs)
@@ -61,3 +63,6 @@ class RequestManager:
         response = self.session.delete(url, **kwargs)
         self._log_response(response)
         return response
+
+    def head(self, url, **kwargs):
+        return self.session.head(url, **kwargs)
