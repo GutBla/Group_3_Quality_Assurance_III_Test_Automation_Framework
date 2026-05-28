@@ -3,6 +3,7 @@ import requests
 from config.config import TOKEN
 from utils.logger import logger
 
+
 class RequestManager:
     _instance = None
     _lock = threading.Lock()
@@ -24,13 +25,15 @@ class RequestManager:
         })
 
     def _log_request(self, method, url, **kwargs):
-        """Método privado para registrar los detalles de la petición en el log."""
+        """Método privado para registrar los detalles de la petición."""
         logger.info(f"HTTP REQUEST: {method} {url}")
         if "json" in kwargs:
             logger.info(f"REQUEST BODY: {kwargs['json']}")
+        if "headers" in kwargs:
+            logger.info(f"OVERRIDE HEADERS: {kwargs['headers']}")
 
     def _log_response(self, response):
-        """Método privado para registrar los detalles de la respuesta en el log."""
+        """Método privado para registrar los detalles de la respuesta."""
         logger.info(f"HTTP RESPONSE STATUS: {response.status_code}")
         try:
             logger.info(f"RESPONSE BODY: {response.json()}")
@@ -50,7 +53,10 @@ class RequestManager:
         return response
 
     def put(self, url, **kwargs):
-        return self.session.put(url, **kwargs)
+        self._log_request("PUT", url, **kwargs)
+        response = self.session.put(url, **kwargs)
+        self._log_response(response)
+        return response
 
     def patch(self, url, **kwargs):
         self._log_request("PATCH", url, **kwargs)
@@ -65,4 +71,7 @@ class RequestManager:
         return response
 
     def head(self, url, **kwargs):
-        return self.session.head(url, **kwargs)
+        self._log_request("HEAD", url, **kwargs)
+        response = self.session.head(url, **kwargs)
+        self._log_response(response)
+        return response
