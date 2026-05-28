@@ -3,4 +3,3 @@ requests
 jsonschema
 python-dotenv
 rich
-flake8-naming
