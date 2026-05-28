@@ -9,6 +9,11 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+      GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+      GITHUB_REPO: ${{ secrets.GITHUB_REPO }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
     - name: Checkout repository code
@@ -24,30 +29,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest requests jsonschema python-dotenv rich pytest-html
 
-    - name: Create .env file from GitHub Secrets
-      run: |
-        echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env
-        echo "GITHUB_USERNAME=${{ secrets.GITHUB_USERNAME }}" >> .env
-        echo "GITHUB_REPO=${{ secrets.GITHUB_REPO }}" >> .env
-        echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
-
-    - name: Execute Pytest 5 consecutive times
+    - name: Execute Pytest
       run: |
         mkdir -p reports
         for i in {1..5}
         do
-          echo "============================================="
-          echo "   STARTING EXECUTION RUN $i OF 5"
-          echo "============================================="
-          
-          # Usamos "|| true" para que si una prueba falla, el script NO se detenga
-          # y nos permita completar las 5 ejecuciones para generar todos los reportes.
           python -m pytest -v \
             --html=reports/report_run_$i.html --self-contained-html \
             --junitxml=reports/junit_run_$i.xml || true
         done
 
-    - name: Upload HTML and JUnit XML Reports as Artifacts
+    - name: Upload Reports
       uses: actions/upload-artifact@v4
       with:
         name: pytest-ct-reports
