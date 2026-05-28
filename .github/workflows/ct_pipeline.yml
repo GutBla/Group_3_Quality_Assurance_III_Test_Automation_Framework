@@ -1,0 +1,56 @@
+name: Continuous Testing (CT) Pipeline
+
+on:
+  push:
+    branches: [ main, feature/add-issue-tests ]
+  pull_request:
+    branches: [ main, feature/add-issue-tests ]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest-html flake8-naming
+
+    - name: Create .env file from GitHub Secrets
+      run: |
+        echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env
+        echo "GITHUB_USERNAME=${{ secrets.GITHUB_USERNAME }}" >> .env
+        echo "GITHUB_REPO=${{ secrets.GITHUB_REPO }}" >> .env
+        echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
+
+    - name: Execute Pytest 5 consecutive times
+      run: |
+        mkdir -p reports
+        for i in {1..5}
+        do
+          echo "============================================="
+          echo "   STARTING EXECUTION RUN $i OF 5"
+          echo "============================================="
+          
+          # Usamos "|| true" para que si una prueba falla, el script NO se detenga
+          # y nos permita completar las 5 ejecuciones para generar todos los reportes.
+          python -m pytest -v \
+            --html=reports/report_run_$i.html --self-contained-html \
+            --junitxml=reports/junit_run_$i.xml || true
+        done
+
+    - name: Upload HTML and JUnit XML Reports as Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: pytest-ct-reports
+        path: reports/
+        retention-days: 5
