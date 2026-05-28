@@ -96,24 +96,24 @@ CREATE_REPO_SCHEMA = {
         "default_branch"
     ],
     "properties": {
-        "id":             {"type": "integer"},
-        "name":           {"type": "string"},
-        "full_name":      {"type": "string"},
-        "private":        {"type": "boolean"},
-        "description":    {"type": ["string", "null"]},
-        "html_url":       {"type": "string"},
-        "url":            {"type": "string"},
-        "has_issues":     {"type": "boolean"},
-        "visibility":     {"type": "string", "enum": ["public", "private", "internal"]},
-        "created_at":     {"type": "string"},
+        "id": {"type": "integer"},
+        "name": {"type": "string"},
+        "full_name": {"type": "string"},
+        "private": {"type": "boolean"},
+        "description": {"type": ["string", "null"]},
+        "html_url": {"type": "string"},
+        "url": {"type": "string"},
+        "has_issues": {"type": "boolean"},
+        "visibility": {"type": "string", "enum": ["public", "private", "internal"]},
+        "created_at": {"type": "string"},
         "default_branch": {"type": "string"},
-        "fork":           {"type": "boolean"},
+        "fork": {"type": "boolean"},
         "owner": {
             "type": "object",
             "required": ["login", "id"],
             "properties": {
                 "login": {"type": "string"},
-                "id":    {"type": "integer"}
+                "id": {"type": "integer"}
             }
         }
     },
@@ -134,19 +134,18 @@ AUTH_USER_SCHEMA = {
     "additionalProperties": True
 }
 
-
 UPDATE_REPO_SCHEMA = {
     "type": "object",
     "required": ["id", "name", "full_name", "private", "description", "visibility"],
     "properties": {
-        "id":          {"type": "integer"},
-        "name":        {"type": "string"},
-        "full_name":   {"type": "string"},
-        "private":     {"type": "boolean"},
+        "id": {"type": "integer"},
+        "name": {"type": "string"},
+        "full_name": {"type": "string"},
+        "private": {"type": "boolean"},
         "description": {"type": ["string", "null"]},
-        "visibility":  {"type": "string", "enum": ["public", "private", "internal"]},
-        "html_url":    {"type": "string"},
-        "updated_at":  {"type": "string"},
+        "visibility": {"type": "string", "enum": ["public", "private", "internal"]},
+        "html_url": {"type": "string"},
+        "updated_at": {"type": "string"},
     },
     "additionalProperties": True
 }
@@ -172,9 +171,9 @@ ERROR_REPO_SCHEMA = {
                 "type": "object",
                 "properties": {
                     "resource": {"type": "string"},
-                    "code":     {"type": "string"},
-                    "field":    {"type": "string"},
-                    "message":  {"type": "string"}
+                    "code": {"type": "string"},
+                    "field": {"type": "string"},
+                    "message": {"type": "string"}
                 }
             }
         }
@@ -191,7 +190,6 @@ EMAIL_ERROR_SCHEMA = {
         "status": {"type": "string"}
     }
 }
-
 
 ERROR_VALIDATION_ISSUE_SCHEMA = {
     "type": "object",
@@ -251,5 +249,65 @@ NOT_FOUND_ISSUE_SCHEMA = {
         "message": {"type": "string"},
         "documentation_url": {"type": "string"}
     },
+    "additionalProperties": True
+}
+
+UNAUTHORIZED_ERROR_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "message": {"type": "string"},
+        "documentation_url": {"type": "string"}
+    },
+    "required": ["message"],
+    "additionalProperties": True
+}
+
+ERROR_VALIDATION_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "message": {"type": "string"},
+        "errors": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "resource": {"type": "string"},
+                    "code": {"type": "string"},
+                    "field": {"type": "string"},
+                    "message": {"type": "string"}
+                },
+                "required": ["resource", "code", "field"]
+            }
+        },
+        "documentation_url": {"type": "string"}
+    },
+    "required": ["message", "errors"],
+    "additionalProperties": True
+}
+
+ERROR_NOT_FOUND_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "message": {"type": "string"},
+        "documentation_url": {"type": "string"},
+        "status": {"type": "string"}
+    },
+    "required": ["message", "documentation_url"],
+    "additionalProperties": True
+}
+
+CREATE_COMMENT_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "id": {"type": "integer"},
+        "node_id": {"type": "string"},
+        "url": {"type": "string"},
+        "html_url": {"type": "string"},
+        "body": {"type": "string"},
+        "user": {"type": "object"},
+        "created_at": {"type": "string"},
+        "updated_at": {"type": "string"}
+    },
+    "required": ["id", "body", "user", "created_at"],
     "additionalProperties": True
 }
