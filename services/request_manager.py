@@ -22,6 +22,10 @@ class RequestManager:
         if not token:
             raise EnvironmentError("ACCESS_TOKEN no está configurado.")
         
+
+        token = token.strip()
+
+        
         self.session = requests.Session()
         self.session.headers.update({
             "Authorization": f"Bearer {token}",
