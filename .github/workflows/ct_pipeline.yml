@@ -27,7 +27,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest requests python-dotenv pytest-html jsonschema
+        # Agregamos pytest-cov aquí
+        pip install pytest requests python-dotenv pytest-html jsonschema pytest-cov
 
     - name: Verify Environment Variables
       run: |
@@ -36,10 +37,11 @@ jobs:
         python -c "import os; print(f'REPO_NAME set: {bool(os.getenv(\"REPO_NAME\"))}')"
         python -c "import os; print(f'ACCESS_TOKEN set: {bool(os.getenv(\"ACCESS_TOKEN\"))}')"
 
-    - name: Execute Pytest
+    - name: Execute Pytest with Coverage
       run: |
         mkdir -p reports
-        python -m pytest -v --html=reports/report.html --junitxml=reports/junit.xml
+        # Agregamos los flags de cobertura para generar el reporte HTML
+        python -m pytest -v --html=reports/report.html --junitxml=reports/junit.xml --cov=services/ --cov-report=html:reports/coverage
 
     - name: Upload Reports
       uses: actions/upload-artifact@v4
