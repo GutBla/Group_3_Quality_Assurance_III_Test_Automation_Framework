@@ -12,6 +12,8 @@ class GitHubIssuesAPI:
         self.username = os.getenv("GITHUB_USERNAME")
         self.repo = os.getenv("GITHUB_REPO")
         
+        print(f"DEBUG: base_url='{self.base_url}', username='{self.username}', repo='{self.repo}'")
+        
         if not all([self.base_url, self.username, self.repo]):
             raise EnvironmentError("Faltan variables de entorno")
             
