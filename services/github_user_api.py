@@ -1,10 +1,13 @@
-from config.config import BASE_URL
+import os
 from services.request_manager import RequestManager
 
 class GitHubUserAPI:
     def __init__(self):
-        self.base_url = BASE_URL
+        self.base_url = os.getenv("BASE_URL")
         self.client = RequestManager()
+        
+        if not self.base_url:
+            raise EnvironmentError("Falta la variable de entorno: BASE_URL")
 
     def update_profile(self, payload):
         return self.client.patch(f"{self.base_url}/user", json=payload)

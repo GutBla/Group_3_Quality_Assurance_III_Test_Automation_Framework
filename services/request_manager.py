@@ -5,8 +5,6 @@ from dotenv import load_dotenv
 from utils.logger import logger
 
 
-load_dotenv()
-
 class RequestManager:
     _instance = None
     _lock = threading.Lock()
@@ -19,9 +17,10 @@ class RequestManager:
         return cls._instance
 
     def _initialize(self):
-        token = os.getenv("GITHUB_TOKEN")
+        token = os.getenv("ACCESS_TOKEN")
+        print(f"DEBUG: Token cargado es: {token}")
         if not token:
-            raise EnvironmentError("GITHUB_TOKEN no está configurado.")
+            raise EnvironmentError("ACCESS_TOKEN no está configurado.")
         
         self.session = requests.Session()
         self.session.headers.update({
@@ -38,7 +37,6 @@ class RequestManager:
             logger.info(f"OVERRIDE HEADERS: {kwargs['headers']}")
 
     def _log_response(self, response):
-        """Método privado para registrar los detalles de la respuesta."""
         logger.info(f"HTTP RESPONSE STATUS: {response.status_code}")
         try:
             logger.info(f"RESPONSE BODY: {response.json()}")

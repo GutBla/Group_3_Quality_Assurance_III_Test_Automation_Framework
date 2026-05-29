@@ -2,6 +2,7 @@ import os
 from services.request_manager import RequestManager
 
 
+
 ENDPOINT = "issues"
 
 
@@ -9,13 +10,11 @@ class GitHubIssuesAPI:
 
     def __init__(self):
         self.base_url = os.getenv("BASE_URL")
-        self.username = os.getenv("GITHUB_USERNAME")
-        self.repo = os.getenv("GITHUB_REPO")
-        
-        print(f"DEBUG: base_url='{self.base_url}', username='{self.username}', repo='{self.repo}'")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
         
         if not all([self.base_url, self.username, self.repo]):
-            raise EnvironmentError("Faltan variables de entorno")
+            raise EnvironmentError("Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
             
         self.default_base_url = f"{self.base_url}/repos/{self.username}/{self.repo}"
         self.client = RequestManager()
@@ -25,7 +24,6 @@ class GitHubIssuesAPI:
             url = f"{self.base_url}/repos/{self.username}/{repo}/{ENDPOINT}"
         else:
             url = f"{self.default_base_url}/{ENDPOINT}"
-
         return self.client.post(url, json=payload, headers=headers)
 
     def get_issue(self, issue_number):

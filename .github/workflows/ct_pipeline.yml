@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BASE_URL: ${{ secrets.BASE_URL }}
-      GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-      GITHUB_REPO: ${{ secrets.GITHUB_REPO }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      USERNAME: ${{ secrets.USER_NAME }}
+      REPO: ${{ secrets.REPO_NAME }}
+      TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
     steps:
     - name: Checkout repository code
