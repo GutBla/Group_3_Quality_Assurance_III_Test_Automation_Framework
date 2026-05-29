@@ -4,6 +4,7 @@ import requests
 from config.config import TOKEN as LOCAL_TOKEN
 from utils.logger import logger
 
+
 class RequestManager:
     _instance = None
     _lock = threading.Lock()
@@ -27,6 +28,7 @@ class RequestManager:
         })
 
     def _log_request(self, method, url, **kwargs):
+        """Método privado para registrar los detalles de la petición."""
         logger.info(f"HTTP REQUEST: {method} {url}")
         if "json" in kwargs:
             logger.info(f"REQUEST BODY: {kwargs['json']}")
@@ -34,6 +36,7 @@ class RequestManager:
             logger.info(f"OVERRIDE HEADERS: {kwargs['headers']}")
 
     def _log_response(self, response):
+        """Método privado para registrar los detalles de la respuesta."""
         logger.info(f"HTTP RESPONSE STATUS: {response.status_code}")
         try:
             logger.info(f"RESPONSE BODY: {response.json()}")
