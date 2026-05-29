@@ -4,6 +4,7 @@ import requests
 from dotenv import load_dotenv
 from utils.logger import logger
 
+
 load_dotenv()
 
 class RequestManager:
@@ -30,8 +31,6 @@ class RequestManager:
         })
 
     def _log_request(self, method, url, **kwargs):
-        if "///" in url:
-            raise ValueError(f"URL inválida: {url}")
         logger.info(f"HTTP REQUEST: {method} {url}")
         if "json" in kwargs:
             logger.info(f"REQUEST BODY: {kwargs['json']}")
@@ -39,6 +38,7 @@ class RequestManager:
             logger.info(f"OVERRIDE HEADERS: {kwargs['headers']}")
 
     def _log_response(self, response):
+        """Método privado para registrar los detalles de la respuesta."""
         logger.info(f"HTTP RESPONSE STATUS: {response.status_code}")
         try:
             logger.info(f"RESPONSE BODY: {response.json()}")
