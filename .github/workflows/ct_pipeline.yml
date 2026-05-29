@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BASE_URL: ${{ secrets.BASE_URL }}
-      USERNAME: ${{ secrets.USER_NAME }}
-      REPO: ${{ secrets.REPO_NAME }}
-      TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      USERNAME: ${{ secrets.USERNAME }}
+      REPO_NAME: ${{ secrets.REPO_NAME }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
     steps:
     - name: Checkout repository code
@@ -27,14 +27,14 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest requests jsonschema python-dotenv rich pytest-html
+        pip install pytest requests python-dotenv pytest-html
 
     - name: Verify Environment Variables
       run: |
         python -c "import os; print(f'BASE_URL set: {bool(os.getenv(\"BASE_URL\"))}')"
-        python -c "import os; print(f'USERNAME set: {bool(os.getenv(\"GITHUB_USERNAME\"))}')"
-        python -c "import os; print(f'REPO set: {bool(os.getenv(\"GITHUB_REPO\"))}')"
-        python -c "import os; print(f'TOKEN set: {bool(os.getenv(\"GITHUB_TOKEN\"))}')"
+        python -c "import os; print(f'USERNAME set: {bool(os.getenv(\"USERNAME\"))}')"
+        python -c "import os; print(f'REPO_NAME set: {bool(os.getenv(\"REPO_NAME\"))}')"
+        python -c "import os; print(f'ACCESS_TOKEN set: {bool(os.getenv(\"ACCESS_TOKEN\"))}')"
 
     - name: Execute Pytest
       run: |
