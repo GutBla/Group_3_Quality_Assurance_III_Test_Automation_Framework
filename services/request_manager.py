@@ -1,23 +1,26 @@
 import os
 import threading
 import requests
-from config.config import TOKEN as LOCAL_TOKEN
+from dotenv import load_dotenv
 from utils.logger import logger
+
+load_dotenv()
 
 class RequestManager:
     _instance = None
     _lock = threading.Lock()
 
     def __new__(cls):
-        if cls._instance is None:
-            with cls._lock:
-                if cls._instance is None:
-                    cls._instance = super().__new__(cls)
-                    cls._instance._initialize()
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super().__new__(cls)
+                cls._instance._initialize()
         return cls._instance
 
     def _initialize(self):
-        token = os.getenv("GITHUB_TOKEN", LOCAL_TOKEN)
+        token = os.getenv("GITHUB_TOKEN")
+        if not token:
+            raise EnvironmentError("GITHUB_TOKEN no está configurado.")
         
         self.session = requests.Session()
         self.session.headers.update({
@@ -27,6 +30,8 @@ class RequestManager:
         })
 
     def _log_request(self, method, url, **kwargs):
+        if "///" in url:
+            raise ValueError(f"URL inválida: {url}")
         logger.info(f"HTTP REQUEST: {method} {url}")
         if "json" in kwargs:
             logger.info(f"REQUEST BODY: {kwargs['json']}")
