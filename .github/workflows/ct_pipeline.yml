@@ -2,9 +2,9 @@ name: Continuous Testing (CT) Pipeline
 
 on:
   push:
-    branches: [ main, feature/add-issue-tests ]
+    branches: [ main, feature/ci-pipeline ]
   pull_request:
-    branches: [ main, feature/add-issue-tests ]
+    branches: [ main, feature/ci-pipeline ]
 
 jobs:
   run-tests:
@@ -28,6 +28,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pytest requests jsonschema python-dotenv rich pytest-html
+
+    - name: Verify Environment Variables
+      run: |
+        python -c "import os; print(f'BASE_URL set: {bool(os.getenv(\"BASE_URL\"))}')"
+        python -c "import os; print(f'USERNAME set: {bool(os.getenv(\"GITHUB_USERNAME\"))}')"
+        python -c "import os; print(f'REPO set: {bool(os.getenv(\"GITHUB_REPO\"))}')"
+        python -c "import os; print(f'TOKEN set: {bool(os.getenv(\"GITHUB_TOKEN\"))}')"
 
     - name: Execute Pytest
       run: |
