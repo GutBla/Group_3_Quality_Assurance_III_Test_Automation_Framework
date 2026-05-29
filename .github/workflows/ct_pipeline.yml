@@ -16,8 +16,7 @@ jobs:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
     steps:
-    - name: Checkout repository code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -27,8 +26,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        # Agregamos pytest-cov aquí
-        pip install pytest requests python-dotenv pytest-html jsonschema pytest-cov
+        pip install pytest requests python-dotenv pytest-html jsonschema pytest-cov flake8
+
+    - name: Run Linter
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
     - name: Verify Environment Variables
       run: |
@@ -40,8 +42,7 @@ jobs:
     - name: Execute Pytest with Coverage
       run: |
         mkdir -p reports
-        # Agregamos los flags de cobertura para generar el reporte HTML
-        python -m pytest -v --html=reports/report.html --junitxml=reports/junit.xml --cov=services/ --cov-report=html:reports/coverage
+        python -m pytest -v --html=reports/report.html --junitxml=reports/junit.xml --cov=services/ --cov=utils/ --cov-report=html:reports/coverage
 
     - name: Upload Reports
       uses: actions/upload-artifact@v4
