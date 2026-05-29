@@ -32,12 +32,7 @@ jobs:
     - name: Execute Pytest
       run: |
         mkdir -p reports
-        for i in {1..5}
-        do
-          python -m pytest -v \
-            --html=reports/report_run_$i.html --self-contained-html \
-            --junitxml=reports/junit_run_$i.xml || true
-        done
+        python -m pytest -v --html=reports/report.html --junitxml=reports/junit.xml
 
     - name: Upload Reports
       uses: actions/upload-artifact@v4
