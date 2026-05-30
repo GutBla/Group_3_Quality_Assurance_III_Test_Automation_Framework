@@ -1,13 +1,14 @@
-from config.config import BASE_URL, USERNAME
+import os
 from services.request_manager import RequestManager
 
-
 class GitHubRepositoriesAPI:
-
     def __init__(self):
-        self.base_url = BASE_URL
-        self.username = USERNAME
+        self.base_url = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
         self.client = RequestManager()
+        
+        if not all([self.base_url, self.username]):
+            raise EnvironmentError("Faltan variables de entorno: BASE_URL, USERNAME")
 
     def create_repo(self, payload):
         return self.client.post(f"{self.base_url}/user/repos", json=payload)

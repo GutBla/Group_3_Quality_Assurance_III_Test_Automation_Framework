@@ -89,8 +89,10 @@ Group_3_Quality_Assurance_III_Test_Automation_Framework/
 │   └── request_manager.py             # Singleton — gestor de peticiones HTTP
 │
 ├── tests/
+│   ├── unit/                          # Tests unitarios para core y utilidades
+│   │   ├── test_request_manager.py
+│   │   └── test_schema_validator.py
 │   ├── conftest.py                    # Configuración principal de Pytest (Carga de plugins)
-│   │
 │   ├── fixtures/                      # Fixtures modularizadas (pytest_plugins)
 │   │   ├── __init__.py                # Inicializador de paquete de Python (vacío)
 │   │   ├── api_fixtures.py            # Inicializadores de clientes API
@@ -109,12 +111,13 @@ Group_3_Quality_Assurance_III_Test_Automation_Framework/
 │
 ├── utils/
 │   ├── logger.py                      # Logger centralizado (genera archivos .log)
-│   └── schemas.py                     # JSON Schemas para validación de respuestas
+│   ├── schemas.py                     # JSON Schemas para validación de respuestas
+│   └── schema_validator.py            # Motor de validación de esquemas
 │
 ├── pytest.ini                         # Configuración de Pytest (incluye pythonpath y markers)
 ├── requirements.txt                   # Dependencias del proyecto
 ├── show_logs.py                       # Script para ejecutar tests y visualizar logs
-└── .env        
+└── .env       
 ```
 
 ---
@@ -217,3 +220,27 @@ python -m pytest -m functional -v
 
 python -m pytest -m "functional and smoke" -v
 ```
+
+## Calidad y Testing
+Este framework asegura la estabilidad mediante una estrategia de pruebas en dos niveles:
+
+Pruebas Unitarias (tests/unit/): Validan la lógica crítica, incluyendo el patrón Singleton en request_manager.py y la integridad de los contratos API mediante schema_validator.py.
+
+Cobertura: Utilizamos pytest-cov para medir la efectividad de las pruebas. La cobertura se valida automáticamente en el pipeline de CI/CD.
+
+Instalación de dependencias
+Para ejecutar las pruebas y generar reportes de cobertura, asegúrate de tener instaladas las librerías necesarias:
+
+Bash
+pip install pytest pytest-cov
+Ejecución Local
+Para ejecutar la suite de pruebas completa, incluyendo el análisis de cobertura, utiliza el siguiente comando:
+
+Bash
+# Ejecuta tests y genera reporte en terminal y HTML
+pytest --cov=services/ --cov=utils/ --cov-report=term-missing --cov-report=html:reports/coverage
+Ver resultados:
+
+Terminal: El reporte de cobertura se mostrará automáticamente en la consola al finalizar.
+
+HTML: Puedes visualizar un reporte detallado abriendo el archivo reports/coverage/index.html en tu navegador.

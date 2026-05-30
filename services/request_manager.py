@@ -1,6 +1,7 @@
+import os
 import threading
 import requests
-from config.config import TOKEN
+from dotenv import load_dotenv
 from utils.logger import logger
 
 
@@ -9,23 +10,30 @@ class RequestManager:
     _lock = threading.Lock()
 
     def __new__(cls):
-        if cls._instance is None:
-            with cls._lock:
-                if cls._instance is None:
-                    cls._instance = super().__new__(cls)
-                    cls._instance._initialize()
+        with cls._lock:
+            if cls._instance is None:
+                cls._instance = super().__new__(cls)
+                cls._instance._initialize()
         return cls._instance
 
     def _initialize(self):
+        token = os.getenv("ACCESS_TOKEN")
+        print(f"DEBUG: Token cargado es: {token}")
+        if not token:
+            raise EnvironmentError("ACCESS_TOKEN no está configurado.")
+        
+
+        token = token.strip()
+
+        
         self.session = requests.Session()
         self.session.headers.update({
-            "Authorization": f"Bearer {TOKEN}",
+            "Authorization": f"Bearer {token}",
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
         })
 
     def _log_request(self, method, url, **kwargs):
-        """Método privado para registrar los detalles de la petición."""
         logger.info(f"HTTP REQUEST: {method} {url}")
         if "json" in kwargs:
             logger.info(f"REQUEST BODY: {kwargs['json']}")
@@ -33,7 +41,6 @@ class RequestManager:
             logger.info(f"OVERRIDE HEADERS: {kwargs['headers']}")
 
     def _log_response(self, response):
-        """Método privado para registrar los detalles de la respuesta."""
         logger.info(f"HTTP RESPONSE STATUS: {response.status_code}")
         try:
             logger.info(f"RESPONSE BODY: {response.json()}")

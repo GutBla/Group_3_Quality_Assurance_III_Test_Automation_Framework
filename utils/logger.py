@@ -1,4 +1,5 @@
 import logging
+import sys
 import os
 from datetime import datetime
 
@@ -13,10 +14,16 @@ _log_file = os.path.join(
 logger = logging.getLogger("qa_framework")
 logger.setLevel(logging.INFO)
 
+formatter = logging.Formatter(
+    fmt="%(asctime)s [%(levelname)s] %(name)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
 if not logger.handlers:
-    _handler = logging.FileHandler(_log_file, encoding="utf-8")
-    _handler.setFormatter(logging.Formatter(
-        fmt="%(asctime)s [%(levelname)s] %(name)s - %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    ))
-    logger.addHandler(_handler)
+    file_handler = logging.FileHandler(_log_file, encoding="utf-8")
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)

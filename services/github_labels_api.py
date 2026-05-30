@@ -1,11 +1,16 @@
-from config.config import BASE_URL, USERNAME, REPO
+import os
 from services.request_manager import RequestManager
 
-
 class GitHubLabelsAPI:
-
     def __init__(self):
-        self.base_url = f"{BASE_URL}/repos/{USERNAME}/{REPO}"
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+        
+        if not all([self.base_url_base, self.username, self.repo]):
+            raise EnvironmentError("Faltan variables de entorno para etiquetas")
+            
+        self.base_url = f"{self.base_url_base}/repos/{self.username}/{self.repo}"
         self.client = RequestManager()
 
     def create_label(self, payload):

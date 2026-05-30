@@ -1,0 +1,52 @@
+name: Continuous Testing (CT) Pipeline
+
+on:
+  push:
+    branches: [ main, feature/ci-pipeline ]
+  pull_request:
+    branches: [ main, feature/ci-pipeline ]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+      USERNAME: ${{ secrets.USERNAME }}
+      REPO_NAME: ${{ secrets.REPO_NAME }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest requests python-dotenv pytest-html jsonschema pytest-cov flake8
+
+    - name: Run Linter
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+    - name: Verify Environment Variables
+      run: |
+        python -c "import os; print(f'BASE_URL set: {bool(os.getenv(\"BASE_URL\"))}')"
+        python -c "import os; print(f'USERNAME set: {bool(os.getenv(\"USERNAME\"))}')"
+        python -c "import os; print(f'REPO_NAME set: {bool(os.getenv(\"REPO_NAME\"))}')"
+        python -c "import os; print(f'ACCESS_TOKEN set: {bool(os.getenv(\"ACCESS_TOKEN\"))}')"
+
+    - name: Execute Pytest with Coverage
+      run: |
+        mkdir -p reports
+        python -m pytest -v --html=reports/report.html --junitxml=reports/junit.xml --cov=services/ --cov=utils/ --cov-report=html:reports/coverage
+
+    - name: Upload Reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: pytest-ct-reports
+        path: reports/
+        retention-days: 5
