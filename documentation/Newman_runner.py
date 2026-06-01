@@ -1,9 +1,9 @@
+import os
+import subprocess
+import sys
+import threading
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import subprocess
-import os
-import threading
-import sys
 
 # Paleta de colores profesional
 BG_PRIMARY = "#1e1e2f"

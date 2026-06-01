@@ -1,6 +1,7 @@
 from config.config import BASE_URL, USERNAME
 from services.request_manager import RequestManager
 
+
 class GitHubRepositoriesAPI:
     def __init__(self):
         self.base_url = BASE_URL

@@ -1,8 +1,10 @@
 import pytest
+
 from data.issue_data import CREATE_ISSUE_PAYLOAD
-from data.label_data import CREATE_LABEL_PAYLOAD, LABEL_NAME, LABEL_UPDATED_NAME
-from data.repository_data import CREATE_REPO_PAYLOAD
+from data.label_data import (CREATE_LABEL_PAYLOAD, LABEL_NAME,
+                             LABEL_UPDATED_NAME)
 from data.pull_request_data import get_dynamic_label_name  # NUEVO
+from data.repository_data import CREATE_REPO_PAYLOAD
 
 
 @pytest.fixture

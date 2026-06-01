@@ -1,5 +1,7 @@
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
+
 from services.github_user_api import GitHubUserAPI
 from services.request_manager import RequestManager
 

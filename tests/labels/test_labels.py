@@ -1,19 +1,11 @@
 import pytest
 from jsonschema import validate
 
-from data.label_data import (
-    CREATE_LABEL_PAYLOAD,
-    CREATE_LABEL_PAYLOAD_NO_NAME,
-    UPDATE_LABEL_PAYLOAD,
-    LABEL_UPDATED_NAME,
-    ASSIGN_LABELS_PAYLOAD,
-)
-from utils.schemas import (
-    LABEL_SCHEMA,
-    LABEL_ERROR_SCHEMA,
-    ASSIGN_LABELS_SCHEMA,
-    LIST_LABELS_SCHEMA,
-)
+from data.label_data import (ASSIGN_LABELS_PAYLOAD, CREATE_LABEL_PAYLOAD,
+                             CREATE_LABEL_PAYLOAD_NO_NAME, LABEL_UPDATED_NAME,
+                             UPDATE_LABEL_PAYLOAD)
+from utils.schemas import (ASSIGN_LABELS_SCHEMA, LABEL_ERROR_SCHEMA,
+                           LABEL_SCHEMA, LIST_LABELS_SCHEMA)
 
 
 @pytest.mark.functional

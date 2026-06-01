@@ -1,5 +1,7 @@
 import os
+
 from services.request_manager import RequestManager
+
 
 class GitHubLabelsAPI:
     def __init__(self):

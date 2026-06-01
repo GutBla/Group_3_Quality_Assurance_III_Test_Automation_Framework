@@ -1,7 +1,9 @@
 import os
 import threading
+
 import requests
 from dotenv import load_dotenv
+
 from utils.logger import logger
 
 load_dotenv(override=True)

@@ -1,24 +1,14 @@
 import pytest
 from jsonschema import validate
 
-from config.config import USERNAME, REPO
-from data.pull_request_data import (
-    CLOSE_PR_PAYLOAD,
-    EMPTY_LABEL_PAYLOAD,
-    INVALID_AUTH_HEADERS,
-    get_dynamic_title_payload,
-    get_dynamic_body_payload,
-    get_dynamic_label_name,
-)
+from config.config import REPO, USERNAME
+from data.pull_request_data import (INVALID_AUTH_HEADERS,
+                                    get_dynamic_body_payload,
+                                    get_dynamic_title_payload)
 from utils.logger import logger
-from utils.schemas import (
-    PULL_REQUEST_SCHEMA,
-    UPDATE_PR_SCHEMA,
-    PR_LABELS_SCHEMA,
-    PR_NOT_FOUND_SCHEMA,
-    PR_VALIDATION_ERROR_SCHEMA,
-    UNAUTHORIZED_ERROR_SCHEMA,
-)
+from utils.schemas import (PR_LABELS_SCHEMA, PR_NOT_FOUND_SCHEMA,
+                           PR_VALIDATION_ERROR_SCHEMA, PULL_REQUEST_SCHEMA,
+                           UNAUTHORIZED_ERROR_SCHEMA, UPDATE_PR_SCHEMA)
 
 PR_NUMBER = 1
 

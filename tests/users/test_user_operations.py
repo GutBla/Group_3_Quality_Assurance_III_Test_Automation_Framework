@@ -1,24 +1,15 @@
 import pytest
 from jsonschema import validate
 
-from data.user_data import (
-    PUBLIC_USERNAME,
-    DISPOSABLE_EMAIL,
-    FOLLOW_USERNAME,
-    INVALID_AUTH_HEADERS,
-    get_update_profile_payload,
-    get_invalid_update_payload,
-    get_update_editable_payload,
-)
+from data.user_data import (DISPOSABLE_EMAIL, FOLLOW_USERNAME,
+                            INVALID_AUTH_HEADERS, PUBLIC_USERNAME,
+                            get_invalid_update_payload,
+                            get_update_editable_payload,
+                            get_update_profile_payload)
 from utils.logger import logger
-from utils.schemas import (
-    AUTH_USER_SCHEMA,
-    PUBLIC_USER_SCHEMA,
-    UPDATE_PROFILE_SCHEMA,
-    EMAIL_ERROR_SCHEMA,
-    UNAUTHORIZED_ERROR_SCHEMA,
-)
-
+from utils.schemas import (AUTH_USER_SCHEMA, EMAIL_ERROR_SCHEMA,
+                           PUBLIC_USER_SCHEMA, UNAUTHORIZED_ERROR_SCHEMA,
+                           UPDATE_PROFILE_SCHEMA)
 
 # HLTC-16 — Obtener usuario autenticado
 

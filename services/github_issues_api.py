@@ -1,7 +1,6 @@
 import os
+
 from services.request_manager import RequestManager
-
-
 
 ENDPOINT = "issues"
 

@@ -1,6 +1,8 @@
 # tests/unit/test_github_pull_requests_api.py
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
+
 from services.github_pull_requests_api import GitHubPullRequestsAPI
 from services.request_manager import RequestManager
 

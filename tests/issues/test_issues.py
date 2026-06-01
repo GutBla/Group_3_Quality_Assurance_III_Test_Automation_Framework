@@ -1,28 +1,19 @@
-import pytest
 import re
+
+import pytest
 from jsonschema import validate
-from data.issue_data import (
-    CREATE_ISSUE_PAYLOAD,
-    MISSING_TITLE_ISSUE_PAYLOAD,
-    UPDATE_ISSUE_PAYLOAD,
-    CLOSE_ISSUE_PAYLOAD,
-    INVALID_ISSUE_NUMBER,
-    INVALID_AUTH_HEADERS,
-    LONG_TITLE_PAYLOAD,
-    NON_EXISTENT_REPO_NAME,
-    CREATE_COMMENT_PAYLOAD
-)
+
+from data.issue_data import (CLOSE_ISSUE_PAYLOAD, CREATE_COMMENT_PAYLOAD,
+                             CREATE_ISSUE_PAYLOAD, INVALID_AUTH_HEADERS,
+                             INVALID_ISSUE_NUMBER, LONG_TITLE_PAYLOAD,
+                             MISSING_TITLE_ISSUE_PAYLOAD,
+                             NON_EXISTENT_REPO_NAME, UPDATE_ISSUE_PAYLOAD)
 from utils.logger import logger
-from utils.schemas import (
-    CREATE_ISSUE_SCHEMA,
-    UPDATE_ISSUE_SCHEMA,
-    ERROR_VALIDATION_ISSUE_SCHEMA,
-    NOT_FOUND_ISSUE_SCHEMA,
-    CREATE_COMMENT_SCHEMA,
-    UNAUTHORIZED_ERROR_SCHEMA,
-    ERROR_VALIDATION_SCHEMA,
-    ERROR_NOT_FOUND_SCHEMA
-)
+from utils.schemas import (CREATE_COMMENT_SCHEMA, CREATE_ISSUE_SCHEMA,
+                           ERROR_NOT_FOUND_SCHEMA,
+                           ERROR_VALIDATION_ISSUE_SCHEMA,
+                           ERROR_VALIDATION_SCHEMA, UNAUTHORIZED_ERROR_SCHEMA,
+                           UPDATE_ISSUE_SCHEMA)
 
 
 @pytest.mark.functional

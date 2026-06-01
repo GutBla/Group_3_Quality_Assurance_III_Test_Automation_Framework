@@ -1,6 +1,7 @@
 import pytest
-from utils.schema_validator import validate_schema
+
 from utils import schemas
+from utils.schema_validator import validate_schema
 
 test_data_map = [
     (schemas.LABEL_SCHEMA, {"id": 1, "name": "bug", "color": "f00", "url": "x", "default": True}),

@@ -1,4 +1,3 @@
-import pytest
 from utils.logger import logger
 
 # --- Session-level hooks (before all / after all) ---
