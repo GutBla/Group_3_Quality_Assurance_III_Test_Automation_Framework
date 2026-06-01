@@ -2,6 +2,7 @@ from utils.logger import logger
 
 # --- Session-level hooks (before all / after all) ---
 
+
 def pytest_sessionstart(session):
     print("\n[SETUP] Starting test session")
 

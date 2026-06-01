@@ -8,10 +8,10 @@ class GitHubLabelsAPI:
         self.base_url_base = os.getenv("BASE_URL")
         self.username = os.getenv("USERNAME")
         self.repo = os.getenv("REPO_NAME")
-        
+
         if not all([self.base_url_base, self.username, self.repo]):
             raise EnvironmentError("Faltan variables de entorno para etiquetas")
-            
+
         self.base_url = f"{self.base_url_base}/repos/{self.username}/{self.repo}"
         self.client = RequestManager()
 

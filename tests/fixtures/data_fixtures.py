@@ -65,7 +65,8 @@ def profile_restore(github_user_api):
     if restore_payload:
         github_user_api.update_profile(restore_payload)
 
-PR_NUMBER = 1 
+
+PR_NUMBER = 1
 
 
 @pytest.fixture
@@ -96,12 +97,12 @@ def pr_state(pr_api):
 
 @pytest.fixture
 def pr_temp_label(pr_api):
-    
+
     label_name = get_dynamic_label_name()
     pr_api.create_label(label_name, color="0075ca")
 
     yield label_name
-    
+
     current_labels_resp = pr_api.get_labels(PR_NUMBER)
     if current_labels_resp.status_code == 200:
         labels = [

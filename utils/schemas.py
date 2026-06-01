@@ -101,24 +101,24 @@ CREATE_REPO_SCHEMA = {
         "default_branch"
     ],
     "properties": {
-        "id":             {"type": "integer"},
-        "name":           {"type": "string"},
-        "full_name":      {"type": "string"},
-        "private":        {"type": "boolean"},
-        "description":    {"type": ["string", "null"]},
-        "html_url":       {"type": "string"},
-        "url":            {"type": "string"},
-        "has_issues":     {"type": "boolean"},
-        "visibility":     {"type": "string", "enum": ["public", "private", "internal"]},
-        "created_at":     {"type": "string"},
+        "id": {"type": "integer"},
+        "name": {"type": "string"},
+        "full_name": {"type": "string"},
+        "private": {"type": "boolean"},
+        "description": {"type": ["string", "null"]},
+        "html_url": {"type": "string"},
+        "url": {"type": "string"},
+        "has_issues": {"type": "boolean"},
+        "visibility": {"type": "string", "enum": ["public", "private", "internal"]},
+        "created_at": {"type": "string"},
         "default_branch": {"type": "string"},
-        "fork":           {"type": "boolean"},
+        "fork": {"type": "boolean"},
         "owner": {
             "type": "object",
             "required": ["login", "id"],
             "properties": {
                 "login": {"type": "string"},
-                "id":    {"type": "integer"}
+                "id": {"type": "integer"}
             }
         }
     },
@@ -131,11 +131,11 @@ LIST_REPOS_SCHEMA = {
         "type": "object",
         "required": ["id", "name", "full_name", "private", "owner"],
         "properties": {
-            "id":        {"type": "integer"},
-            "name":      {"type": "string"},
+            "id": {"type": "integer"},
+            "name": {"type": "string"},
             "full_name": {"type": "string"},
-            "private":   {"type": "boolean"},
-            "owner":     {"type": "object"},
+            "private": {"type": "boolean"},
+            "owner": {"type": "object"},
         }
     }
 }
@@ -146,8 +146,8 @@ CONTRIBUTORS_SCHEMA = {
         "type": "object",
         "required": ["login", "id", "contributions"],
         "properties": {
-            "login":         {"type": "string"},
-            "id":            {"type": "integer"},
+            "login": {"type": "string"},
+            "id": {"type": "integer"},
             "contributions": {"type": "integer"},
         }
     }

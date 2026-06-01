@@ -13,11 +13,12 @@ from utils.schemas import (AUTH_USER_SCHEMA, EMAIL_ERROR_SCHEMA,
 
 # HLTC-16 — Obtener usuario autenticado
 
+
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
 def test_hltc16_get_authenticated_user(github_user_api):
-    
+
     logger.info("Ejecutando GET /user para el usuario autenticado")
     response = github_user_api.get_authenticated_user()
     body = response.json()
@@ -44,7 +45,7 @@ def test_hltc16_get_authenticated_user(github_user_api):
 @pytest.mark.negative
 @pytest.mark.smoke
 def test_hltc17_unauthorized_access_rejected(github_user_api):
-    
+
     logger.info("Ejecutando GET /user con token inválido")
     response = github_user_api.get_authenticated_user(
         headers=INVALID_AUTH_HEADERS
@@ -74,7 +75,7 @@ def test_hltc17_unauthorized_access_rejected(github_user_api):
 @pytest.mark.acceptance
 @pytest.mark.smoke
 def test_hltc18_update_profile(github_user_api, profile_restore):
-    
+
     payload = get_update_profile_payload()
 
     logger.info(f"Actualizando perfil con bio='{payload['bio']}'")
@@ -116,7 +117,7 @@ def test_hltc18_update_profile(github_user_api, profile_restore):
 def test_hltc19_update_profile_protected_fields_ignored(
     github_user_api, profile_restore
 ):
-    
+
     original = github_user_api.get_authenticated_user().json()
     original_login = original["login"]
     original_id = original["id"]
@@ -158,7 +159,7 @@ def test_hltc19_update_profile_protected_fields_ignored(
 @pytest.mark.acceptance
 @pytest.mark.smoke
 def test_hltc20_get_public_user(github_user_api):
-    
+
     username = PUBLIC_USERNAME
 
     logger.info(f"Ejecutando GET /users/{username}")
@@ -187,7 +188,7 @@ def test_hltc20_get_public_user(github_user_api):
 @pytest.mark.functional
 @pytest.mark.regression
 def test_hltc21_update_editable_fields(github_user_api, profile_restore):
-    
+
     payload = get_update_editable_payload()
 
     logger.info(
@@ -231,7 +232,7 @@ def test_hltc21_update_editable_fields(github_user_api, profile_restore):
 @pytest.mark.acceptance
 @pytest.mark.smoke
 def test_hltc22_follow_user(github_user_api):
-    
+
     target = FOLLOW_USERNAME
 
     logger.info(f"Siguiendo al usuario '{target}'")
@@ -259,7 +260,7 @@ def test_hltc22_follow_user(github_user_api):
 @pytest.mark.functional
 @pytest.mark.regression
 def test_hltc23_check_following_user(github_user_api):
-    
+
     target = FOLLOW_USERNAME
 
     logger.info(f"Asegurando que seguimos a '{target}' antes de verificar")
@@ -287,7 +288,7 @@ def test_hltc23_check_following_user(github_user_api):
 @pytest.mark.acceptance
 @pytest.mark.smoke
 def test_hltc24_unfollow_user(github_user_api):
-    
+
     target = FOLLOW_USERNAME
 
     logger.info(f"Asegurando que seguimos a '{target}' antes de dejar de seguir")
@@ -317,7 +318,7 @@ def test_hltc24_unfollow_user(github_user_api):
 @pytest.mark.negative
 @pytest.mark.regression
 def test_hltc25_add_disposable_email_rejected(github_user_api):
-    
+
     logger.info(f"Intentando agregar email desechable: {DISPOSABLE_EMAIL}")
     response = github_user_api.add_emails([DISPOSABLE_EMAIL])
     body = response.json()
@@ -346,7 +347,7 @@ def test_hltc25_add_disposable_email_rejected(github_user_api):
 @pytest.mark.functional
 @pytest.mark.regression
 def test_profile_has_no_residual_test_data(github_user_api, profile_restore):
-    
+
     import re
 
     logger.info("Obteniendo estado actual del perfil para verificación de integridad")

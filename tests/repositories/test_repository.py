@@ -99,7 +99,9 @@ def test_should_change_repository_visibility_to_private(repo_api, repository):
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     time.sleep(3)
     payload = UPDATE_VISIBILITY_PAYLOAD
-    logger.info(f"Changing visibility of repo '{CREATE_REPO_PAYLOAD['name']}' to private")
+    logger.info(
+        f"Changing visibility of repo '{
+            CREATE_REPO_PAYLOAD['name']}' to private")
 
     # Act
     logger.info("Executing PATCH request to change repository visibility")
@@ -207,6 +209,7 @@ def test_should_list_authenticated_user_repositories(repo_api, repository):
     repo_names = [r["name"] for r in response_body]
     assert repo_name in repo_names
 
+
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_get_repository_contributors(repo_api, repository):
@@ -235,6 +238,7 @@ def test_should_get_repository_contributors(repo_api, repository):
     # Assert 4 — Integrity: el repo existe
     get_response = repo_api.get_repo(repo_name)
     assert get_response.status_code == 200
+
 
 @pytest.mark.functional
 @pytest.mark.regression
@@ -296,7 +300,6 @@ def test_should_disable_issues_on_existing_repository(repo_api, repository):
     get_response = repo_api.get_repo(repo_name)
     get_body = get_response.json()
     assert get_body["has_issues"] is False
-
 
 
 @pytest.mark.negative

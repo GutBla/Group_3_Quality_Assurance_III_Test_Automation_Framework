@@ -19,7 +19,7 @@ PR_NUMBER = 1
 @pytest.mark.acceptance
 @pytest.mark.smoke
 def test_hltc27_should_update_pr_title_successfully(pr_api, pr_state):
-    
+
     payload = get_dynamic_title_payload()
 
     logger.info(f"Preparando actualización de título del PR #{PR_NUMBER}")
@@ -56,7 +56,7 @@ def test_hltc27_should_update_pr_title_successfully(pr_api, pr_state):
 @pytest.mark.functional
 @pytest.mark.regression
 def test_hltc28_should_update_pr_body_successfully(pr_api, pr_state):
-    
+
     payload = get_dynamic_body_payload()
 
     logger.info(f"Preparando actualización del cuerpo del PR #{PR_NUMBER}")
@@ -91,10 +91,11 @@ def test_hltc28_should_update_pr_body_successfully(pr_api, pr_state):
 
 # HLTC-29 — Agregar etiqueta al PR
 
+
 @pytest.mark.functional
 @pytest.mark.regression
 def test_hltc29_should_add_label_to_pr_successfully(pr_api, pr_temp_label):
-    
+
     label_name = pr_temp_label
 
     logger.info(f"Agregando etiqueta '{label_name}' al PR #{PR_NUMBER}")
@@ -135,7 +136,7 @@ def test_hltc29_should_add_label_to_pr_successfully(pr_api, pr_temp_label):
 @pytest.mark.acceptance
 @pytest.mark.smoke
 def test_hltc30_should_close_pr_successfully(pr_api, pr_state):
-    
+
     if pr_state["state"] == "closed":
         pytest.skip("El PR ya está cerrado — este test requiere un PR abierto.")
 
@@ -169,10 +170,11 @@ def test_hltc30_should_close_pr_successfully(pr_api, pr_state):
 
 # HLTC-31 — Agregar etiqueta vacía (debe fallar)
 
+
 @pytest.mark.negative
 @pytest.mark.regression
 def test_hltc31_should_fail_to_add_empty_label_list(pr_api):
-    
+
     logger.info(f"Intentando agregar lista de etiquetas vacía al PR #{PR_NUMBER}")
     response = pr_api.add_labels(PR_NUMBER, [])
     body = response.json()
@@ -237,7 +239,7 @@ def test_should_get_pull_request_successfully(pr_api):
 @pytest.mark.negative
 @pytest.mark.smoke
 def test_should_fail_to_get_pr_with_invalid_token(pr_api):
-    
+
     logger.info(f"Intentando obtener PR #{PR_NUMBER} con token inválido")
     response = pr_api.client.get(
         f"{pr_api._pulls_base}/{PR_NUMBER}",
@@ -259,10 +261,11 @@ def test_should_fail_to_get_pr_with_invalid_token(pr_api):
 
 # Obtener PR inexistente (404)
 
+
 @pytest.mark.negative
 @pytest.mark.regression
 def test_should_return_404_for_nonexistent_pr(pr_api):
-    
+
     fake_pr_number = 99999999
 
     logger.info(f"Intentando obtener PR inexistente #{fake_pr_number}")
@@ -290,7 +293,7 @@ def test_should_return_404_for_nonexistent_pr(pr_api):
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_list_pull_requests_successfully(pr_api):
-    
+
     logger.info(f"Listando PRs del repositorio {USERNAME}/{REPO}")
     response = pr_api.list_pull_requests(state="all")
     body = response.json()

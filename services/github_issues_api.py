@@ -11,10 +11,11 @@ class GitHubIssuesAPI:
         self.base_url = os.getenv("BASE_URL")
         self.username = os.getenv("USERNAME")
         self.repo = os.getenv("REPO_NAME")
-        
+
         if not all([self.base_url, self.username, self.repo]):
-            raise EnvironmentError("Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
-            
+            raise EnvironmentError(
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
+
         self.default_base_url = f"{self.base_url}/repos/{self.username}/{self.repo}"
         self.client = RequestManager()
 

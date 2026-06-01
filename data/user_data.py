@@ -20,6 +20,7 @@ UPDATE_EDITABLE_FIELDS_PAYLOAD = {
     "hireable": True,
 }
 
+
 def get_update_profile_payload():
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     return {

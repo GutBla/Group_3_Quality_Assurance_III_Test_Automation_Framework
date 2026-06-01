@@ -29,10 +29,12 @@ def rm_with_mock_session():
     with patch.object(rm, "session", mock_session):
         yield rm, mock_session
 
+
 def test_request_manager_singleton():
     rm1 = RequestManager()
     rm2 = RequestManager()
     assert rm1 is rm2
+
 
 def test_log_response_non_json(rm_with_mock_session):
     rm, _ = rm_with_mock_session
@@ -49,6 +51,7 @@ def test_initialize_missing_token():
         with pytest.raises(EnvironmentError, match="ACCESS_TOKEN no está configurado."):
             obj = object.__new__(RequestManager)
             obj._initialize()
+
 
 def test_get_method_calls_session(rm_with_mock_session):
     rm, mock_session = rm_with_mock_session

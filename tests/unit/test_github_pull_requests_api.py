@@ -10,14 +10,17 @@ from services.request_manager import RequestManager
 @pytest.fixture
 def mock_request_manager():
     with patch.object(RequestManager, '_instance', None), \
-         patch('services.github_pull_requests_api.RequestManager') as MockRequestManager:
+            patch('services.github_pull_requests_api.RequestManager') as MockRequestManager:
 
         mock_instance = MagicMock()
         MockRequestManager.return_value = mock_instance
 
-        mock_instance.get.return_value = MagicMock(status_code=200, json=lambda: {"id": 1, "number": 1})
-        mock_instance.patch.return_value = MagicMock(status_code=200, json=lambda: {"state": "closed"})
-        mock_instance.post.return_value = MagicMock(status_code=201, json=lambda: [{"name": "bug"}])
+        mock_instance.get.return_value = MagicMock(
+            status_code=200, json=lambda: {"id": 1, "number": 1})
+        mock_instance.patch.return_value = MagicMock(
+            status_code=200, json=lambda: {"state": "closed"})
+        mock_instance.post.return_value = MagicMock(
+            status_code=201, json=lambda: [{"name": "bug"}])
         mock_instance.put.return_value = MagicMock(status_code=200, json=lambda: [])
         mock_instance.delete.return_value = MagicMock(status_code=204)
 
