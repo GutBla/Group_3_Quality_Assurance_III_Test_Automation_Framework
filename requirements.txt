@@ -4,6 +4,5 @@ jsonschema
 python-dotenv
 rich
 flake8
-flake8-naming
 pytest-html
 pytest-cov
