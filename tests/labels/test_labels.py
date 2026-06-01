@@ -1,3 +1,4 @@
+import pytest
 from jsonschema import validate
 
 from data.label_data import (
@@ -7,9 +8,16 @@ from data.label_data import (
     LABEL_UPDATED_NAME,
     ASSIGN_LABELS_PAYLOAD,
 )
-from utils.schemas import LABEL_SCHEMA, LABEL_ERROR_SCHEMA, ASSIGN_LABELS_SCHEMA
+from utils.schemas import (
+    LABEL_SCHEMA,
+    LABEL_ERROR_SCHEMA,
+    ASSIGN_LABELS_SCHEMA,
+    LIST_LABELS_SCHEMA,
+)
 
 
+@pytest.mark.functional
+@pytest.mark.smoke
 def test_should_create_label_successfully(labels_api):
     """HLTC-06: Crear una etiqueta con nombre y color válidos"""
 
@@ -44,6 +52,8 @@ def test_should_create_label_successfully(labels_api):
     labels_api.delete_label(payload["name"])
 
 
+@pytest.mark.negative
+@pytest.mark.regression
 def test_should_fail_to_create_label_without_name(labels_api):
     """HLTC-07: Validar error al crear etiqueta sin nombre"""
 
@@ -69,6 +79,8 @@ def test_should_fail_to_create_label_without_name(labels_api):
     assert "name" not in body
 
 
+@pytest.mark.functional
+@pytest.mark.regression
 def test_should_update_label_successfully(label, labels_api):
     """HLTC-08: Actualizar nombre y color de una etiqueta existente"""
 
@@ -99,6 +111,8 @@ def test_should_update_label_successfully(label, labels_api):
     assert get_body["color"] == payload["color"]
 
 
+@pytest.mark.acceptance
+@pytest.mark.regression
 def test_should_assign_label_to_issue(label, labels_api, issue):
     """HLTC-10: Asignar etiqueta existente a un issue"""
 
@@ -129,6 +143,8 @@ def test_should_assign_label_to_issue(label, labels_api, issue):
     assert LABEL_UPDATED_NAME in issue_label_names
 
 
+@pytest.mark.functional
+@pytest.mark.smoke
 def test_should_get_existing_label_successfully(label, labels_api):
     """HLTC-06 integrity: Obtener una etiqueta existente por nombre"""
 
@@ -158,6 +174,8 @@ def test_should_get_existing_label_successfully(label, labels_api):
     assert body["id"] > 0
 
 
+@pytest.mark.functional
+@pytest.mark.regression
 def test_should_delete_label_successfully(label, labels_api):
     """HLTC-09: Eliminar una etiqueta existente del repositorio"""
 
@@ -181,3 +199,83 @@ def test_should_delete_label_successfully(label, labels_api):
     get_body = get_response.json()
     assert "message" in get_body
     assert get_body["message"] == "Not Found"
+
+
+# ── Activity 3: Additional tests ─────────────────────────────────────────────
+
+@pytest.mark.negative
+@pytest.mark.regression
+def test_should_fail_to_get_nonexistent_label(labels_api):
+    """HLTC-11: GET sobre etiqueta inexistente devuelve 404"""
+
+    # Arrange
+    nonexistent_name = "nonexistent-label-sergio-xyz"
+    labels_api.delete_label(nonexistent_name)
+
+    # Act
+    response = labels_api.get_label(nonexistent_name)
+    body = response.json()
+
+    # Assert 1 — Status Code
+    assert response.status_code == 404
+
+    # Assert 2 — Error message
+    assert "message" in body
+    assert body["message"] == "Not Found"
+
+    # Assert 3 — Schema Validation
+    validate(instance=body, schema=LABEL_ERROR_SCHEMA)
+
+    # Assert 4 — No resource data in body
+    assert "id" not in body
+    assert "color" not in body
+
+
+@pytest.mark.functional
+@pytest.mark.smoke
+def test_should_list_all_labels_from_repository(label, labels_api):
+    """HLTC-12: Listar todas las etiquetas del repositorio"""
+
+    # Act
+    response = labels_api.list_labels()
+    body = response.json()
+
+    # Assert 1 — Status Code
+    assert response.status_code == 200
+
+    # Assert 2 — Response is a list
+    assert isinstance(body, list)
+
+    # Assert 3 — Schema Validation
+    validate(instance=body, schema=LIST_LABELS_SCHEMA)
+
+    # Assert 4 — The label created by the fixture is present
+    label_names = [lbl["name"] for lbl in body]
+    assert label in label_names
+
+
+@pytest.mark.negative
+@pytest.mark.regression
+def test_should_fail_to_create_duplicate_label(label, labels_api):
+    """HLTC-13: Crear etiqueta con nombre duplicado devuelve 422"""
+
+    # Arrange — label fixture already created this label
+    duplicate_payload = {
+        "name": label,
+        "color": "cc0000",
+        "description": "Intento de etiqueta duplicada",
+    }
+
+    # Act
+    response = labels_api.create_label(duplicate_payload)
+    body = response.json()
+
+    # Assert 1 — Status Code
+    assert response.status_code == 422
+
+    # Assert 2 — Error message present
+    assert "message" in body
+    assert body["message"] != ""
+
+    # Assert 3 — No resource data returned
+    assert "id" not in body
