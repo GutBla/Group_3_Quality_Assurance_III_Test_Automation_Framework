@@ -127,6 +127,35 @@ CREATE_REPO_SCHEMA = {
     "additionalProperties": True
 }
 
+LIST_REPOS_SCHEMA = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "required": ["id", "name", "full_name", "private", "owner"],
+        "properties": {
+            "id":        {"type": "integer"},
+            "name":      {"type": "string"},
+            "full_name": {"type": "string"},
+            "private":   {"type": "boolean"},
+            "owner":     {"type": "object"},
+        }
+    }
+}
+
+CONTRIBUTORS_SCHEMA = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "required": ["login", "id", "contributions"],
+        "properties": {
+            "login":         {"type": "string"},
+            "id":            {"type": "integer"},
+            "contributions": {"type": "integer"},
+        }
+    }
+}
+
+
 AUTH_USER_SCHEMA = {
     "type": "object",
     "required": ["login", "id"],
