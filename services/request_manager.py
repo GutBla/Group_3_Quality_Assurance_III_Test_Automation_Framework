@@ -19,6 +19,8 @@ class RequestManager:
         return cls._instance
 
     def _initialize(self):
+        load_dotenv()
+        
         token = os.getenv("ACCESS_TOKEN")
         print(f"DEBUG: Token cargado es: {token}")
         if not token:
