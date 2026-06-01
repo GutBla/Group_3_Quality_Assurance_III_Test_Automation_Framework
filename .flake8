@@ -1,16 +1,12 @@
 [flake8]
-max-line-length = 88
+max-line-length = 250
 exclude =
     .git,
     __pycache__,
-    venv,
+    .venv,
     .pytest_cache,
     .idea,
-    documentation
-
-#Reportar activamente los errores de nomenclatura (Naming)
+    documentation,
+    logs,
+    reports
 select = C,E,F,W,B,B9,N
-[flake8]
-max-line-length = 120
-ignore = E201,E241,E302,E303,E305,E501,F401,F811,W291,W292,W293
-exclude = .venv,.git,__pycache__,docs,reports,.pytest_cache
