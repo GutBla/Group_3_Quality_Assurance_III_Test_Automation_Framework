@@ -4,6 +4,8 @@ import requests
 from dotenv import load_dotenv
 from utils.logger import logger
 
+load_dotenv(override=True)
+
 
 class RequestManager:
     _instance = None

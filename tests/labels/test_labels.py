@@ -279,3 +279,60 @@ def test_should_fail_to_create_duplicate_label(label, labels_api):
 
     # Assert 3 — No resource data returned
     assert "id" not in body
+
+
+@pytest.mark.negative
+@pytest.mark.regression
+def test_should_fail_to_update_nonexistent_label(labels_api):
+    """HLTC-14: PATCH sobre etiqueta inexistente devuelve 404"""
+
+    # Arrange
+    nonexistent_name = "nonexistent-label-sergio-xyz"
+    labels_api.delete_label(nonexistent_name)
+    payload = {"new_name": "renamed-label", "color": "aabbcc"}
+
+    # Act
+    response = labels_api.update_label(nonexistent_name, payload)
+    body = response.json()
+
+    # Assert 1 — Status Code
+    assert response.status_code == 404
+
+    # Assert 2 — Error message
+    assert "message" in body
+    assert body["message"] == "Not Found"
+
+    # Assert 3 — Schema Validation
+    validate(instance=body, schema=LABEL_ERROR_SCHEMA)
+
+    # Assert 4 — No resource data in body
+    assert "id" not in body
+    assert "color" not in body
+
+
+@pytest.mark.negative
+@pytest.mark.regression
+def test_should_fail_to_create_label_with_invalid_color(labels_api):
+    """HLTC-15: Crear etiqueta con formato de color inválido devuelve 422"""
+
+    # Arrange
+    invalid_color_payload = {
+        "name": "label-invalid-color-sergio",
+        "color": "ZZZZZZ",
+        "description": "Label con color inválido",
+    }
+    labels_api.delete_label(invalid_color_payload["name"])
+
+    # Act
+    response = labels_api.create_label(invalid_color_payload)
+    body = response.json()
+
+    # Assert 1 — Status Code
+    assert response.status_code == 422
+
+    # Assert 2 — Error message present
+    assert "message" in body
+    assert body["message"] != ""
+
+    # Assert 3 — No resource was created
+    assert "id" not in body
