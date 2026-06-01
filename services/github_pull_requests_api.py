@@ -31,7 +31,8 @@ class GitHubPullRequestsAPI:
         return self.client.get(self._pulls_base, params={"state": state})
 
     def update_pull_request(self, pr_number, payload):
-        return self.client.patch(f"{self._pulls_base}/{pr_number}", json=payload)
+        return self.client.patch(
+            f"{self._pulls_base}/{pr_number}", json=payload)
 
     def close_pull_request(self, pr_number):
         return self.update_pull_request(pr_number, {"state": "closed"})

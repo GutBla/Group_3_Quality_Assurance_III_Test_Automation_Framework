@@ -10,7 +10,8 @@ class GitHubLabelsAPI:
         self.repo = os.getenv("REPO_NAME")
 
         if not all([self.base_url_base, self.username, self.repo]):
-            raise EnvironmentError("Faltan variables de entorno para etiquetas")
+            raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
 
         self.base_url = f"{self.base_url_base}/repos/{self.username}/{self.repo}"
         self.client = RequestManager()
@@ -22,7 +23,8 @@ class GitHubLabelsAPI:
         return self.client.get(f"{self.base_url}/labels/{label_name}")
 
     def update_label(self, label_name, payload):
-        return self.client.patch(f"{self.base_url}/labels/{label_name}", json=payload)
+        return self.client.patch(
+            f"{self.base_url}/labels/{label_name}", json=payload)
 
     def delete_label(self, label_name):
         return self.client.delete(f"{self.base_url}/labels/{label_name}")

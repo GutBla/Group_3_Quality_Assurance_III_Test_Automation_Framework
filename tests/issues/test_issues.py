@@ -98,7 +98,8 @@ def test_should_fail_to_create_issue_when_title_is_missing(github_api):
 
     # Assert 4 — Data Integrity Check
     logger.info("Executing integrity check via GET")
-    get_all_response = github_api.client.get(github_api.default_base_url + "/issues")
+    get_all_response = github_api.client.get(
+        github_api.default_base_url + "/issues")
     issues_list = get_all_response.json()
 
     exists_invalid = any(
@@ -162,7 +163,8 @@ def test_should_fail_to_update_issue_when_id_is_invalid(github_api):
     # Arrange
     invalid_id = INVALID_ISSUE_NUMBER
     payload = CLOSE_ISSUE_PAYLOAD
-    logger.info(f"Preparing PATCH request for non-existent issue #{invalid_id}")
+    logger.info(
+        f"Preparing PATCH request for non-existent issue #{invalid_id}")
 
     # Act
     response = github_api.update_issue(invalid_id, payload)
@@ -250,7 +252,8 @@ def test_should_fail_to_create_issue_when_token_is_invalid(github_api):
     # Arrange
     payload = CREATE_ISSUE_PAYLOAD
     headers = INVALID_AUTH_HEADERS
-    logger.info("Preparing valid payload but injecting an invalid authorization header")
+    logger.info(
+        "Preparing valid payload but injecting an invalid authorization header")
 
     # Act
     logger.info("Executing API request to create an issue with bad credentials")
@@ -262,7 +265,8 @@ def test_should_fail_to_create_issue_when_token_is_invalid(github_api):
     assert response.status_code == 401
 
     # Assert 2 — Response Body Match
-    logger.info("Verifying error message matches GitHub standard for bad credentials")
+    logger.info(
+        "Verifying error message matches GitHub standard for bad credentials")
     assert response_body["message"] == "Bad credentials"
 
     # Assert 3 — Schema Validation
@@ -275,13 +279,15 @@ def test_should_fail_to_create_issue_when_token_is_invalid(github_api):
 
 @pytest.mark.negative
 @pytest.mark.regression
-def test_should_fail_to_create_issue_when_title_exceeds_length_limit(github_api):
+def test_should_fail_to_create_issue_when_title_exceeds_length_limit(
+        github_api):
     # Arrange
     payload = LONG_TITLE_PAYLOAD
     logger.info("Preparing payload with a title exceeding 1024 characters")
 
     # Act
-    logger.info("Executing API request to create an issue with an oversized title")
+    logger.info(
+        "Executing API request to create an issue with an oversized title")
     response = github_api.create_issue(payload)
     response_body = response.json()
 
@@ -314,7 +320,8 @@ def test_should_fail_to_create_issue_when_repo_does_not_exist(github_api):
     )
 
     # Act
-    logger.info(f"Executing API request targeting fake repository '{fake_repo}'")
+    logger.info(
+        f"Executing API request targeting fake repository '{fake_repo}'")
     response = github_api.create_issue(payload, repo=fake_repo)
     response_body = response.json()
 
@@ -340,10 +347,12 @@ def test_should_add_comment_to_existing_issue_successfully(github_api, issue):
     # Arrange
     issue_number = issue
     payload = CREATE_COMMENT_PAYLOAD
-    logger.info(f"Preparing payload for comment creation on issue #{issue_number}")
+    logger.info(
+        f"Preparing payload for comment creation on issue #{issue_number}")
 
     # Act
-    logger.info(f"Executing API request to add comment to issue #{issue_number}")
+    logger.info(
+        f"Executing API request to add comment to issue #{issue_number}")
     response = github_api.create_comment(issue_number, payload)
     response_body = response.json()
 

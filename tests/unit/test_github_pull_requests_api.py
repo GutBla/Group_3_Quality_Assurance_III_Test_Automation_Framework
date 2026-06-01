@@ -21,7 +21,8 @@ def mock_request_manager():
             status_code=200, json=lambda: {"state": "closed"})
         mock_instance.post.return_value = MagicMock(
             status_code=201, json=lambda: [{"name": "bug"}])
-        mock_instance.put.return_value = MagicMock(status_code=200, json=lambda: [])
+        mock_instance.put.return_value = MagicMock(
+            status_code=200, json=lambda: [])
         mock_instance.delete.return_value = MagicMock(status_code=204)
 
         yield mock_instance
@@ -114,7 +115,8 @@ def test_set_labels(pr_api, mock_request_manager):
 
 
 def test_create_label(pr_api, mock_request_manager):
-    response = pr_api.create_label("newlabel", color="FF0000", description="test")
+    response = pr_api.create_label(
+        "newlabel", color="FF0000", description="test")
     mock_request_manager.post.assert_called_once_with(
         'https://api.github.com/repos/testowner/testrepo/labels',
         json={"name": "newlabel", "color": "FF0000", "description": "test"}

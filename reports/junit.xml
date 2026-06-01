@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="21" failures="3" skipped="1" tests="101" time="44.951" timestamp="2026-06-01T01:12:00.929572-04:00" hostname="MSI"><testcase classname="tests.issues.test_issues" name="test_should_create_issue_successfully" time="0.003"><error message="failed on setup with &quot;OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME&quot;">@pytest.fixture
+    def github_api():
+&gt;       return GitHubIssuesAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_issues_api.GitHubIssuesAPI object at 0x0000015626E25400&gt;
+
+    def __init__(self):
+        self.base_url = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
+E           OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME
+
+services\github_issues_api.py:16: OSError</error></testcase><testcase classname="tests.issues.test_issues" name="test_should_fail_to_create_issue_when_title_is_missing" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME&quot;">@pytest.fixture
+    def github_api():
+&gt;       return GitHubIssuesAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_issues_api.GitHubIssuesAPI object at 0x000001562801DF10&gt;
+
+    def __init__(self):
+        self.base_url = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
+E           OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME
+
+services\github_issues_api.py:16: OSError</error></testcase><testcase classname="tests.issues.test_issues" name="test_should_update_issue_successfully" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME&quot;">@pytest.fixture
+    def github_api():
+&gt;       return GitHubIssuesAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_issues_api.GitHubIssuesAPI object at 0x0000015627F98920&gt;
+
+    def __init__(self):
+        self.base_url = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
+E           OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME
+
+services\github_issues_api.py:16: OSError</error></testcase><testcase classname="tests.issues.test_issues" name="test_should_fail_to_update_issue_when_id_is_invalid" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME&quot;">@pytest.fixture
+    def github_api():
+&gt;       return GitHubIssuesAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_issues_api.GitHubIssuesAPI object at 0x0000015627F98B30&gt;
+
+    def __init__(self):
+        self.base_url = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
+E           OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME
+
+services\github_issues_api.py:16: OSError</error></testcase><testcase classname="tests.issues.test_issues" name="test_should_close_issue_successfully" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME&quot;">@pytest.fixture
+    def github_api():
+&gt;       return GitHubIssuesAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_issues_api.GitHubIssuesAPI object at 0x0000015628056780&gt;
+
+    def __init__(self):
+        self.base_url = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
+E           OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME
+
+services\github_issues_api.py:16: OSError</error></testcase><testcase classname="tests.issues.test_issues" name="test_should_fail_to_create_issue_when_token_is_invalid" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME&quot;">@pytest.fixture
+    def github_api():
+&gt;       return GitHubIssuesAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_issues_api.GitHubIssuesAPI object at 0x00000156280576E0&gt;
+
+    def __init__(self):
+        self.base_url = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
+E           OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME
+
+services\github_issues_api.py:16: OSError</error></testcase><testcase classname="tests.issues.test_issues" name="test_should_fail_to_create_issue_when_title_exceeds_length_limit" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME&quot;">@pytest.fixture
+    def github_api():
+&gt;       return GitHubIssuesAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_issues_api.GitHubIssuesAPI object at 0x00000156280A09B0&gt;
+
+    def __init__(self):
+        self.base_url = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
+E           OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME
+
+services\github_issues_api.py:16: OSError</error></testcase><testcase classname="tests.issues.test_issues" name="test_should_fail_to_create_issue_when_repo_does_not_exist" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME&quot;">@pytest.fixture
+    def github_api():
+&gt;       return GitHubIssuesAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_issues_api.GitHubIssuesAPI object at 0x00000156280A0C20&gt;
+
+    def __init__(self):
+        self.base_url = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
+E           OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME
+
+services\github_issues_api.py:16: OSError</error></testcase><testcase classname="tests.issues.test_issues" name="test_should_add_comment_to_existing_issue_successfully" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME&quot;">@pytest.fixture
+    def github_api():
+&gt;       return GitHubIssuesAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_issues_api.GitHubIssuesAPI object at 0x00000156280A2EA0&gt;
+
+    def __init__(self):
+        self.base_url = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
+E           OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME
+
+services\github_issues_api.py:16: OSError</error></testcase><testcase classname="tests.issues.test_issues" name="test_should_reopen_closed_issue_successfully" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME&quot;">@pytest.fixture
+    def github_api():
+&gt;       return GitHubIssuesAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_issues_api.GitHubIssuesAPI object at 0x00000156280A3CE0&gt;
+
+    def __init__(self):
+        self.base_url = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME")
+E           OSError: Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME
+
+services\github_issues_api.py:16: OSError</error></testcase><testcase classname="tests.labels.test_labels" name="test_should_create_label_successfully" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno para etiquetas&quot;">@pytest.fixture
+    def labels_api():
+&gt;       return GitHubLabelsAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_labels_api.GitHubLabelsAPI object at 0x0000015628064560&gt;
+
+    def __init__(self):
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url_base, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
+E           OSError: Faltan variables de entorno para etiquetas
+
+services\github_labels_api.py:13: OSError</error></testcase><testcase classname="tests.labels.test_labels" name="test_should_fail_to_create_label_without_name" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno para etiquetas&quot;">@pytest.fixture
+    def labels_api():
+&gt;       return GitHubLabelsAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_labels_api.GitHubLabelsAPI object at 0x0000015628067E90&gt;
+
+    def __init__(self):
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url_base, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
+E           OSError: Faltan variables de entorno para etiquetas
+
+services\github_labels_api.py:13: OSError</error></testcase><testcase classname="tests.labels.test_labels" name="test_should_update_label_successfully" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno para etiquetas&quot;">@pytest.fixture
+    def labels_api():
+&gt;       return GitHubLabelsAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_labels_api.GitHubLabelsAPI object at 0x00000156280707D0&gt;
+
+    def __init__(self):
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url_base, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
+E           OSError: Faltan variables de entorno para etiquetas
+
+services\github_labels_api.py:13: OSError</error></testcase><testcase classname="tests.labels.test_labels" name="test_should_assign_label_to_issue" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno para etiquetas&quot;">@pytest.fixture
+    def labels_api():
+&gt;       return GitHubLabelsAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_labels_api.GitHubLabelsAPI object at 0x00000156280714C0&gt;
+
+    def __init__(self):
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url_base, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
+E           OSError: Faltan variables de entorno para etiquetas
+
+services\github_labels_api.py:13: OSError</error></testcase><testcase classname="tests.labels.test_labels" name="test_should_get_existing_label_successfully" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno para etiquetas&quot;">@pytest.fixture
+    def labels_api():
+&gt;       return GitHubLabelsAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_labels_api.GitHubLabelsAPI object at 0x00000156280675C0&gt;
+
+    def __init__(self):
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url_base, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
+E           OSError: Faltan variables de entorno para etiquetas
+
+services\github_labels_api.py:13: OSError</error></testcase><testcase classname="tests.labels.test_labels" name="test_should_delete_label_successfully" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno para etiquetas&quot;">@pytest.fixture
+    def labels_api():
+&gt;       return GitHubLabelsAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_labels_api.GitHubLabelsAPI object at 0x00000156280A1370&gt;
+
+    def __init__(self):
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url_base, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
+E           OSError: Faltan variables de entorno para etiquetas
+
+services\github_labels_api.py:13: OSError</error></testcase><testcase classname="tests.labels.test_labels" name="test_should_fail_to_get_nonexistent_label" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno para etiquetas&quot;">@pytest.fixture
+    def labels_api():
+&gt;       return GitHubLabelsAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_labels_api.GitHubLabelsAPI object at 0x00000156280A11F0&gt;
+
+    def __init__(self):
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url_base, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
+E           OSError: Faltan variables de entorno para etiquetas
+
+services\github_labels_api.py:13: OSError</error></testcase><testcase classname="tests.labels.test_labels" name="test_should_list_all_labels_from_repository" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno para etiquetas&quot;">@pytest.fixture
+    def labels_api():
+&gt;       return GitHubLabelsAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_labels_api.GitHubLabelsAPI object at 0x00000156280576B0&gt;
+
+    def __init__(self):
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url_base, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
+E           OSError: Faltan variables de entorno para etiquetas
+
+services\github_labels_api.py:13: OSError</error></testcase><testcase classname="tests.labels.test_labels" name="test_should_fail_to_create_duplicate_label" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno para etiquetas&quot;">@pytest.fixture
+    def labels_api():
+&gt;       return GitHubLabelsAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_labels_api.GitHubLabelsAPI object at 0x0000015628057E90&gt;
+
+    def __init__(self):
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url_base, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
+E           OSError: Faltan variables de entorno para etiquetas
+
+services\github_labels_api.py:13: OSError</error></testcase><testcase classname="tests.labels.test_labels" name="test_should_fail_to_update_nonexistent_label" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno para etiquetas&quot;">@pytest.fixture
+    def labels_api():
+&gt;       return GitHubLabelsAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_labels_api.GitHubLabelsAPI object at 0x0000015627F98DA0&gt;
+
+    def __init__(self):
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url_base, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
+E           OSError: Faltan variables de entorno para etiquetas
+
+services\github_labels_api.py:13: OSError</error></testcase><testcase classname="tests.labels.test_labels" name="test_should_fail_to_create_label_with_invalid_color" time="0.002"><error message="failed on setup with &quot;OSError: Faltan variables de entorno para etiquetas&quot;">@pytest.fixture
+    def labels_api():
+&gt;       return GitHubLabelsAPI()
+               ^^^^^^^^^^^^^^^^^
+
+tests\fixtures\api_fixtures.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;services.github_labels_api.GitHubLabelsAPI object at 0x0000015628071430&gt;
+
+    def __init__(self):
+        self.base_url_base = os.getenv("BASE_URL")
+        self.username = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
+    
+        if not all([self.base_url_base, self.username, self.repo]):
+&gt;           raise EnvironmentError(
+                "Faltan variables de entorno para etiquetas")
+E           OSError: Faltan variables de entorno para etiquetas
+
+services\github_labels_api.py:13: OSError</error></testcase><testcase classname="tests.pull_requests.test_pull_requests" name="test_hltc27_should_update_pr_title_successfully" time="2.838" /><testcase classname="tests.pull_requests.test_pull_requests" name="test_hltc28_should_update_pr_body_successfully" time="2.287" /><testcase classname="tests.pull_requests.test_pull_requests" name="test_hltc29_should_add_label_to_pr_successfully" time="2.841" /><testcase classname="tests.pull_requests.test_pull_requests" name="test_hltc30_should_close_pr_successfully" time="0.993"><skipped type="pytest.skip" message="El PR ya está cerrado — este test requiere un PR abierto.">C:\Users\MSI PULSE\Documents\Jala University\Ingenieria de Software\Curso\Ingeniería de Calidad de Software 3 - Software Quality Engineering 3\5. Proyectos\Group_3_Quality_Assurance_III_Test_Automation_Framework\tests\pull_requests\test_pull_requests.py:141: El PR ya está cerrado — este test requiere un PR abierto.</skipped></testcase><testcase classname="tests.pull_requests.test_pull_requests" name="test_hltc31_should_fail_to_add_empty_label_list" time="0.274" /><testcase classname="tests.pull_requests.test_pull_requests" name="test_should_get_pull_request_successfully" time="0.387" /><testcase classname="tests.pull_requests.test_pull_requests" name="test_should_fail_to_get_pr_with_invalid_token" time="0.151" /><testcase classname="tests.pull_requests.test_pull_requests" name="test_should_return_404_for_nonexistent_pr" time="0.646" /><testcase classname="tests.pull_requests.test_pull_requests" name="test_should_list_pull_requests_successfully" time="0.579" /><testcase classname="tests.pull_requests.test_pull_requests" name="test_should_have_no_residual_data_after_updates" time="1.377" /><testcase classname="tests.repositories.test_repository" name="test_should_create_repository_successfully" time="0.718"><failure message="assert 422 == 201&#10; +  where 422 = &lt;Response [422]&gt;.status_code">repo_api = &lt;services.github_repositories_api.GitHubRepositoriesAPI object at 0x0000015628079B20&gt;
+repository = 'mi-repo-de-prueba'
+
+    @pytest.mark.functional
+    @pytest.mark.acceptance
+    @pytest.mark.smoke
+    def test_should_create_repository_successfully(repo_api, repository):
+    
+        # Arrange
+        payload = CREATE_REPO_PAYLOAD
+        logger.info(
+            f"Preparing payload for repository creation: {
+                payload['name']}")
+    
+        # Act
+        logger.info("Executing API request to create a new repository")
+        response = repo_api.create_repo(payload)
+        response_body = response.json()
+    
+        # Assert 1 — Status Code
+        logger.info("Verifying response status code is 201")
+&gt;       assert response.status_code == 201
+E       assert 422 == 201
+E        +  where 422 = &lt;Response [422]&gt;.status_code
+
+tests\repositories\test_repository.py:33: AssertionError</failure></testcase><testcase classname="tests.repositories.test_repository" name="test_should_update_repository_description" time="1.485" /><testcase classname="tests.repositories.test_repository" name="test_should_change_repository_visibility_to_private" time="4.495" /><testcase classname="tests.repositories.test_repository" name="test_should_delete_existing_repository" time="3.962"><failure message="assert 403 == 204&#10; +  where 403 = &lt;Response [403]&gt;.status_code">repo_api = &lt;services.github_repositories_api.GitHubRepositoriesAPI object at 0x0000015627FE1400&gt;
+repository = 'mi-repo-de-prueba'
+
+    @pytest.mark.functional
+    @pytest.mark.acceptance
+    @pytest.mark.smoke
+    def test_should_delete_existing_repository(repo_api, repository):
+    
+        # Arrange
+        repo_api.create_repo(CREATE_REPO_PAYLOAD)
+        time.sleep(3)
+        repo_name = CREATE_REPO_PAYLOAD["name"]
+        logger.info(f"Preparing to delete repository '{repo_name}'")
+    
+        # Act
+        logger.info("Executing DELETE request to remove repository")
+        response = repo_api.delete_repo(repo_name)
+    
+        # Assert 1 — Status Code
+        logger.info("Verifying response status code is 204")
+&gt;       assert response.status_code == 204
+E       assert 403 == 204
+E        +  where 403 = &lt;Response [403]&gt;.status_code
+
+tests\repositories\test_repository.py:159: AssertionError</failure></testcase><testcase classname="tests.repositories.test_repository" name="test_should_fail_when_creating_duplicate_repository" time="3.986" /><testcase classname="tests.repositories.test_repository" name="test_should_list_authenticated_user_repositories" time="1.133" /><testcase classname="tests.repositories.test_repository" name="test_should_get_repository_contributors" time="1.746" /><testcase classname="tests.repositories.test_repository" name="test_should_create_repository_with_wiki_disabled" time="0.671"><failure message="assert 422 == 201&#10; +  where 422 = &lt;Response [422]&gt;.status_code">repo_api = &lt;services.github_repositories_api.GitHubRepositoriesAPI object at 0x000001562803B7A0&gt;
+repository = 'mi-repo-de-prueba'
+
+    @pytest.mark.functional
+    @pytest.mark.regression
+    def test_should_create_repository_with_wiki_disabled(repo_api, repository):
+    
+        # Arrange
+        payload = {
+            "name": CREATE_REPO_PAYLOAD["name"],
+            "description": "Repo sin wiki",
+            "private": False,
+            "has_wiki": False,
+        }
+        logger.info(f"Creating repo '{payload['name']}' with has_wiki=False")
+    
+        # Act
+        response = repo_api.create_repo(payload)
+        response_body = response.json()
+    
+        # Assert 1 — Status Code
+&gt;       assert response.status_code == 201
+E       assert 422 == 201
+E        +  where 422 = &lt;Response [422]&gt;.status_code
+
+tests\repositories\test_repository.py:271: AssertionError</failure></testcase><testcase classname="tests.repositories.test_repository" name="test_should_disable_issues_on_existing_repository" time="1.403" /><testcase classname="tests.repositories.test_repository" name="test_should_fail_to_delete_nonexistent_repository" time="0.211" /><testcase classname="tests.unit.test_github_pull_requests_api" name="test_get_pull_request" time="0.012" /><testcase classname="tests.unit.test_github_pull_requests_api" name="test_list_pull_requests" time="0.008" /><testcase classname="tests.unit.test_github_pull_requests_api" name="test_update_pull_request" time="0.008" /><testcase classname="tests.unit.test_github_pull_requests_api" name="test_close_pull_request" time="0.009" /><testcase classname="tests.unit.test_github_pull_requests_api" name="test_reopen_pull_request" time="0.010" /><testcase classname="tests.unit.test_github_pull_requests_api" name="test_add_labels" time="0.009" /><testcase classname="tests.unit.test_github_pull_requests_api" name="test_get_labels" time="0.008" /><testcase classname="tests.unit.test_github_pull_requests_api" name="test_set_labels" time="0.010" /><testcase classname="tests.unit.test_github_pull_requests_api" name="test_create_label" time="0.009" /><testcase classname="tests.unit.test_github_pull_requests_api" name="test_delete_label" time="0.009" /><testcase classname="tests.unit.test_github_user_api" name="test_get_authenticated_user" time="0.009" /><testcase classname="tests.unit.test_github_user_api" name="test_get_authenticated_user_with_custom_headers" time="0.010" /><testcase classname="tests.unit.test_github_user_api" name="test_update_profile" time="0.010" /><testcase classname="tests.unit.test_github_user_api" name="test_get_user" time="0.009" /><testcase classname="tests.unit.test_github_user_api" name="test_follow_user" time="0.010" /><testcase classname="tests.unit.test_github_user_api" name="test_unfollow_user" time="0.021" /><testcase classname="tests.unit.test_github_user_api" name="test_check_following" time="0.008" /><testcase classname="tests.unit.test_github_user_api" name="test_add_emails" time="0.009" /><testcase classname="tests.unit.test_request_manager" name="test_request_manager_singleton" time="0.002" /><testcase classname="tests.unit.test_request_manager" name="test_log_response_non_json" time="0.007" /><testcase classname="tests.unit.test_request_manager" name="test_initialize_missing_token" time="0.004" /><testcase classname="tests.unit.test_request_manager" name="test_get_method_calls_session" time="0.007" /><testcase classname="tests.unit.test_request_manager" name="test_post_method_calls_session" time="0.008" /><testcase classname="tests.unit.test_request_manager" name="test_patch_method_calls_session" time="0.007" /><testcase classname="tests.unit.test_request_manager" name="test_put_method_calls_session" time="0.008" /><testcase classname="tests.unit.test_request_manager" name="test_delete_method_calls_session" time="0.008" /><testcase classname="tests.unit.test_request_manager" name="test_head_method_calls_session" time="0.007" /><testcase classname="tests.unit.test_request_manager" name="test_log_request_with_json_body" time="0.008" /><testcase classname="tests.unit.test_request_manager" name="test_log_request_with_override_headers" time="0.014" /><testcase classname="tests.unit.test_request_manager" name="test_get_with_custom_headers_passes_them_through" time="0.013" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema0-data0]" time="0.019" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema1-data1]" time="0.009" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema2-data2]" time="0.012" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema3-data3]" time="0.023" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema4-data4]" time="0.013" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema5-data5]" time="0.027" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema6-data6]" time="0.014" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema7-data7]" time="0.016" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema8-data8]" time="0.008" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema9-data9]" time="0.015" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema10-data10]" time="0.008" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema11-data11]" time="0.014" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema12-data12]" time="0.022" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema13-data13]" time="0.008" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema14-data14]" time="0.008" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema15-data15]" time="0.016" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema16-data16]" time="0.009" /><testcase classname="tests.unit.test_schema_validator" name="test_all_schemas_validation[schema17-data17]" time="0.015" /><testcase classname="tests.unit.test_schema_validator" name="test_schema_validation_failure" time="0.007" /><testcase classname="tests.users.test_user_operations" name="test_hltc16_get_authenticated_user" time="0.283" /><testcase classname="tests.users.test_user_operations" name="test_hltc17_unauthorized_access_rejected" time="0.149" /><testcase classname="tests.users.test_user_operations" name="test_hltc18_update_profile" time="1.748" /><testcase classname="tests.users.test_user_operations" name="test_hltc19_update_profile_protected_fields_ignored" time="1.237" /><testcase classname="tests.users.test_user_operations" name="test_hltc20_get_public_user" time="0.211" /><testcase classname="tests.users.test_user_operations" name="test_hltc21_update_editable_fields" time="1.217" /><testcase classname="tests.users.test_user_operations" name="test_hltc22_follow_user" time="0.776" /><testcase classname="tests.users.test_user_operations" name="test_hltc23_check_following_user" time="0.702" /><testcase classname="tests.users.test_user_operations" name="test_hltc24_unfollow_user" time="0.834" /><testcase classname="tests.users.test_user_operations" name="test_hltc25_add_disposable_email_rejected" time="0.238" /><testcase classname="tests.users.test_user_operations" name="test_profile_has_no_residual_test_data" time="0.779" /></testsuite></testsuites>

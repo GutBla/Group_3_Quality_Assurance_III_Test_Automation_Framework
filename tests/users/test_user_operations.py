@@ -123,8 +123,10 @@ def test_hltc19_update_profile_protected_fields_ignored(
     original_id = original["id"]
 
     import datetime
-    new_bio = f"QA Integrity Check {datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    payload = get_invalid_update_payload(original_login, original_id, new_bio=new_bio)
+    new_bio = f"QA Integrity Check {
+        datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    payload = get_invalid_update_payload(
+        original_login, original_id, new_bio=new_bio)
 
     logger.info(
         f"Enviando payload con campos protegidos: login='{payload['login']}', "
@@ -291,7 +293,8 @@ def test_hltc24_unfollow_user(github_user_api):
 
     target = FOLLOW_USERNAME
 
-    logger.info(f"Asegurando que seguimos a '{target}' antes de dejar de seguir")
+    logger.info(
+        f"Asegurando que seguimos a '{target}' antes de dejar de seguir")
     follow_resp = github_user_api.follow_user(target)
     assert follow_resp.status_code == 204
 
@@ -350,7 +353,8 @@ def test_profile_has_no_residual_test_data(github_user_api, profile_restore):
 
     import re
 
-    logger.info("Obteniendo estado actual del perfil para verificación de integridad")
+    logger.info(
+        "Obteniendo estado actual del perfil para verificación de integridad")
     response = github_user_api.get_authenticated_user()
     body = response.json()
 
@@ -380,7 +384,8 @@ def test_profile_has_no_residual_test_data(github_user_api, profile_restore):
             residue_info = f"company='{body['company']}'"
             break
 
-    logger.info("Verificando que no hay residuos de pruebas en bio/location/company")
+    logger.info(
+        "Verificando que no hay residuos de pruebas en bio/location/company")
     assert residue_found is False, (
         f"Se encontraron datos residuales de test en el perfil: {residue_info}"
     )

@@ -27,7 +27,8 @@ class GitHubIssuesAPI:
         return self.client.post(url, json=payload, headers=headers)
 
     def get_issue(self, issue_number):
-        return self.client.get(f"{self.default_base_url}/{ENDPOINT}/{issue_number}")
+        return self.client.get(
+            f"{self.default_base_url}/{ENDPOINT}/{issue_number}")
 
     def close_issue(self, issue_number):
         return self.client.patch(

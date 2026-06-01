@@ -105,7 +105,13 @@ class NewmanRunnerApp(tk.Tk):
             highlightthickness=1,
             highlightbackground=BORDER
         )
-        output_frame.grid(row=2, column=0, columnspan=2, sticky="ew", pady=15, padx=2)
+        output_frame.grid(
+            row=2,
+            column=0,
+            columnspan=2,
+            sticky="ew",
+            pady=15,
+            padx=2)
         output_frame.columnconfigure(0, weight=1)
 
         tk.Label(
@@ -127,7 +133,15 @@ class NewmanRunnerApp(tk.Tk):
             highlightthickness=1,
             highlightbackground=BORDER
         )
-        folder_entry.grid(row=1, column=0, sticky="ew", ipady=5, padx=10, pady=(0, 10))
+        folder_entry.grid(
+            row=1,
+            column=0,
+            sticky="ew",
+            ipady=5,
+            padx=10,
+            pady=(
+                0,
+                10))
 
         # Botones
         btn_frame = tk.Frame(main_frame, bg=BG_PRIMARY)
@@ -221,7 +235,13 @@ class NewmanRunnerApp(tk.Tk):
 
     def _crear_campo(self, parent, label, hint, variable, command, row):
         frame = tk.Frame(parent, bg=BG_PRIMARY)
-        frame.grid(row=row, column=0, columnspan=2, sticky="ew", pady=8, padx=2)
+        frame.grid(
+            row=row,
+            column=0,
+            columnspan=2,
+            sticky="ew",
+            pady=8,
+            padx=2)
         frame.columnconfigure(0, weight=1)
 
         tk.Label(
@@ -335,7 +355,8 @@ class NewmanRunnerApp(tk.Tk):
             newman_local = os.path.join(
                 script_dir, "node_modules", ".bin", "newman.cmd")
         else:
-            newman_local = os.path.join(script_dir, "node_modules", ".bin", "newman")
+            newman_local = os.path.join(
+                script_dir, "node_modules", ".bin", "newman")
         if os.path.isfile(newman_local):
             return [newman_local]
         else:
@@ -417,8 +438,12 @@ class NewmanRunnerApp(tk.Tk):
             "-e", environment
         ]
 
-        self.after(0, lambda: self._append_log(f"Output directory: {output_dir}\n"))
-        self.after(0, lambda: self._append_log(f"Command: {' '.join(cmd)}\n\n"))
+        self.after(0, lambda: self._append_log(
+            f"Output directory: {output_dir}\n"))
+        self.after(
+            0, lambda: self._append_log(
+                f"Command: {
+                    ' '.join(cmd)}\n\n"))
 
         try:
             process = subprocess.Popen(
@@ -454,7 +479,9 @@ class NewmanRunnerApp(tk.Tk):
                         "Newman finished with errors", ERROR))
                 self.after(0, lambda: self._append_log(f"\nExit code: {rc}\n"))
         except Exception as e:
-            self.after(0, lambda: self._append_log(f"\nUnexpected error: {e}\n"))
+            self.after(
+                0, lambda: self._append_log(
+                    f"\nUnexpected error: {e}\n"))
             self.after(0, lambda: self._set_status("Execution error", ERROR))
         finally:
             self.after(0, self._reset_button)

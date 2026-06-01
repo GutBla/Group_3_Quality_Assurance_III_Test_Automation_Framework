@@ -29,7 +29,8 @@ def get_update_profile_payload():
     }
 
 
-def get_invalid_update_payload(original_login, original_id, new_bio="Nueva API QA"):
+def get_invalid_update_payload(
+        original_login, original_id, new_bio="Nueva API QA"):
     return {
         "login": f"intento_{original_login}",
         "id": original_id + 9999,

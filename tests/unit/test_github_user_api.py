@@ -39,12 +39,14 @@ def user_api(mock_request_manager):
 
 def test_get_authenticated_user(user_api, mock_request_manager):
     response = user_api.get_authenticated_user()
-    mock_request_manager.get.assert_called_once_with('https://api.github.com/user')
+    mock_request_manager.get.assert_called_once_with(
+        'https://api.github.com/user')
     assert response.status_code == 200
     assert response.json() == {"login": "testuser", "id": 123}
 
 
-def test_get_authenticated_user_with_custom_headers(user_api, mock_request_manager):
+def test_get_authenticated_user_with_custom_headers(
+        user_api, mock_request_manager):
     custom_headers = {"Authorization": "Bearer fake"}
     user_api.get_authenticated_user(headers=custom_headers)
     mock_request_manager.get.assert_called_once_with(

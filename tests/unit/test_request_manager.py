@@ -117,7 +117,11 @@ def test_head_method_calls_session(rm_with_mock_session):
 
 def test_log_request_with_json_body(rm_with_mock_session):
     rm, _ = rm_with_mock_session
-    rm._log_request("POST", "https://api.github.com/user/emails", json={"emails": []})
+    rm._log_request(
+        "POST",
+        "https://api.github.com/user/emails",
+        json={
+            "emails": []})
 
 
 def test_log_request_with_override_headers(rm_with_mock_session):

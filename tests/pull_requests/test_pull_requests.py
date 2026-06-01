@@ -175,7 +175,8 @@ def test_hltc30_should_close_pr_successfully(pr_api, pr_state):
 @pytest.mark.regression
 def test_hltc31_should_fail_to_add_empty_label_list(pr_api):
 
-    logger.info(f"Intentando agregar lista de etiquetas vacía al PR #{PR_NUMBER}")
+    logger.info(
+        f"Intentando agregar lista de etiquetas vacía al PR #{PR_NUMBER}")
     response = pr_api.add_labels(PR_NUMBER, [])
     body = response.json()
 
@@ -198,7 +199,8 @@ def test_hltc31_should_fail_to_add_empty_label_list(pr_api):
         for keyword in ["validation", "invalid", "no subschema"]
     ), f"Mensaje de error inesperado: {body['message']}"
 
-    logger.info("Validando schema de respuesta contra PR_VALIDATION_ERROR_SCHEMA")
+    logger.info(
+        "Validando schema de respuesta contra PR_VALIDATION_ERROR_SCHEMA")
     validate(instance=body, schema=PR_VALIDATION_ERROR_SCHEMA)
 
 
@@ -208,7 +210,8 @@ def test_hltc31_should_fail_to_add_empty_label_list(pr_api):
 @pytest.mark.smoke
 def test_should_get_pull_request_successfully(pr_api):
 
-    logger.info(f"Obteniendo PR #{PR_NUMBER} del repositorio {USERNAME}/{REPO}")
+    logger.info(
+        f"Obteniendo PR #{PR_NUMBER} del repositorio {USERNAME}/{REPO}")
     response = pr_api.get_pull_request(PR_NUMBER)
     body = response.json()
 
