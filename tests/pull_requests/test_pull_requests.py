@@ -1,7 +1,7 @@
 import pytest
 from jsonschema import validate
 
-from config.config import REPO, USERNAME
+from config.config import REPO_NAME, USERNAME
 from data.pull_request_data import (INVALID_AUTH_HEADERS,
                                     get_dynamic_body_payload,
                                     get_dynamic_title_payload)
@@ -89,8 +89,8 @@ def test_hltc28_should_update_pr_body_successfully(pr_api, pr_state):
     assert get_response.status_code == 200
     assert get_body["body"] == payload["body"]
 
-# HLTC-29 — Agregar etiqueta al PR
 
+# HLTC-29 — Agregar etiqueta al PR
 
 @pytest.mark.functional
 @pytest.mark.regression
@@ -168,8 +168,8 @@ def test_hltc30_should_close_pr_successfully(pr_api, pr_state):
     assert get_response.status_code == 200
     assert get_body["state"] == "closed"
 
-# HLTC-31 — Agregar etiqueta vacía (debe fallar)
 
+# HLTC-31 — Agregar etiqueta vacía (debe fallar)
 
 @pytest.mark.negative
 @pytest.mark.regression
@@ -211,7 +211,7 @@ def test_hltc31_should_fail_to_add_empty_label_list(pr_api):
 def test_should_get_pull_request_successfully(pr_api):
 
     logger.info(
-        f"Obteniendo PR #{PR_NUMBER} del repositorio {USERNAME}/{REPO}")
+        f"Obteniendo PR #{PR_NUMBER} del repositorio {USERNAME}/{REPO_NAME}")
     response = pr_api.get_pull_request(PR_NUMBER)
     body = response.json()
 
@@ -262,8 +262,8 @@ def test_should_fail_to_get_pr_with_invalid_token(pr_api):
     logger.info("Validando schema de respuesta contra UNAUTHORIZED_ERROR_SCHEMA")
     validate(instance=body, schema=UNAUTHORIZED_ERROR_SCHEMA)
 
-# Obtener PR inexistente (404)
 
+# Obtener PR inexistente (404)
 
 @pytest.mark.negative
 @pytest.mark.regression
@@ -297,7 +297,7 @@ def test_should_return_404_for_nonexistent_pr(pr_api):
 @pytest.mark.regression
 def test_should_list_pull_requests_successfully(pr_api):
 
-    logger.info(f"Listando PRs del repositorio {USERNAME}/{REPO}")
+    logger.info(f"Listando PRs del repositorio {USERNAME}/{REPO_NAME}")
     response = pr_api.list_pull_requests(state="all")
     body = response.json()
 
