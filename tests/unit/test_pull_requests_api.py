@@ -1,4 +1,3 @@
-# tests/unit/test_github_pull_requests_api.py
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -10,10 +9,9 @@ from services.request_manager import RequestManager
 @pytest.fixture
 def mock_request_manager():
     with patch.object(RequestManager, '_instance', None), \
-            patch('services.github_pull_requests_api.RequestManager') as MockRequestManager:
-
+            patch('services.github_pull_requests_api.RequestManager') as mock_request_manager_cls:
         mock_instance = MagicMock()
-        MockRequestManager.return_value = mock_instance
+        mock_request_manager_cls.return_value = mock_instance
 
         mock_instance.get.return_value = MagicMock(
             status_code=200, json=lambda: {"id": 1, "number": 1})
@@ -32,8 +30,8 @@ def mock_request_manager():
 def pr_api(mock_request_manager):
     with patch.dict('os.environ', {
         'BASE_URL': 'https://api.github.com',
-        'GITHUB_USERNAME': 'testowner',
-        'GITHUB_REPO': 'testrepo'
+        'USERNAME': 'testowner',
+        'REPO_NAME': 'testrepo'
     }):
         api = GitHubPullRequestsAPI()
         api.client = mock_request_manager

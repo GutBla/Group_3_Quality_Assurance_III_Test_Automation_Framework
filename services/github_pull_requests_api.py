@@ -7,13 +7,13 @@ class GitHubPullRequestsAPI:
 
     def __init__(self):
         self.base_url = os.getenv("BASE_URL")
-        self.owner = os.getenv("GITHUB_USERNAME")
-        self.repo = os.getenv("GITHUB_REPO")
+        self.owner = os.getenv("USERNAME")
+        self.repo = os.getenv("REPO_NAME")
         self.client = RequestManager()
 
         if not all([self.base_url, self.owner, self.repo]):
             raise EnvironmentError(
-                "Faltan variables de entorno: BASE_URL, GITHUB_USERNAME, GITHUB_REPO"
+                "Faltan variables de entorno: BASE_URL, USERNAME, REPO_NAME"
             )
 
     @property
