@@ -21,6 +21,8 @@ class RequestManager:
         return cls._instance
 
     def _initialize(self):
+        load_dotenv()
+        
         token = os.getenv("ACCESS_TOKEN")
         if not token:
             raise EnvironmentError("ACCESS_TOKEN no está configurado.")
