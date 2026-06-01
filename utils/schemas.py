@@ -100,27 +100,25 @@ CREATE_REPO_SCHEMA = {
         "created_at",
         "default_branch"
     ],
-
     "properties": {
-
-        "id":             {"type": "integer"},
-        "name":           {"type": "string"},
-        "full_name":      {"type": "string"},
-        "private":        {"type": "boolean"},
-        "description":    {"type": ["string", "null"]},
-        "html_url":       {"type": "string"},
-        "url":            {"type": "string"},
-        "has_issues":     {"type": "boolean"},
-        "visibility":     {"type": "string", "enum": ["public", "private", "internal"]},
-        "created_at":     {"type": "string"},
+        "id": {"type": "integer"},
+        "name": {"type": "string"},
+        "full_name": {"type": "string"},
+        "private": {"type": "boolean"},
+        "description": {"type": ["string", "null"]},
+        "html_url": {"type": "string"},
+        "url": {"type": "string"},
+        "has_issues": {"type": "boolean"},
+        "visibility": {"type": "string", "enum": ["public", "private", "internal"]},
+        "created_at": {"type": "string"},
         "default_branch": {"type": "string"},
-        "fork":           {"type": "boolean"},
+        "fork": {"type": "boolean"},
         "owner": {
             "type": "object",
             "required": ["login", "id"],
             "properties": {
                 "login": {"type": "string"},
-                "id":    {"type": "integer"}
+                "id": {"type": "integer"}
             }
         }
     },
@@ -133,11 +131,11 @@ LIST_REPOS_SCHEMA = {
         "type": "object",
         "required": ["id", "name", "full_name", "private", "owner"],
         "properties": {
-            "id":        {"type": "integer"},
-            "name":      {"type": "string"},
+            "id": {"type": "integer"},
+            "name": {"type": "string"},
             "full_name": {"type": "string"},
-            "private":   {"type": "boolean"},
-            "owner":     {"type": "object"},
+            "private": {"type": "boolean"},
+            "owner": {"type": "object"},
         }
     }
 }
@@ -148,13 +146,12 @@ CONTRIBUTORS_SCHEMA = {
         "type": "object",
         "required": ["login", "id", "contributions"],
         "properties": {
-            "login":         {"type": "string"},
-            "id":            {"type": "integer"},
+            "login": {"type": "string"},
+            "id": {"type": "integer"},
             "contributions": {"type": "integer"},
         }
     }
 }
-
 
 AUTH_USER_SCHEMA = {
     "type": "object",
@@ -227,7 +224,6 @@ EMAIL_ERROR_SCHEMA = {
     }
 }
 
-
 ERROR_VALIDATION_ISSUE_SCHEMA = {
     "type": "object",
     "required": ["message"],
@@ -248,6 +244,7 @@ ERROR_VALIDATION_ISSUE_SCHEMA = {
     },
     "additionalProperties": True
 }
+
 UPDATE_ISSUE_SCHEMA = {
     "type": "object",
     "required": [
@@ -277,6 +274,7 @@ UPDATE_ISSUE_SCHEMA = {
     },
     "additionalProperties": True
 }
+
 NOT_FOUND_ISSUE_SCHEMA = {
     "type": "object",
     "required": ["message"],
@@ -347,3 +345,74 @@ CREATE_COMMENT_SCHEMA = {
     "additionalProperties": True
 }
 
+PULL_REQUEST_SCHEMA = {
+    "type": "object",
+    "required": ["id", "number", "title", "state", "url", "html_url"],
+    "properties": {
+        "id": {"type": "integer"},
+        "number": {"type": "integer"},
+        "title": {"type": "string"},
+        "body": {"type": ["string", "null"]},
+        "state": {"type": "string", "enum": ["open", "closed"]},
+        "url": {"type": "string"},
+        "html_url": {"type": "string"},
+        "merged": {"type": ["boolean", "null"]},
+        "draft": {"type": "boolean"},
+        "created_at": {"type": "string"},
+        "updated_at": {"type": "string"},
+        "head": {"type": "object"},
+        "base": {"type": "object"},
+        "user": {"type": "object"},
+    },
+    "additionalProperties": True,
+}
+
+UPDATE_PR_SCHEMA = {
+    "type": "object",
+    "required": ["id", "number", "title", "state"],
+    "properties": {
+        "id": {"type": "integer"},
+        "number": {"type": "integer"},
+        "title": {"type": "string"},
+        "body": {"type": ["string", "null"]},
+        "state": {"type": "string", "enum": ["open", "closed"]},
+        "merged": {"type": ["boolean", "null"]},
+        "updated_at": {"type": "string"},
+    },
+    "additionalProperties": True,
+}
+
+PR_LABELS_SCHEMA = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "required": ["id", "name", "color"],
+        "properties": {
+            "id": {"type": "integer"},
+            "name": {"type": "string"},
+            "color": {"type": "string"},
+            "url": {"type": "string"},
+            "default": {"type": "boolean"},
+        },
+    },
+}
+
+PR_NOT_FOUND_SCHEMA = {
+    "type": "object",
+    "required": ["message"],
+    "properties": {
+        "message": {"type": "string"},
+        "documentation_url": {"type": "string"},
+    },
+    "additionalProperties": True,
+}
+
+PR_VALIDATION_ERROR_SCHEMA = {
+    "type": "object",
+    "required": ["message"],
+    "properties": {
+        "message": {"type": "string"},
+        "documentation_url": {"type": "string"},
+    },
+    "additionalProperties": True,
+}

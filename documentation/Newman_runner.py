@@ -1,9 +1,9 @@
+import os
+import subprocess
+import sys
+import threading
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import subprocess
-import os
-import threading
-import sys
 
 # Paleta de colores profesional
 BG_PRIMARY = "#1e1e2f"
@@ -22,6 +22,7 @@ FONT_SUBTITLE = ("Segoe UI", 10)
 FONT_FIELD = ("Segoe UI", 10)
 FONT_BUTTON = ("Segoe UI", 11, "bold")
 FONT_LOG = ("Consolas", 9)
+
 
 class NewmanRunnerApp(tk.Tk):
     def __init__(self):
@@ -104,7 +105,13 @@ class NewmanRunnerApp(tk.Tk):
             highlightthickness=1,
             highlightbackground=BORDER
         )
-        output_frame.grid(row=2, column=0, columnspan=2, sticky="ew", pady=15, padx=2)
+        output_frame.grid(
+            row=2,
+            column=0,
+            columnspan=2,
+            sticky="ew",
+            pady=15,
+            padx=2)
         output_frame.columnconfigure(0, weight=1)
 
         tk.Label(
@@ -126,7 +133,15 @@ class NewmanRunnerApp(tk.Tk):
             highlightthickness=1,
             highlightbackground=BORDER
         )
-        folder_entry.grid(row=1, column=0, sticky="ew", ipady=5, padx=10, pady=(0, 10))
+        folder_entry.grid(
+            row=1,
+            column=0,
+            sticky="ew",
+            ipady=5,
+            padx=10,
+            pady=(
+                0,
+                10))
 
         # Botones
         btn_frame = tk.Frame(main_frame, bg=BG_PRIMARY)
@@ -164,7 +179,15 @@ class NewmanRunnerApp(tk.Tk):
             highlightthickness=1,
             highlightbackground=BORDER
         )
-        log_frame.grid(row=4, column=0, columnspan=2, sticky="nsew", pady=(10, 5), padx=2)
+        log_frame.grid(
+            row=4,
+            column=0,
+            columnspan=2,
+            sticky="nsew",
+            pady=(
+                10,
+                5),
+            padx=2)
         log_frame.columnconfigure(0, weight=1)
         log_frame.rowconfigure(0, weight=1)
 
@@ -212,7 +235,13 @@ class NewmanRunnerApp(tk.Tk):
 
     def _crear_campo(self, parent, label, hint, variable, command, row):
         frame = tk.Frame(parent, bg=BG_PRIMARY)
-        frame.grid(row=row, column=0, columnspan=2, sticky="ew", pady=8, padx=2)
+        frame.grid(
+            row=row,
+            column=0,
+            columnspan=2,
+            sticky="ew",
+            pady=8,
+            padx=2)
         frame.columnconfigure(0, weight=1)
 
         tk.Label(
@@ -323,9 +352,11 @@ class NewmanRunnerApp(tk.Tk):
     def _get_newman_command(self):
         script_dir = os.path.dirname(os.path.abspath(__file__))
         if sys.platform == "win32":
-            newman_local = os.path.join(script_dir, "node_modules", ".bin", "newman.cmd")
+            newman_local = os.path.join(
+                script_dir, "node_modules", ".bin", "newman.cmd")
         else:
-            newman_local = os.path.join(script_dir, "node_modules", ".bin", "newman")
+            newman_local = os.path.join(
+                script_dir, "node_modules", ".bin", "newman")
         if os.path.isfile(newman_local):
             return [newman_local]
         else:
@@ -350,7 +381,8 @@ class NewmanRunnerApp(tk.Tk):
             return False
         invalid_chars = set(r'\/:*?"<>|')
         if any(c in invalid_chars for c in folder_name):
-            messagebox.showerror("Error", f"Folder name contains invalid characters: {invalid_chars}")
+            messagebox.showerror(
+                "Error", f"Folder name contains invalid characters: {invalid_chars}")
             return False
         return True
 
@@ -391,7 +423,10 @@ class NewmanRunnerApp(tk.Tk):
         environment = self.environment_path.get()
         folder_name = self.output_folder_name.get().strip()
 
-        output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), folder_name)
+        output_dir = os.path.join(
+            os.path.dirname(
+                os.path.abspath(__file__)),
+            folder_name)
         os.makedirs(output_dir, exist_ok=True)
         report_path = os.path.join(output_dir, "report.html")
 
@@ -403,8 +438,12 @@ class NewmanRunnerApp(tk.Tk):
             "-e", environment
         ]
 
-        self.after(0, lambda: self._append_log(f"Output directory: {output_dir}\n"))
-        self.after(0, lambda: self._append_log(f"Command: {' '.join(cmd)}\n\n"))
+        self.after(0, lambda: self._append_log(
+            f"Output directory: {output_dir}\n"))
+        self.after(
+            0, lambda: self._append_log(
+                f"Command: {
+                    ' '.join(cmd)}\n\n"))
 
         try:
             process = subprocess.Popen(
@@ -423,14 +462,26 @@ class NewmanRunnerApp(tk.Tk):
             rc = process.returncode
 
             if rc == 0:
-                self.after(0, lambda: self._set_status(f"Completed - Report: {report_path}", SUCCESS))
-                self.after(0, lambda: self._append_log(f"\nHTML report generated: {report_path}\n"))
-                self.after(0, lambda: messagebox.showinfo("Success", f"Newman finished successfully.\n\nReport: {report_path}"))
+                self.after(
+                    0, lambda: self._set_status(
+                        f"Completed - Report: {report_path}", SUCCESS))
+                self.after(
+                    0, lambda: self._append_log(
+                        f"\nHTML report generated: {report_path}\n"))
+                self.after(
+                    0,
+                    lambda: messagebox.showinfo(
+                        "Success",
+                        f"Newman finished successfully.\n\nReport: {report_path}"))
             else:
-                self.after(0, lambda: self._set_status("Newman finished with errors", ERROR))
+                self.after(
+                    0, lambda: self._set_status(
+                        "Newman finished with errors", ERROR))
                 self.after(0, lambda: self._append_log(f"\nExit code: {rc}\n"))
         except Exception as e:
-            self.after(0, lambda: self._append_log(f"\nUnexpected error: {e}\n"))
+            self.after(
+                0, lambda: self._append_log(
+                    f"\nUnexpected error: {e}\n"))
             self.after(0, lambda: self._set_status("Execution error", ERROR))
         finally:
             self.after(0, self._reset_button)
@@ -438,6 +489,7 @@ class NewmanRunnerApp(tk.Tk):
     def _reset_button(self):
         self.running = False
         self.run_btn.configure(state="normal", text="RUN NEWMAN")
+
 
 if __name__ == "__main__":
     app = NewmanRunnerApp()

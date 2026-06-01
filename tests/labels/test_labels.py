@@ -1,19 +1,11 @@
 import pytest
 from jsonschema import validate
 
-from data.label_data import (
-    CREATE_LABEL_PAYLOAD,
-    CREATE_LABEL_PAYLOAD_NO_NAME,
-    UPDATE_LABEL_PAYLOAD,
-    LABEL_UPDATED_NAME,
-    ASSIGN_LABELS_PAYLOAD,
-)
-from utils.schemas import (
-    LABEL_SCHEMA,
-    LABEL_ERROR_SCHEMA,
-    ASSIGN_LABELS_SCHEMA,
-    LIST_LABELS_SCHEMA,
-)
+from data.label_data import (ASSIGN_LABELS_PAYLOAD, CREATE_LABEL_PAYLOAD,
+                             CREATE_LABEL_PAYLOAD_NO_NAME, LABEL_UPDATED_NAME,
+                             UPDATE_LABEL_PAYLOAD)
+from utils.schemas import (ASSIGN_LABELS_SCHEMA, LABEL_ERROR_SCHEMA,
+                           LABEL_SCHEMA, LIST_LABELS_SCHEMA)
 
 
 @pytest.mark.functional
@@ -116,7 +108,8 @@ def test_should_update_label_successfully(label, labels_api):
 def test_should_assign_label_to_issue(label, labels_api, issue):
     """HLTC-10: Asignar etiqueta existente a un issue"""
 
-    # Arrange — update the label first so its name matches ASSIGN_LABELS_PAYLOAD
+    # Arrange — update the label first so its name matches
+    # ASSIGN_LABELS_PAYLOAD
     from data.label_data import UPDATE_LABEL_PAYLOAD
     labels_api.update_label(label, UPDATE_LABEL_PAYLOAD)
 

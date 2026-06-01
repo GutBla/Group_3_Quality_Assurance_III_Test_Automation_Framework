@@ -1,4 +1,6 @@
-# tests/conftest.py
+from dotenv import load_dotenv
+
+load_dotenv()
 
 pytest_plugins = [
     "tests.fixtures.logging_fixtures",

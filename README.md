@@ -53,8 +53,8 @@ Crear un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
 ```env
 BASE_URL=https://api.github.com
-GITHUB_USERNAME=tu_usuario_github
-GITHUB_REPO=tu_repositorio
+USERNAME=tu_usuario_github
+REPO_NAME=tu_repositorio
 GITHUB_TOKEN=tu_github_token
 ```
 

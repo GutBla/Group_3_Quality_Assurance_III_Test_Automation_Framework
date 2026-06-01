@@ -1,7 +1,9 @@
 import os
 import threading
+
 import requests
 from dotenv import load_dotenv
+
 from utils.logger import logger
 
 load_dotenv(override=True)
@@ -19,17 +21,10 @@ class RequestManager:
         return cls._instance
 
     def _initialize(self):
-        load_dotenv()
-        
         token = os.getenv("ACCESS_TOKEN")
-        print(f"DEBUG: Token cargado es: {token}")
         if not token:
             raise EnvironmentError("ACCESS_TOKEN no está configurado.")
-        
-
         token = token.strip()
-
-        
         self.session = requests.Session()
         self.session.headers.update({
             "Authorization": f"Bearer {token}",

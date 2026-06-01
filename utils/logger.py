@@ -1,6 +1,6 @@
 import logging
-import sys
 import os
+import sys
 from datetime import datetime
 
 _LOG_DIR = "logs"
