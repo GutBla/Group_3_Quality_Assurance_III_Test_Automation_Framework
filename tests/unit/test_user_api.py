@@ -100,4 +100,3 @@ def test_add_emails(user_api, mock_request_manager):
         json={"emails": emails}
     )
     assert response.status_code == 201
-    
