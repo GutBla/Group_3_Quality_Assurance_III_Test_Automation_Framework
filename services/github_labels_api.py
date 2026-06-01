@@ -25,6 +25,9 @@ class GitHubLabelsAPI:
     def delete_label(self, label_name):
         return self.client.delete(f"{self.base_url}/labels/{label_name}")
 
+    def list_labels(self):
+        return self.client.get(f"{self.base_url}/labels")
+
     def add_labels_to_issue(self, issue_number, labels):
         return self.client.post(
             f"{self.base_url}/issues/{issue_number}/labels",

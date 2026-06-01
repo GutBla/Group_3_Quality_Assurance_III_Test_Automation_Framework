@@ -5,6 +5,12 @@ on:
     branches: [ main, feature/ci-pipeline ]
   pull_request:
     branches: [ main, feature/ci-pipeline ]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual CT run'
+        required: false
+        default: 'Manual execution'
 
 jobs:
   run-tests:
@@ -26,7 +32,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest requests python-dotenv pytest-html jsonschema pytest-cov flake8
+        pip install -r requirements.txt
 
     - name: Run Linter
       run: |
@@ -42,11 +48,19 @@ jobs:
     - name: Execute Pytest with Coverage
       run: |
         mkdir -p reports
-        python -m pytest -v --html=reports/report.html --junitxml=reports/junit.xml --cov=services/ --cov=utils/ --cov-report=html:reports/coverage
+        python -m pytest -v \
+          --html=reports/report.html \
+          --self-contained-html \
+          --junitxml=reports/junit.xml \
+          --cov=services/ \
+          --cov=utils/ \
+          --cov-report=html:reports/coverage \
+          --cov-report=xml:reports/coverage.xml
 
     - name: Upload Reports
+      if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: pytest-ct-reports
+        name: pytest-ct-reports-run-${{ github.run_number }}
         path: reports/
-        retention-days: 5
+        retention-days: 30

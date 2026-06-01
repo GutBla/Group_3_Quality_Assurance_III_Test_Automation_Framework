@@ -36,6 +36,11 @@ ASSIGN_LABELS_SCHEMA = {
     }
 }
 
+LIST_LABELS_SCHEMA = {
+    "type": "array",
+    "items": LABEL_SCHEMA
+}
+
 CREATE_ISSUE_SCHEMA = {
     "type": "object",
     "required": [
