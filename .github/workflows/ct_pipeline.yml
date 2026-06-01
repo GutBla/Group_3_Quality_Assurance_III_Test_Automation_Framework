@@ -2,19 +2,18 @@ name: Continuous Testing (CT) Pipeline
 
 on:
   push:
-    branches: [ main, feature/ci-pipeline ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, feature/ci-pipeline ]
+    branches: [ main ]
   workflow_dispatch:
-    inputs:
-      reason:
-        description: 'Reason for manual CT run'
-        required: false
-        default: 'Manual execution'
 
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        run_id: [1, 2, 3, 4, 5]
+    
     env:
       BASE_URL: ${{ secrets.BASE_URL }}
       USERNAME: ${{ secrets.USERNAME }}
@@ -38,29 +37,21 @@ jobs:
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
-    - name: Verify Environment Variables
-      run: |
-        python -c "import os; print(f'BASE_URL set: {bool(os.getenv(\"BASE_URL\"))}')"
-        python -c "import os; print(f'USERNAME set: {bool(os.getenv(\"USERNAME\"))}')"
-        python -c "import os; print(f'REPO_NAME set: {bool(os.getenv(\"REPO_NAME\"))}')"
-        python -c "import os; print(f'ACCESS_TOKEN set: {bool(os.getenv(\"ACCESS_TOKEN\"))}')"
-
     - name: Execute Pytest with Coverage
       run: |
         mkdir -p reports
         python -m pytest -v \
-          --html=reports/report.html \
+          --html=reports/report_${{ matrix.run_id }}.html \
           --self-contained-html \
-          --junitxml=reports/junit.xml \
+          --junitxml=reports/junit_${{ matrix.run_id }}.xml \
           --cov=services/ \
           --cov=utils/ \
-          --cov-report=html:reports/coverage \
-          --cov-report=xml:reports/coverage.xml
+          --cov-report=html:reports/coverage_${{ matrix.run_id }}
 
     - name: Upload Reports
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: pytest-ct-reports-run-${{ github.run_number }}
+        name: pytest-ct-reports-run-${{ matrix.run_id }}
         path: reports/
         retention-days: 30
