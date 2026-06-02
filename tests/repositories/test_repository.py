@@ -20,7 +20,6 @@ from utils.logger import logger
 @pytest.mark.acceptance
 @pytest.mark.smoke
 def test_should_create_repository_successfully(repo_api, repository):
-
     # Arrange
     payload = CREATE_REPO_PAYLOAD
     logger.info(f"Preparing payload for repository creation: {payload['name']}")
@@ -63,7 +62,6 @@ def test_should_create_repository_successfully(repo_api, repository):
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_update_repository_description(repo_api, repository):
-
     # Arrange
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     payload = UPDATE_DESCRIPTION_PAYLOAD
@@ -98,7 +96,6 @@ def test_should_update_repository_description(repo_api, repository):
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_change_repository_visibility_to_private(repo_api, repository):
-
     # Arrange
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     time.sleep(3)
@@ -136,7 +133,6 @@ def test_should_change_repository_visibility_to_private(repo_api, repository):
 @pytest.mark.acceptance
 @pytest.mark.smoke
 def test_should_delete_existing_repository(repo_api, repository):
-
     # Arrange
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     time.sleep(3)
@@ -161,7 +157,6 @@ def test_should_delete_existing_repository(repo_api, repository):
 @pytest.mark.negative
 @pytest.mark.regression
 def test_should_fail_when_creating_duplicate_repository(repo_api, repository):
-
     # Arrange
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     time.sleep(3)
@@ -212,6 +207,7 @@ def test_should_list_authenticated_user_repositories(repo_api, repository):
     repo_names = [r["name"] for r in response_body]
     assert repo_name in repo_names
 
+
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_get_repository_contributors(repo_api, repository):
@@ -241,10 +237,10 @@ def test_should_get_repository_contributors(repo_api, repository):
     get_response = repo_api.get_repo(repo_name)
     assert get_response.status_code == 200
 
+
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_create_repository_with_wiki_disabled(repo_api, repository):
-
     # Arrange
     payload = {
         "name": CREATE_REPO_PAYLOAD["name"],
@@ -277,7 +273,6 @@ def test_should_create_repository_with_wiki_disabled(repo_api, repository):
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_disable_issues_on_existing_repository(repo_api, repository):
-
     # Arrange
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     repo_name = CREATE_REPO_PAYLOAD["name"]
@@ -303,11 +298,9 @@ def test_should_disable_issues_on_existing_repository(repo_api, repository):
     assert get_body["has_issues"] is False
 
 
-
 @pytest.mark.negative
 @pytest.mark.regression
 def test_should_fail_to_delete_nonexistent_repository(repo_api):
-
     # Arrange
     fake_repo = "repo-que-no-existe-xyz-99999"
     logger.info(f"Attempting to DELETE non-existent repo '{fake_repo}'")
