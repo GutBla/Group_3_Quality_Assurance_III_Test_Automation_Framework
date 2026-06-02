@@ -1,8 +1,6 @@
 import time
 import pytest
 from jsonschema import validate
-from utils.schemas import CREATE_REPO_SCHEMA, UPDATE_REPO_SCHEMA, ERROR_REPO_SCHEMA
-from data.repository_data import ( CREATE_REPO_PAYLOAD, UPDATE_DESCRIPTION_PAYLOAD, UPDATE_VISIBILITY_PAYLOAD, DUPLICATE_REPO_PAYLOAD)
 
 from utils.schemas import (
     CREATE_REPO_SCHEMA,
