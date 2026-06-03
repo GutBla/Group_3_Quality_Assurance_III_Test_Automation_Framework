@@ -1,27 +1,28 @@
 import time
-
 import pytest
 from jsonschema import validate
 
-from data.repository_data import (CREATE_REPO_PAYLOAD, DUPLICATE_REPO_PAYLOAD,
-                                  UPDATE_DESCRIPTION_PAYLOAD,
-                                  UPDATE_VISIBILITY_PAYLOAD)
+from utils.schemas import (
+    CREATE_REPO_SCHEMA,
+    UPDATE_REPO_SCHEMA,
+    ERROR_REPO_SCHEMA,
+    LIST_REPOS_SCHEMA,
+    CONTRIBUTORS_SCHEMA)
+from data.repository_data import (
+    CREATE_REPO_PAYLOAD,
+    UPDATE_DESCRIPTION_PAYLOAD,
+    UPDATE_VISIBILITY_PAYLOAD,
+    DUPLICATE_REPO_PAYLOAD, )
 from utils.logger import logger
-from utils.schemas import (CONTRIBUTORS_SCHEMA, CREATE_REPO_SCHEMA,
-                           ERROR_REPO_SCHEMA, LIST_REPOS_SCHEMA,
-                           UPDATE_REPO_SCHEMA)
 
 
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
 def test_should_create_repository_successfully(repo_api, repository):
-
     # Arrange
     payload = CREATE_REPO_PAYLOAD
-    logger.info(
-        f"Preparing payload for repository creation: {
-            payload['name']}")
+    logger.info(f"Preparing payload for repository creation: {payload['name']}")
 
     # Act
     logger.info("Executing API request to create a new repository")
@@ -44,9 +45,7 @@ def test_should_create_repository_successfully(repo_api, repository):
     validate(instance=response_body, schema=CREATE_REPO_SCHEMA)
 
     # Assert 4 — Integrity Check via GET
-    logger.info(
-        f"Executing integrity check via GET for repo '{
-            response_body['name']}'")
+    logger.info(f"Executing integrity check via GET for repo '{response_body['name']}'")
     get_response = repo_api.get_repo(response_body["name"])
     get_body = get_response.json()
 
@@ -57,20 +56,16 @@ def test_should_create_repository_successfully(repo_api, repository):
     # Assert 5 — Default Values
     logger.info("Verifying default values: fork is False and owner matches")
     assert response_body["fork"] is False
-    assert response_body["owner"]["login"] == response_body["full_name"].split(
-        "/")[0]
+    assert response_body["owner"]["login"] == response_body["full_name"].split("/")[0]
 
 
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_update_repository_description(repo_api, repository):
-
     # Arrange
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     payload = UPDATE_DESCRIPTION_PAYLOAD
-    logger.info(
-        f"Updating description of repo '{
-            CREATE_REPO_PAYLOAD['name']}'")
+    logger.info(f"Updating description of repo '{CREATE_REPO_PAYLOAD['name']}'")
 
     # Act
     logger.info("Executing PATCH request to update repository description")
@@ -91,8 +86,7 @@ def test_should_update_repository_description(repo_api, repository):
     validate(instance=response_body, schema=UPDATE_REPO_SCHEMA)
 
     # Assert 4 — Integrity Check via GET
-    logger.info(
-        "Executing integrity check via GET to verify description persistence")
+    logger.info("Executing integrity check via GET to verify description persistence")
     get_response = repo_api.get_repo(CREATE_REPO_PAYLOAD["name"])
     get_body = get_response.json()
 
@@ -102,14 +96,11 @@ def test_should_update_repository_description(repo_api, repository):
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_change_repository_visibility_to_private(repo_api, repository):
-
     # Arrange
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     time.sleep(3)
     payload = UPDATE_VISIBILITY_PAYLOAD
-    logger.info(
-        f"Changing visibility of repo '{
-            CREATE_REPO_PAYLOAD['name']}' to private")
+    logger.info(f"Changing visibility of repo '{CREATE_REPO_PAYLOAD['name']}' to private")
 
     # Act
     logger.info("Executing PATCH request to change repository visibility")
@@ -130,8 +121,7 @@ def test_should_change_repository_visibility_to_private(repo_api, repository):
     validate(instance=response_body, schema=UPDATE_REPO_SCHEMA)
 
     # Assert 4 — Integrity Check via GET
-    logger.info(
-        "Executing integrity check via GET to verify visibility persistence")
+    logger.info("Executing integrity check via GET to verify visibility persistence")
     get_response = repo_api.get_repo(CREATE_REPO_PAYLOAD["name"])
     get_body = get_response.json()
 
@@ -143,7 +133,6 @@ def test_should_change_repository_visibility_to_private(repo_api, repository):
 @pytest.mark.acceptance
 @pytest.mark.smoke
 def test_should_delete_existing_repository(repo_api, repository):
-
     # Arrange
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     time.sleep(3)
@@ -161,13 +150,13 @@ def test_should_delete_existing_repository(repo_api, repository):
     # Assert 2 — Integrity Check via GET
     logger.info("Executing integrity check via GET: repo should return 404")
     get_response = repo_api.get_repo(repo_name)
+
     assert get_response.status_code == 404
 
 
 @pytest.mark.negative
 @pytest.mark.regression
 def test_should_fail_when_creating_duplicate_repository(repo_api, repository):
-
     # Arrange
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     time.sleep(3)
@@ -198,8 +187,7 @@ def test_should_list_authenticated_user_repositories(repo_api, repository):
     # Arrange
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     repo_name = CREATE_REPO_PAYLOAD["name"]
-    logger.info(
-        f"Listing repos for authenticated user, expecting '{repo_name}'")
+    logger.info(f"Listing repos for authenticated user, expecting '{repo_name}'")
 
     # Act
     response = repo_api.list_user_repos()
@@ -253,7 +241,6 @@ def test_should_get_repository_contributors(repo_api, repository):
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_create_repository_with_wiki_disabled(repo_api, repository):
-
     # Arrange
     payload = {
         "name": CREATE_REPO_PAYLOAD["name"],
@@ -286,7 +273,6 @@ def test_should_create_repository_with_wiki_disabled(repo_api, repository):
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_disable_issues_on_existing_repository(repo_api, repository):
-
     # Arrange
     repo_api.create_repo(CREATE_REPO_PAYLOAD)
     repo_name = CREATE_REPO_PAYLOAD["name"]
@@ -315,7 +301,6 @@ def test_should_disable_issues_on_existing_repository(repo_api, repository):
 @pytest.mark.negative
 @pytest.mark.regression
 def test_should_fail_to_delete_nonexistent_repository(repo_api):
-
     # Arrange
     fake_repo = "repo-que-no-existe-xyz-99999"
     logger.info(f"Attempting to DELETE non-existent repo '{fake_repo}'")
