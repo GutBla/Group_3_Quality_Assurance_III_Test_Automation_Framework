@@ -45,7 +45,7 @@ jobs:
     - name: Run Tests
       run: |
         mkdir -p reports
-        python -m pytest tests/unit/ -v \
+        python -m pytest tests/ --ignore=tests/unit/ -v \
           --html=reports/report.html \
           --self-contained-html \
           --junitxml=reports/junit.xml \
