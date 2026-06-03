@@ -1,10 +1,10 @@
 import pytest
 
 from data.issue_data import CREATE_ISSUE_PAYLOAD
-from data.label_data import (CREATE_LABEL_PAYLOAD, LABEL_NAME,
-                             LABEL_UPDATED_NAME)
-from data.pull_request_data import get_dynamic_label_name  # NUEVO
+from data.label_data import CREATE_LABEL_PAYLOAD, LABEL_NAME, LABEL_UPDATED_NAME
+from data.pull_request_data import get_dynamic_label_name
 from data.repository_data import CREATE_REPO_PAYLOAD
+from utils.logger import logger
 
 
 @pytest.fixture
@@ -50,20 +50,33 @@ def profile_restore(github_user_api):
     original_company = original.get("company")
     original_hireable = original.get("hireable")
 
+    logger.info(
+        f"Perfil original guardado: bio={original_bio}, company={original_company}, "
+        f"location={original_location}, hireable={original_hireable}"
+    )
+
     yield
 
     restore_payload = {}
-    if original_bio is not None:
+    if original_bio is None:
+        restore_payload["bio"] = ""
+    else:
         restore_payload["bio"] = original_bio
-    if original_location is not None:
+    if original_location is None:
+        restore_payload["location"] = ""
+    else:
         restore_payload["location"] = original_location
-    if original_company is not None:
+    if original_company is None:
+        restore_payload["company"] = ""
+    else:
         restore_payload["company"] = original_company
-    if original_hireable is not None:
+    if original_hireable is None:
+        restore_payload["hireable"] = False
+    else:
         restore_payload["hireable"] = original_hireable
 
-    if restore_payload:
-        github_user_api.update_profile(restore_payload)
+    logger.info(f"Restaurando perfil a: {restore_payload}")
+    github_user_api.update_profile(restore_payload)
 
 
 PR_NUMBER = 1
@@ -97,10 +110,8 @@ def pr_state(pr_api):
 
 @pytest.fixture
 def pr_temp_label(pr_api):
-
     label_name = get_dynamic_label_name()
     pr_api.create_label(label_name, color="0075ca")
-
     yield label_name
 
     current_labels_resp = pr_api.get_labels(PR_NUMBER)
@@ -111,5 +122,4 @@ def pr_temp_label(pr_api):
             if lbl["name"] != label_name
         ]
         pr_api.set_labels(PR_NUMBER, labels)
-
     pr_api.delete_label(label_name)
