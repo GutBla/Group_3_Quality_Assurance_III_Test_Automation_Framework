@@ -1,6 +1,6 @@
 import pytest
 from jsonschema import validate
-from data.user_data import (DISPOSABLE_EMAIL, FOLLOW_USERNAME,
+from data.user_data import (DISPOSABLE_EMAIL,
                             INVALID_AUTH_HEADERS, PUBLIC_USERNAME,
                             get_invalid_update_payload,
                             get_update_editable_payload,
