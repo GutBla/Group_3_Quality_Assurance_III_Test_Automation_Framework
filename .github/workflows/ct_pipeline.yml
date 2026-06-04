@@ -41,10 +41,14 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt pytest-cov pytest-html
+        pip install -r requirements.txt pytest-cov pytest-html pytest-xdist
     - name: Run Tests
       run: |
         mkdir -p reports
+        # 1. Ejecutar Unit Tests (Secuencial, sin reportes)
+        python -m pytest tests/unit/ -v
+        
+        # 2. Ejecutar resto de tests (Secuencial, con reportes)
         python -m pytest tests/ --ignore=tests/unit/ -v \
           --html=reports/report.html \
           --self-contained-html \
