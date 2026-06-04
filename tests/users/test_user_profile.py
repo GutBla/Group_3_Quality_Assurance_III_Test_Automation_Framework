@@ -12,7 +12,9 @@ from utils.schemas import (AUTH_USER_SCHEMA, EMAIL_ERROR_SCHEMA,
                            UPDATE_PROFILE_SCHEMA)
 
 
-@pytest.mark.xdist_group(name="user_profile")
+pytestmark = pytest.mark.xdist_group(name="serial_tests")
+
+
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
@@ -35,7 +37,6 @@ def test_should_get_authenticated_user(github_user_api):
     validate(instance=body, schema=AUTH_USER_SCHEMA)
 
 
-@pytest.mark.xdist_group(name="user_profile")
 @pytest.mark.negative
 @pytest.mark.smoke
 def test_should_reject_unauthorized_access(github_user_api):
@@ -57,7 +58,6 @@ def test_should_reject_unauthorized_access(github_user_api):
     validate(instance=body, schema=UNAUTHORIZED_ERROR_SCHEMA)
 
 
-@pytest.mark.xdist_group(name="user_profile")
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
@@ -81,7 +81,8 @@ def test_should_update_profile_successfully(github_user_api, profile_restore):
         assert body["bio"] != ""
         logger.info("Validando schema contra UPDATE_PROFILE_SCHEMA")
         validate(instance=body, schema=UPDATE_PROFILE_SCHEMA)
-        time.sleep(2)
+        
+        time.sleep(4) 
         logger.info("Ejecutando verificación de integridad vía GET")
         get_response = github_user_api.get_authenticated_user()
         get_body = get_response.json()
@@ -89,7 +90,6 @@ def test_should_update_profile_successfully(github_user_api, profile_restore):
         assert get_body["location"] == payload["location"]
 
 
-@pytest.mark.xdist_group(name="user_profile")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_ignore_protected_fields_when_updating_profile(
@@ -124,7 +124,6 @@ def test_should_ignore_protected_fields_when_updating_profile(
     validate(instance=body, schema=UPDATE_PROFILE_SCHEMA)
 
 
-@pytest.mark.xdist_group(name="user_profile")
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
@@ -147,7 +146,6 @@ def test_should_get_public_user_by_username(github_user_api):
     validate(instance=body, schema=PUBLIC_USER_SCHEMA)
 
 
-@pytest.mark.xdist_group(name="user_profile")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_update_editable_fields_successfully(github_user_api, profile_restore):
@@ -173,7 +171,8 @@ def test_should_update_editable_fields_successfully(github_user_api, profile_res
     assert "hireable" in body
     logger.info("Validando schema contra UPDATE_PROFILE_SCHEMA")
     validate(instance=body, schema=UPDATE_PROFILE_SCHEMA)
-    time.sleep(2)
+    
+    time.sleep(4) 
     logger.info("Ejecutando verificación de integridad vía GET")
     get_response = github_user_api.get_authenticated_user()
     get_body = get_response.json()
@@ -182,7 +181,6 @@ def test_should_update_editable_fields_successfully(github_user_api, profile_res
     assert get_body["hireable"] is True
 
 
-@pytest.mark.xdist_group(name="user_profile")
 @pytest.mark.negative
 @pytest.mark.regression
 def test_should_reject_disposable_email(github_user_api):
@@ -204,13 +202,12 @@ def test_should_reject_disposable_email(github_user_api):
     validate(instance=body, schema=EMAIL_ERROR_SCHEMA)
 
 
-@pytest.mark.xdist_group(name="user_profile")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_profile_has_no_residual_test_data(github_user_api, profile_restore):
     """Verifica que no queden datos residuales de pruebas en el perfil"""
     import re
-    time.sleep(2)
+    time.sleep(4) # Ajustado para consistencia
     logger.info("Obteniendo estado actual del perfil para verificación de integridad")
     response = github_user_api.get_authenticated_user()
     body = response.json()

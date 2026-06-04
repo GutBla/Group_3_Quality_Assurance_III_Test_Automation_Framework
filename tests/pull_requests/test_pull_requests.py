@@ -12,8 +12,8 @@ from utils.schemas import (PR_LABELS_SCHEMA, PR_NOT_FOUND_SCHEMA,
 
 PR_NUMBER = 1
 
+pytestmark = pytest.mark.xdist_group(name="serial_tests")
 
-@pytest.mark.xdist_group(name="pull_requests")
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
@@ -34,7 +34,8 @@ def test_should_update_pr_title_successfully(pr_api, pr_state):
     assert body["title"] != ""
     logger.info("Validando schema de respuesta contra UPDATE_PR_SCHEMA")
     validate(instance=body, schema=UPDATE_PR_SCHEMA)
-    time.sleep(2)
+    
+    time.sleep(4)
     logger.info("Ejecutando verificación de integridad vía GET")
     get_response = pr_api.get_pull_request(PR_NUMBER)
     get_body = get_response.json()
@@ -43,7 +44,6 @@ def test_should_update_pr_title_successfully(pr_api, pr_state):
     assert get_body["number"] == PR_NUMBER
 
 
-@pytest.mark.xdist_group(name="pull_requests")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_update_pr_body_successfully(pr_api, pr_state):
@@ -65,7 +65,8 @@ def test_should_update_pr_body_successfully(pr_api, pr_state):
     assert body["body"] != ""
     logger.info("Validando schema de respuesta contra UPDATE_PR_SCHEMA")
     validate(instance=body, schema=UPDATE_PR_SCHEMA)
-    time.sleep(2)
+    
+    time.sleep(4)
     logger.info("Ejecutando verificación de integridad vía GET")
     get_response = pr_api.get_pull_request(PR_NUMBER)
     get_body = get_response.json()
@@ -73,7 +74,6 @@ def test_should_update_pr_body_successfully(pr_api, pr_state):
     assert get_body["body"] == payload["body"]
 
 
-@pytest.mark.xdist_group(name="pull_requests")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_add_label_to_pr_successfully(pr_api, pr_temp_label):
@@ -96,7 +96,8 @@ def test_should_add_label_to_pr_successfully(pr_api, pr_temp_label):
     assert len(body) > 0
     logger.info("Validando schema de respuesta contra PR_LABELS_SCHEMA")
     validate(instance=body, schema=PR_LABELS_SCHEMA)
-    time.sleep(2)
+    
+    time.sleep(4)
     logger.info("Ejecutando verificación de integridad vía GET labels")
     get_response = pr_api.get_labels(PR_NUMBER)
     get_body = get_response.json()
@@ -105,7 +106,6 @@ def test_should_add_label_to_pr_successfully(pr_api, pr_temp_label):
     assert label_name in get_label_names
 
 
-@pytest.mark.xdist_group(name="pull_requests")
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
@@ -128,7 +128,8 @@ def test_should_close_pr_successfully(pr_api, pr_state):
     assert body["number"] == PR_NUMBER
     logger.info("Validando schema de respuesta contra UPDATE_PR_SCHEMA")
     validate(instance=body, schema=UPDATE_PR_SCHEMA)
-    time.sleep(2)
+    
+    time.sleep(4)
     logger.info("Ejecutando verificación de integridad vía GET")
     get_response = pr_api.get_pull_request(PR_NUMBER)
     get_body = get_response.json()
@@ -136,7 +137,6 @@ def test_should_close_pr_successfully(pr_api, pr_state):
     assert get_body["state"] == "closed"
 
 
-@pytest.mark.xdist_group(name="pull_requests")
 @pytest.mark.negative
 @pytest.mark.regression
 def test_should_fail_to_add_empty_label_list(pr_api):
@@ -161,7 +161,6 @@ def test_should_fail_to_add_empty_label_list(pr_api):
     validate(instance=body, schema=PR_VALIDATION_ERROR_SCHEMA)
 
 
-@pytest.mark.xdist_group(name="pull_requests")
 @pytest.mark.functional
 @pytest.mark.smoke
 def test_should_get_pull_request_successfully(pr_api):
@@ -186,7 +185,6 @@ def test_should_get_pull_request_successfully(pr_api):
     validate(instance=body, schema=PULL_REQUEST_SCHEMA)
 
 
-@pytest.mark.xdist_group(name="pull_requests")
 @pytest.mark.negative
 @pytest.mark.smoke
 def test_should_fail_to_get_pr_with_invalid_token(pr_api):
@@ -207,7 +205,6 @@ def test_should_fail_to_get_pr_with_invalid_token(pr_api):
     validate(instance=body, schema=UNAUTHORIZED_ERROR_SCHEMA)
 
 
-@pytest.mark.xdist_group(name="pull_requests")
 @pytest.mark.negative
 @pytest.mark.regression
 def test_should_return_404_for_nonexistent_pr(pr_api):
@@ -228,7 +225,6 @@ def test_should_return_404_for_nonexistent_pr(pr_api):
     assert "id" not in body
 
 
-@pytest.mark.xdist_group(name="pull_requests")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_list_pull_requests_successfully(pr_api):
@@ -250,13 +246,12 @@ def test_should_list_pull_requests_successfully(pr_api):
     logger.info(f"Total de PRs encontrados: {len(body)}")
 
 
-@pytest.mark.xdist_group(name="pull_requests")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_have_no_residual_data_after_updates(pr_api, pr_state):
     """Verifica que no queden datos residuales de pruebas en el PR"""
     import re
-    time.sleep(2)
+    time.sleep(4)
     logger.info(f"Verificando integridad final del PR {PR_NUMBER}")
     response = pr_api.get_pull_request(PR_NUMBER)
     body = response.json()
