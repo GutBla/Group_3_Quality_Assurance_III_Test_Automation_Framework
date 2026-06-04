@@ -45,11 +45,11 @@ jobs:
     - name: Run Tests
       run: |
         mkdir -p reports
-        # 1. Ejecutar Unit Tests (Secuencial, sin reportes)
-        python -m pytest tests/unit/ -v
+        # 1. Ejecutar Unit Tests en paralelo, sin reportes
+        python -m pytest tests/unit/ -n auto -q
         
-        # 2. Ejecutar resto de tests (Secuencial, con reportes)
-        python -m pytest tests/ --ignore=tests/unit/ -v \
+        # 2. Ejecutar resto de tests en paralelo, con reportes y excluyendo unit tests
+        python -m pytest tests/ --ignore=tests/unit/ -n auto -v \
           --html=reports/report.html \
           --self-contained-html \
           --junitxml=reports/junit.xml \
