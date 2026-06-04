@@ -21,7 +21,8 @@ from utils.logger import logger
 @pytest.mark.smoke
 def test_should_create_repository_successfully(repo_api, repository):
     # Arrange
-    payload = CREATE_REPO_PAYLOAD
+    payload = CREATE_REPO_PAYLOAD.copy()
+    payload["name"] = repository
     logger.info(f"Preparing payload for repository creation: {payload['name']}")
 
     # Act
@@ -35,7 +36,7 @@ def test_should_create_repository_successfully(repo_api, repository):
 
     # Assert 2 — Response Body
     logger.info("Verifying response body contains matching payload data")
-    assert response_body["name"] == payload["name"]
+    assert response_body["name"] == repository
     assert response_body["description"] == payload["description"]
     assert response_body["private"] == payload["private"]
     assert response_body["has_issues"] == payload["has_issues"]
@@ -49,7 +50,7 @@ def test_should_create_repository_successfully(repo_api, repository):
     get_response = repo_api.get_repo(response_body["name"])
     get_body = get_response.json()
 
-    assert get_body["name"] == payload["name"]
+    assert get_body["name"] == repository
     assert get_body["description"] == payload["description"]
     assert get_body["private"] == payload["private"]
 
@@ -63,13 +64,13 @@ def test_should_create_repository_successfully(repo_api, repository):
 @pytest.mark.regression
 def test_should_update_repository_description(repo_api, repository):
     # Arrange
-    repo_api.create_repo(CREATE_REPO_PAYLOAD)
+    repo_api.create_repo({**CREATE_REPO_PAYLOAD, "name": repository})
     payload = UPDATE_DESCRIPTION_PAYLOAD
-    logger.info(f"Updating description of repo '{CREATE_REPO_PAYLOAD['name']}'")
+    logger.info(f"Updating description of repo '{repository}'")
 
     # Act
     logger.info("Executing PATCH request to update repository description")
-    response = repo_api.update_repo(CREATE_REPO_PAYLOAD["name"], payload)
+    response = repo_api.update_repo(repository, payload)
     response_body = response.json()
 
     # Assert 1 — Status Code
@@ -87,7 +88,7 @@ def test_should_update_repository_description(repo_api, repository):
 
     # Assert 4 — Integrity Check via GET
     logger.info("Executing integrity check via GET to verify description persistence")
-    get_response = repo_api.get_repo(CREATE_REPO_PAYLOAD["name"])
+    get_response = repo_api.get_repo(repository)
     get_body = get_response.json()
 
     assert get_body["description"] == payload["description"]
@@ -97,14 +98,14 @@ def test_should_update_repository_description(repo_api, repository):
 @pytest.mark.regression
 def test_should_change_repository_visibility_to_private(repo_api, repository):
     # Arrange
-    repo_api.create_repo(CREATE_REPO_PAYLOAD)
+    repo_api.create_repo({**CREATE_REPO_PAYLOAD, "name": repository})
     time.sleep(3)
     payload = UPDATE_VISIBILITY_PAYLOAD
-    logger.info(f"Changing visibility of repo '{CREATE_REPO_PAYLOAD['name']}' to private")
+    logger.info(f"Changing visibility of repo '{repository}' to private")
 
     # Act
     logger.info("Executing PATCH request to change repository visibility")
-    response = repo_api.update_repo(CREATE_REPO_PAYLOAD["name"], payload)
+    response = repo_api.update_repo(repository, payload)
     response_body = response.json()
 
     # Assert 1 — Status Code
@@ -122,7 +123,7 @@ def test_should_change_repository_visibility_to_private(repo_api, repository):
 
     # Assert 4 — Integrity Check via GET
     logger.info("Executing integrity check via GET to verify visibility persistence")
-    get_response = repo_api.get_repo(CREATE_REPO_PAYLOAD["name"])
+    get_response = repo_api.get_repo(repository)
     get_body = get_response.json()
 
     assert get_body["private"] is True
@@ -134,14 +135,13 @@ def test_should_change_repository_visibility_to_private(repo_api, repository):
 @pytest.mark.smoke
 def test_should_delete_existing_repository(repo_api, repository):
     # Arrange
-    repo_api.create_repo(CREATE_REPO_PAYLOAD)
+    repo_api.create_repo({**CREATE_REPO_PAYLOAD, "name": repository})
     time.sleep(3)
-    repo_name = CREATE_REPO_PAYLOAD["name"]
-    logger.info(f"Preparing to delete repository '{repo_name}'")
+    logger.info(f"Preparing to delete repository '{repository}'")
 
     # Act
     logger.info("Executing DELETE request to remove repository")
-    response = repo_api.delete_repo(repo_name)
+    response = repo_api.delete_repo(repository)
 
     # Assert 1 — Status Code
     logger.info("Verifying response status code is 204")
@@ -149,7 +149,7 @@ def test_should_delete_existing_repository(repo_api, repository):
 
     # Assert 2 — Integrity Check via GET
     logger.info("Executing integrity check via GET: repo should return 404")
-    get_response = repo_api.get_repo(repo_name)
+    get_response = repo_api.get_repo(repository)
 
     assert get_response.status_code == 404
 
@@ -158,9 +158,10 @@ def test_should_delete_existing_repository(repo_api, repository):
 @pytest.mark.regression
 def test_should_fail_when_creating_duplicate_repository(repo_api, repository):
     # Arrange
-    repo_api.create_repo(CREATE_REPO_PAYLOAD)
+    repo_api.create_repo({**CREATE_REPO_PAYLOAD, "name": repository})
     time.sleep(3)
-    payload = DUPLICATE_REPO_PAYLOAD
+    payload = DUPLICATE_REPO_PAYLOAD.copy()
+    payload["name"] = repository
     logger.info(f"Attempting to create duplicate repo '{payload['name']}'")
 
     # Act
@@ -185,9 +186,8 @@ def test_should_fail_when_creating_duplicate_repository(repo_api, repository):
 @pytest.mark.regression
 def test_should_list_authenticated_user_repositories(repo_api, repository):
     # Arrange
-    repo_api.create_repo(CREATE_REPO_PAYLOAD)
-    repo_name = CREATE_REPO_PAYLOAD["name"]
-    logger.info(f"Listing repos for authenticated user, expecting '{repo_name}'")
+    repo_api.create_repo({**CREATE_REPO_PAYLOAD, "name": repository})
+    logger.info(f"Listing repos for authenticated user, expecting '{repository}'")
 
     # Act
     response = repo_api.list_user_repos()
@@ -205,23 +205,20 @@ def test_should_list_authenticated_user_repositories(repo_api, repository):
 
     # Assert 4 — Integrity:
     repo_names = [r["name"] for r in response_body]
-    assert repo_name in repo_names
+    assert repository in repo_names
 
 
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_get_repository_contributors(repo_api, repository):
     # Arrange
-    repo_api.create_repo(CREATE_REPO_PAYLOAD)
-    repo_name = CREATE_REPO_PAYLOAD["name"]
-    logger.info(f"Getting contributors for repo '{repo_name}'")
+    repo_api.create_repo({**CREATE_REPO_PAYLOAD, "name": repository})
+    logger.info(f"Getting contributors for repo '{repository}'")
 
     # Act
-    response = repo_api.get_contributors(repo_name)
+    response = repo_api.get_contributors(repository)
 
     # Assert 1 — Status Code
-    # 204 = repo vacío sin commits,
-    # 200 = tiene contributors
     assert response.status_code in [200, 204]
 
     if response.status_code == 200:
@@ -234,7 +231,7 @@ def test_should_get_repository_contributors(repo_api, repository):
         validate(instance=response_body, schema=CONTRIBUTORS_SCHEMA)
 
     # Assert 4 — Integrity: el repo existe
-    get_response = repo_api.get_repo(repo_name)
+    get_response = repo_api.get_repo(repository)
     assert get_response.status_code == 200
 
 
@@ -243,7 +240,7 @@ def test_should_get_repository_contributors(repo_api, repository):
 def test_should_create_repository_with_wiki_disabled(repo_api, repository):
     # Arrange
     payload = {
-        "name": CREATE_REPO_PAYLOAD["name"],
+        "name": repository,
         "description": "Repo sin wiki",
         "private": False,
         "has_wiki": False,
@@ -274,13 +271,12 @@ def test_should_create_repository_with_wiki_disabled(repo_api, repository):
 @pytest.mark.regression
 def test_should_disable_issues_on_existing_repository(repo_api, repository):
     # Arrange
-    repo_api.create_repo(CREATE_REPO_PAYLOAD)
-    repo_name = CREATE_REPO_PAYLOAD["name"]
+    repo_api.create_repo({**CREATE_REPO_PAYLOAD, "name": repository})
     payload = {"has_issues": False}
-    logger.info(f"Disabling issues on repo '{repo_name}'")
+    logger.info(f"Disabling issues on repo '{repository}'")
 
     # Act
-    response = repo_api.update_repo(repo_name, payload)
+    response = repo_api.update_repo(repository, payload)
     response_body = response.json()
 
     # Assert 1 — Status Code
@@ -293,7 +289,7 @@ def test_should_disable_issues_on_existing_repository(repo_api, repository):
     validate(instance=response_body, schema=UPDATE_REPO_SCHEMA)
 
     # Assert 4 — Integrity Check via GET
-    get_response = repo_api.get_repo(repo_name)
+    get_response = repo_api.get_repo(repository)
     get_body = get_response.json()
     assert get_body["has_issues"] is False
 
