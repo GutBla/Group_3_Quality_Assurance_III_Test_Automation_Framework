@@ -99,6 +99,6 @@ def pr_temp_label(pr_api, worker_suffix):
     current_labels_resp = pr_api.get_labels(1)
     if current_labels_resp.status_code == 200:
         labels = [lbl["name"] for lbl in current_labels_resp.json()
-                    if lbl["name"] != label_name]
+                if lbl["name"] != label_name]
         pr_api.set_labels(1, labels)
     pr_api.delete_label(label_name)
