@@ -238,7 +238,10 @@ Para ejecutar la suite de pruebas completa, incluyendo el análisis de cobertura
 
 Bash
 # Ejecuta tests y genera reporte en terminal y HTML
+``` bash
 pytest --cov=services/ --cov=utils/ --cov-report=term-missing --cov-report=html:reports/coverage
+```
+
 Ver resultados:
 
 Terminal: El reporte de cobertura se mostrará automáticamente en la consola al finalizar.
