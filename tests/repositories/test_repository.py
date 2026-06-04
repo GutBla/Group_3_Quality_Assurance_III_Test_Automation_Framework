@@ -16,6 +16,7 @@ from data.repository_data import (
 from utils.logger import logger
 
 
+@pytest.mark.xdist_group(name="repositories")
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
@@ -60,6 +61,7 @@ def test_should_create_repository_successfully(repo_api, repository):
     assert response_body["owner"]["login"] == response_body["full_name"].split("/")[0]
 
 
+@pytest.mark.xdist_group(name="repositories")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_update_repository_description(repo_api, repository):
@@ -94,6 +96,7 @@ def test_should_update_repository_description(repo_api, repository):
     assert get_body["description"] == payload["description"]
 
 
+@pytest.mark.xdist_group(name="repositories")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_change_repository_visibility_to_private(repo_api, repository):
@@ -130,6 +133,7 @@ def test_should_change_repository_visibility_to_private(repo_api, repository):
     assert get_body["visibility"] == "private"
 
 
+@pytest.mark.xdist_group(name="repositories")
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
@@ -154,6 +158,7 @@ def test_should_delete_existing_repository(repo_api, repository):
     assert get_response.status_code == 404
 
 
+@pytest.mark.xdist_group(name="repositories")
 @pytest.mark.negative
 @pytest.mark.regression
 def test_should_fail_when_creating_duplicate_repository(repo_api, repository):
@@ -182,6 +187,7 @@ def test_should_fail_when_creating_duplicate_repository(repo_api, repository):
     validate(instance=response_body, schema=ERROR_REPO_SCHEMA)
 
 
+@pytest.mark.xdist_group(name="repositories")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_list_authenticated_user_repositories(repo_api, repository):
@@ -208,6 +214,7 @@ def test_should_list_authenticated_user_repositories(repo_api, repository):
     assert repository in repo_names
 
 
+@pytest.mark.xdist_group(name="repositories")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_get_repository_contributors(repo_api, repository):
@@ -235,6 +242,7 @@ def test_should_get_repository_contributors(repo_api, repository):
     assert get_response.status_code == 200
 
 
+@pytest.mark.xdist_group(name="repositories")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_create_repository_with_wiki_disabled(repo_api, repository):
@@ -267,6 +275,7 @@ def test_should_create_repository_with_wiki_disabled(repo_api, repository):
     assert get_body["has_wiki"] is False
 
 
+@pytest.mark.xdist_group(name="repositories")
 @pytest.mark.functional
 @pytest.mark.regression
 def test_should_disable_issues_on_existing_repository(repo_api, repository):
@@ -294,6 +303,7 @@ def test_should_disable_issues_on_existing_repository(repo_api, repository):
     assert get_body["has_issues"] is False
 
 
+@pytest.mark.xdist_group(name="repositories")
 @pytest.mark.negative
 @pytest.mark.regression
 def test_should_fail_to_delete_nonexistent_repository(repo_api):

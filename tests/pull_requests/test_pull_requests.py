@@ -1,4 +1,5 @@
 import pytest
+import time
 from jsonschema import validate
 from config.config import REPO_NAME, USERNAME
 from data.pull_request_data import (INVALID_AUTH_HEADERS,
@@ -33,6 +34,7 @@ def test_should_update_pr_title_successfully(pr_api, pr_state):
     assert body["title"] != ""
     logger.info("Validando schema de respuesta contra UPDATE_PR_SCHEMA")
     validate(instance=body, schema=UPDATE_PR_SCHEMA)
+    time.sleep(2)
     logger.info("Ejecutando verificación de integridad vía GET")
     get_response = pr_api.get_pull_request(PR_NUMBER)
     get_body = get_response.json()
@@ -63,6 +65,7 @@ def test_should_update_pr_body_successfully(pr_api, pr_state):
     assert body["body"] != ""
     logger.info("Validando schema de respuesta contra UPDATE_PR_SCHEMA")
     validate(instance=body, schema=UPDATE_PR_SCHEMA)
+    time.sleep(2)
     logger.info("Ejecutando verificación de integridad vía GET")
     get_response = pr_api.get_pull_request(PR_NUMBER)
     get_body = get_response.json()
@@ -93,6 +96,7 @@ def test_should_add_label_to_pr_successfully(pr_api, pr_temp_label):
     assert len(body) > 0
     logger.info("Validando schema de respuesta contra PR_LABELS_SCHEMA")
     validate(instance=body, schema=PR_LABELS_SCHEMA)
+    time.sleep(2)
     logger.info("Ejecutando verificación de integridad vía GET labels")
     get_response = pr_api.get_labels(PR_NUMBER)
     get_body = get_response.json()
@@ -124,6 +128,7 @@ def test_should_close_pr_successfully(pr_api, pr_state):
     assert body["number"] == PR_NUMBER
     logger.info("Validando schema de respuesta contra UPDATE_PR_SCHEMA")
     validate(instance=body, schema=UPDATE_PR_SCHEMA)
+    time.sleep(2)
     logger.info("Ejecutando verificación de integridad vía GET")
     get_response = pr_api.get_pull_request(PR_NUMBER)
     get_body = get_response.json()
@@ -251,6 +256,7 @@ def test_should_list_pull_requests_successfully(pr_api):
 def test_should_have_no_residual_data_after_updates(pr_api, pr_state):
     """Verifica que no queden datos residuales de pruebas en el PR"""
     import re
+    time.sleep(2)
     logger.info(f"Verificando integridad final del PR {PR_NUMBER}")
     response = pr_api.get_pull_request(PR_NUMBER)
     body = response.json()
