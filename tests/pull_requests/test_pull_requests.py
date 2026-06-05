@@ -1,20 +1,37 @@
+import re
+
 import pytest
 from jsonschema import validate
+
 from config.config import REPO_NAME, USERNAME
-from data.pull_request_data import (INVALID_AUTH_HEADERS,
-                                    get_dynamic_body_payload,
-                                    get_dynamic_title_payload)
+from data.pull_request_data import (
+    INVALID_AUTH_HEADERS,
+    get_dynamic_body_payload,
+    get_dynamic_title_payload,
+)
 from utils.logger import logger
-from utils.schemas import (PR_LABELS_SCHEMA, PR_NOT_FOUND_SCHEMA,
-                           PR_VALIDATION_ERROR_SCHEMA, PULL_REQUEST_SCHEMA,
-                           UNAUTHORIZED_ERROR_SCHEMA, UPDATE_PR_SCHEMA)
+from utils.schemas import (
+    PR_LABELS_SCHEMA,
+    PR_NOT_FOUND_SCHEMA,
+    PR_VALIDATION_ERROR_SCHEMA,
+    PULL_REQUEST_SCHEMA,
+    UNAUTHORIZED_ERROR_SCHEMA,
+    UPDATE_PR_SCHEMA,
+)
 
 PR_NUMBER = 1
+
+RESIDUAL_PR_PATTERNS = [
+    re.compile(r"Título actualizado \d+"),
+    re.compile(r"Cuerpo modificado \d+"),
+    re.compile(r"temp-label-\d+"),
+]
 
 
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
+@pytest.mark.xdist_group("pull_request")
 def test_should_update_pr_title_successfully(pr_api, pr_state):
     """HLTC-27: Actualizar título de un pull request existente"""
     payload = get_dynamic_title_payload()
@@ -42,6 +59,7 @@ def test_should_update_pr_title_successfully(pr_api, pr_state):
 
 @pytest.mark.functional
 @pytest.mark.regression
+@pytest.mark.xdist_group("pull_request")
 def test_should_update_pr_body_successfully(pr_api, pr_state):
     """HLTC-28: Actualizar cuerpo de un pull request existente"""
     payload = get_dynamic_body_payload()
@@ -70,6 +88,7 @@ def test_should_update_pr_body_successfully(pr_api, pr_state):
 
 @pytest.mark.functional
 @pytest.mark.regression
+@pytest.mark.xdist_group("pull_request")
 def test_should_add_label_to_pr_successfully(pr_api, pr_temp_label):
     """HLTC-29: Asignar etiqueta existente a un pull request"""
     label_name = pr_temp_label
@@ -101,10 +120,11 @@ def test_should_add_label_to_pr_successfully(pr_api, pr_temp_label):
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
+@pytest.mark.xdist_group("pull_request")
 def test_should_close_pr_successfully(pr_api, pr_state):
     """HLTC-30: Cambiar estado de pull request a cerrado"""
     if pr_state["state"] == "closed":
-        pytest.skip("El PR ya está cerrado — este test requiere un PR abierto.")
+        pytest.skip("El PR ya estaba cerrado antes del test — requiere un PR abierto.")
     logger.info(f"Cerrando PR {PR_NUMBER}")
     response = pr_api.close_pull_request(PR_NUMBER)
     body = response.json()
@@ -238,33 +258,34 @@ def test_should_list_pull_requests_successfully(pr_api):
 
 @pytest.mark.functional
 @pytest.mark.regression
+@pytest.mark.xdist_group("pull_request")
 def test_should_have_no_residual_data_after_updates(pr_api, pr_state):
     """Verifica que no queden datos residuales de pruebas en el PR"""
-    import re
     logger.info(f"Verificando integridad final del PR {PR_NUMBER}")
     response = pr_api.get_pull_request(PR_NUMBER)
     body = response.json()
     assert response.status_code == 200
-    test_patterns = [
-        re.compile(r"Título actualizado \d+"),
-        re.compile(r"Cuerpo modificado \d+"),
-        re.compile(r"temp-label-\d+"),
-    ]
     residue = False
-    for pattern in test_patterns:
-        if pattern.search(body.get("title") or ""):
-            residue = True
-        if pattern.search(body.get("body") or ""):
-            residue = True
+    residue_detail = ""
+    for pattern in RESIDUAL_PR_PATTERNS:
+        for field in ("title", "body"):
+            value = body.get(field) or ""
+            if pattern.search(value):
+                residue = True
+                residue_detail = f"{field}='{value}' coincide con {pattern.pattern!r}"
+                break
+        if residue:
+            break
     logger.info("Verificando que no hay residuos en título o cuerpo")
     assert residue is False, (
-        f"Se encontraron datos residuales de test en el PR: "
-        f"title='{body.get('title')}', body='{body.get('body')}'"
+        f"Se encontraron datos residuales de test en el PR: {residue_detail}"
     )
     logger.info("Verificando campos básicos del PR")
     assert "number" in body
     assert "title" in body
     assert "state" in body
-    logger.info(f"Estado final del PR: {body['state']}")
-    if pr_state["state"]:
-        assert body["state"] == pr_state["state"]
+    logger.info(f"Estado actual del PR: {body['state']}")
+    assert body["state"] == "open", (
+        f"Se esperaba que el PR esté 'open' al inicio del test de integridad, "
+        f"pero está '{body['state']}'"
+    )
