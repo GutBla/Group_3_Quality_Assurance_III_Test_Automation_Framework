@@ -15,18 +15,20 @@ class GitHubRepositoriesAPI:
         return self.client.post(f"{self.base_url}/user/repos", json=payload)
 
     def get_repo(self, repo_name):
-        return self.client.get(f"{self.base_url}/repos/{self.username}/{repo_name}")
+        url = f"{self.base_url}/repos/{self.username}/{repo_name}"
+        return self.client.get(url)
 
     def update_repo(self, repo_name, payload):
-        return self.client.patch(f"{self.base_url}/repos/{self.username}/{repo_name}", json=payload)
+        url = f"{self.base_url}/repos/{self.username}/{repo_name}"
+        return self.client.patch(url, json=payload)
 
     def delete_repo(self, repo_name):
-        return self.client.delete(f"{self.base_url}/repos/{self.username}/{repo_name}")
+        url = f"{self.base_url}/repos/{self.username}/{repo_name}"
+        return self.client.delete(url)
 
     def list_user_repos(self):
         return self.client.get(f"{self.base_url}/user/repos")
 
     def get_contributors(self, repo_name):
-        return self.client.get(
-            f"{self.base_url}/repos/{self.username}/{repo_name}/contributors"
-        )
+        url = f"{self.base_url}/repos/{self.username}/{repo_name}/contributors"
+        return self.client.get(url)
