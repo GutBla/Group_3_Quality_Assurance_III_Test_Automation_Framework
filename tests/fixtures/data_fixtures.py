@@ -1,11 +1,9 @@
 import uuid
 import pytest
-import time
 from data.issue_data import CREATE_ISSUE_PAYLOAD
-from data.label_data import CREATE_LABEL_PAYLOAD, LABEL_NAME, LABEL_UPDATED_NAME
+from data.label_data import CREATE_LABEL_PAYLOAD, LABEL_NAME
 from data.pull_request_data import get_dynamic_label_name
 from utils.logger import logger
-
 
 _NEUTRAL_PROFILE = {
     "bio": "",
@@ -39,16 +37,13 @@ def closed_issue(github_api):
 
 @pytest.fixture
 def label(labels_api):
-    """
-    Fixture corregido: Genera nombres únicos para evitar colisiones 
-    en ejecución paralela (xdist).
-    """
+    """Fixture corregido: Genera nombres únicos para evitar colisiones."""
     unique_suffix = uuid.uuid4().hex[:6]
     unique_label_name = f"{LABEL_NAME}-{unique_suffix}"
-    
+
     payload = CREATE_LABEL_PAYLOAD.copy()
     payload["name"] = unique_label_name
-    
+
     response = labels_api.create_label(payload)
     if response.status_code != 201:
         pytest.fail(f"Fallo en creación de etiqueta: {response.text}")
