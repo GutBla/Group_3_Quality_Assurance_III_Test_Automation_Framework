@@ -1,9 +1,9 @@
+import uuid
 import pytest
 
 from data.issue_data import CREATE_ISSUE_PAYLOAD
 from data.label_data import CREATE_LABEL_PAYLOAD, LABEL_NAME, LABEL_UPDATED_NAME
 from data.pull_request_data import get_dynamic_label_name
-from data.repository_data import CREATE_REPO_PAYLOAD
 from utils.logger import logger
 
 
@@ -37,9 +37,10 @@ def label(labels_api):
 
 @pytest.fixture
 def repository(repo_api):
-    repo_api.delete_repo(CREATE_REPO_PAYLOAD["name"])
-    yield CREATE_REPO_PAYLOAD["name"]
-    repo_api.delete_repo(CREATE_REPO_PAYLOAD["name"])
+    repo_name = f"mi-repo-de-prueba-{uuid.uuid4().hex[:8]}"
+    repo_api.delete_repo(repo_name)
+    yield repo_name
+    repo_api.delete_repo(repo_name)
 
 
 @pytest.fixture
