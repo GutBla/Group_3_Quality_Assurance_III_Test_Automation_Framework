@@ -9,18 +9,22 @@ from services.request_manager import RequestManager
 @pytest.fixture
 def mock_request_manager():
     with patch.object(RequestManager, '_instance', None), \
-            patch('services.github_pull_requests_api.RequestManager') as mock_request_manager_cls:
+            patch('services.github_pull_requests_api.RequestManager') as mock_cls:
         mock_instance = MagicMock()
-        mock_request_manager_cls.return_value = mock_instance
+        mock_cls.return_value = mock_instance
 
         mock_instance.get.return_value = MagicMock(
-            status_code=200, json=lambda: {"id": 1, "number": 1})
+            status_code=200, json=lambda: {"id": 1, "number": 1}
+        )
         mock_instance.patch.return_value = MagicMock(
-            status_code=200, json=lambda: {"state": "closed"})
+            status_code=200, json=lambda: {"state": "closed"}
+        )
         mock_instance.post.return_value = MagicMock(
-            status_code=201, json=lambda: [{"name": "bug"}])
+            status_code=201, json=lambda: [{"name": "bug"}]
+        )
         mock_instance.put.return_value = MagicMock(
-            status_code=200, json=lambda: [])
+            status_code=200, json=lambda: []
+        )
         mock_instance.delete.return_value = MagicMock(status_code=204)
 
         yield mock_instance
@@ -114,7 +118,8 @@ def test_set_labels(pr_api, mock_request_manager):
 
 def test_create_label(pr_api, mock_request_manager):
     response = pr_api.create_label(
-        "newlabel", color="FF0000", description="test")
+        "newlabel", color="FF0000", description="test"
+    )
     mock_request_manager.post.assert_called_once_with(
         'https://api.github.com/repos/testowner/testrepo/labels',
         json={"name": "newlabel", "color": "FF0000", "description": "test"}

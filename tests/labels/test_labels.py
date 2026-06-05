@@ -143,6 +143,7 @@ def test_should_get_existing_label_successfully(label, labels_api):
 
     # Arrange
     label_name = label
+    expected_color = CREATE_LABEL_PAYLOAD["color"]
 
     # Act
     response = labels_api.get_label(label_name)
@@ -153,7 +154,7 @@ def test_should_get_existing_label_successfully(label, labels_api):
 
     # Assert 2 — Response Body
     assert body["name"] == label_name
-    assert body["color"] == CREATE_LABEL_PAYLOAD["color"]
+    assert body["color"] == expected_color
 
     # Assert 3 — Schema Validation
     validate(instance=body, schema=LABEL_SCHEMA)

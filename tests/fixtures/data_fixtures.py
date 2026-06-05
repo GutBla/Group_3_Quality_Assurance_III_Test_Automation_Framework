@@ -1,10 +1,9 @@
 import uuid
 import pytest
 from data.issue_data import CREATE_ISSUE_PAYLOAD
-from data.label_data import CREATE_LABEL_PAYLOAD, LABEL_NAME, LABEL_UPDATED_NAME
+from data.label_data import CREATE_LABEL_PAYLOAD, LABEL_NAME
 from data.pull_request_data import get_dynamic_label_name
 from utils.logger import logger
-
 
 _NEUTRAL_PROFILE = {
     "bio": "",
@@ -38,13 +37,21 @@ def closed_issue(github_api):
 
 @pytest.fixture
 def label(labels_api):
-    labels_api.delete_label(LABEL_NAME)
-    labels_api.delete_label(LABEL_UPDATED_NAME)
-    response = labels_api.create_label(CREATE_LABEL_PAYLOAD)
-    label_name = response.json()["name"]
+    """Fixture corregido: Genera nombres únicos para evitar colisiones."""
+    unique_suffix = uuid.uuid4().hex[:6]
+    unique_label_name = f"{LABEL_NAME}-{unique_suffix}"
+
+    payload = CREATE_LABEL_PAYLOAD.copy()
+    payload["name"] = unique_label_name
+
+    response = labels_api.create_label(payload)
+    if response.status_code != 201:
+        pytest.fail(f"Fallo en creación de etiqueta: {response.text}")
+
+    label_name = response.json().get("name")
     yield label_name
-    labels_api.delete_label(LABEL_NAME)
-    labels_api.delete_label(LABEL_UPDATED_NAME)
+
+    labels_api.delete_label(unique_label_name)
 
 
 @pytest.fixture
@@ -67,7 +74,7 @@ def profile_restore(github_user_api):
         f"company={original_company!r}, location={original_location!r}, "
         f"hireable={original_hireable}"
     )
-    logger.info("[profile_restore] Limpiando perfil a estado neutral antes del test")
+    logger.info("[profile_restore] Limpiando perfil estado neutral antes del test")
     github_user_api.update_profile(_NEUTRAL_PROFILE)
     yield
     restore_payload = {
@@ -92,10 +99,7 @@ def pr_state(pr_api):
         f"title={original_title!r}, state={original_state}"
     )
     logger.info("[pr_state] Limpiando PR a estado neutral antes del test")
-    clean_payload = {
-        "title": _NEUTRAL_PR_TITLE,
-        "body": _NEUTRAL_PR_BODY,
-    }
+    clean_payload = {"title": _NEUTRAL_PR_TITLE, "body": _NEUTRAL_PR_BODY}
     if original_state == "closed":
         pr_api.update_pull_request(PR_NUMBER, {"state": "open"})
     pr_api.update_pull_request(PR_NUMBER, clean_payload)
@@ -104,10 +108,7 @@ def pr_state(pr_api):
         "body": original_body,
         "state": original_state,
     }
-    restore_payload = {
-        "title": original_title,
-        "body": original_body,
-    }
+    restore_payload = {"title": original_title, "body": original_body}
     current = pr_api.get_pull_request(PR_NUMBER).json()
     if current.get("state") == "closed" and original_state == "open":
         restore_payload["state"] = "open"

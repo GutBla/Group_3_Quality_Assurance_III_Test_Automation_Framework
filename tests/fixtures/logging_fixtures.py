@@ -14,9 +14,14 @@ def pytest_sessionfinish(session, exitstatus):
 
 
 def pytest_configure(config):
-    config._metadata = {"Project": "Group 3 — QA III Test Automation Framework", "Team": "Group 3",
-                        "API": "GitHub REST API", "Base URL": "https://api.github.com",
-                        "Date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "Total Tests": "40", }
+    config._metadata = {
+        "Project": "Group 3 — QA III Test Automation Framework",
+        "Team": "Group 3",
+        "API": "GitHub REST API",
+        "Base URL": "https://api.github.com",
+        "Date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "Total Tests": "40",
+    }
 
 
 def pytest_html_report_title(report):
@@ -24,6 +29,7 @@ def pytest_html_report_title(report):
 
 
 # --- Per-test logging hooks ---
+
 
 def pytest_runtest_setup(item):
     logger.info(f"START  {item.nodeid}")
