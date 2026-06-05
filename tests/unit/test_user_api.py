@@ -9,7 +9,8 @@ from services.request_manager import RequestManager
 @pytest.fixture
 def mock_request_manager():
     with patch.object(RequestManager, '_instance', None), \
-            patch('services.github_user_api.RequestManager') as mock_request_manager_cls:
+            patch('services.github_user_api.RequestManager') as \
+            mock_request_manager_cls:
         mock_instance = MagicMock()
         mock_request_manager_cls.return_value = mock_instance
 
