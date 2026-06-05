@@ -39,19 +39,24 @@ def closed_issue(github_api):
 
 @pytest.fixture
 def label(labels_api):
-    labels_api.delete_label(LABEL_NAME)
-    labels_api.delete_label(LABEL_UPDATED_NAME)
-    time.sleep(1)
-
-    response = labels_api.create_label(CREATE_LABEL_PAYLOAD)
+    """
+    Fixture corregido: Genera nombres únicos para evitar colisiones 
+    en ejecución paralela (xdist).
+    """
+    unique_suffix = uuid.uuid4().hex[:6]
+    unique_label_name = f"{LABEL_NAME}-{unique_suffix}"
+    
+    payload = CREATE_LABEL_PAYLOAD.copy()
+    payload["name"] = unique_label_name
+    
+    response = labels_api.create_label(payload)
     if response.status_code != 201:
         pytest.fail(f"Fallo en creación de etiqueta: {response.text}")
 
     label_name = response.json().get("name")
     yield label_name
 
-    labels_api.delete_label(LABEL_NAME)
-    labels_api.delete_label(LABEL_UPDATED_NAME)
+    labels_api.delete_label(unique_label_name)
 
 
 @pytest.fixture
