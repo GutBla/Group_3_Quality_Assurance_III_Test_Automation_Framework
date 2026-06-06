@@ -20,6 +20,9 @@ Framework de automatización de pruebas de API usando Python y Pytest sobre la G
 ```bash
 git clone "https://github.com/GutBla/Group_3_Quality_Assurance_III_Test_Automation_Framework.git"
 
+```
+
+```bash
 cd Group_3_Quality_Assurance_III_Test_Automation_Framework
 ```
 

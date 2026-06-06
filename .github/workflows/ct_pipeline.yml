@@ -68,14 +68,23 @@ jobs:
     - name: Run Tests
       run: |
         mkdir -p reports
+          
+        python -m pytest tests/unit/ -v \
+          --junitxml=reports/junit_unit.xml \
+          --cov=services/ \
+          --cov=utils/ \
+          --cov-report=xml:reports/coverage.xml \
+          --cov-report=html:reports/coverage
+          
         python -m pytest tests/ --ignore=tests/unit/ -v \
           --html=reports/report.html \
           --self-contained-html \
-          --junitxml=reports/junit.xml \
+          --junitxml=reports/junit_ct.xml \
           --cov=services/ \
           --cov=utils/ \
-          --cov-report=html:reports/coverage \
-          --cov-report=xml:reports/coverage.xml
+          --cov-append \
+          --cov-report=xml:reports/coverage.xml \
+          --cov-report=html:reports/coverage
     - name: Upload Reports
       if: always()
       uses: actions/upload-artifact@v4
