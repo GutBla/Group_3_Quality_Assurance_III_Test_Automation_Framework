@@ -1,9 +1,9 @@
 import pytest
-from jsonschema import validate
 
 from data.label_data import (ASSIGN_LABELS_PAYLOAD, CREATE_LABEL_PAYLOAD,
                              CREATE_LABEL_PAYLOAD_NO_NAME, LABEL_UPDATED_NAME,
                              UPDATE_LABEL_PAYLOAD)
+from utils.schema_validator import validate_schema
 from utils.schemas import (ASSIGN_LABELS_SCHEMA, LABEL_ERROR_SCHEMA,
                            LABEL_SCHEMA, LIST_LABELS_SCHEMA)
 
@@ -29,8 +29,8 @@ def test_should_create_label_successfully(labels_api):
     assert body["color"] == payload["color"]
     assert body["default"] is False
 
-    # Assert 3 — Schema Validation
-    validate(instance=body, schema=LABEL_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion: schema mismatch is reported as failure, not crash)
+    assert validate_schema(body, LABEL_SCHEMA)
 
     # Assert 4 — Data Integrity via GET
     get_response = labels_api.get_label(payload["name"])
@@ -63,8 +63,8 @@ def test_should_fail_to_create_label_without_name(labels_api):
     assert "message" in body
     assert body["message"] != ""
 
-    # Assert 3 — Schema Validation
-    validate(instance=body, schema=LABEL_ERROR_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(body, LABEL_ERROR_SCHEMA)
 
     # Assert 4 — Data Integrity (no label was created)
     assert "id" not in body
@@ -91,8 +91,8 @@ def test_should_update_label_successfully(label, labels_api):
     assert body["name"] == payload["new_name"]
     assert body["color"] == payload["color"]
 
-    # Assert 3 — Schema Validation
-    validate(instance=body, schema=LABEL_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(body, LABEL_SCHEMA)
 
     # Assert 4 — Data Integrity via GET
     get_response = labels_api.get_label(payload["new_name"])
@@ -124,8 +124,8 @@ def test_should_assign_label_to_issue(label, labels_api, issue):
     label_names = [lbl["name"] for lbl in body]
     assert LABEL_UPDATED_NAME in label_names
 
-    # Assert 3 — Schema Validation
-    validate(instance=body, schema=ASSIGN_LABELS_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(body, ASSIGN_LABELS_SCHEMA)
 
     # Assert 4 — Data Integrity via GET issue
     get_response = labels_api.get_issue(issue)
@@ -156,8 +156,8 @@ def test_should_get_existing_label_successfully(label, labels_api):
     assert body["name"] == label_name
     assert body["color"] == expected_color
 
-    # Assert 3 — Schema Validation
-    validate(instance=body, schema=LABEL_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(body, LABEL_SCHEMA)
 
     # Assert 4 — Data Integrity
     assert body["default"] is False
@@ -217,8 +217,8 @@ def test_should_fail_to_get_nonexistent_label(labels_api):
     assert "message" in body
     assert body["message"] == "Not Found"
 
-    # Assert 3 — Schema Validation
-    validate(instance=body, schema=LABEL_ERROR_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(body, LABEL_ERROR_SCHEMA)
 
     # Assert 4 — No resource data in body
     assert "id" not in body
@@ -240,8 +240,8 @@ def test_should_list_all_labels_from_repository(label, labels_api):
     # Assert 2 — Response is a list
     assert isinstance(body, list)
 
-    # Assert 3 — Schema Validation
-    validate(instance=body, schema=LIST_LABELS_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(body, LIST_LABELS_SCHEMA)
 
     # Assert 4 — The label created by the fixture is present
     label_names = [lbl["name"] for lbl in body]
@@ -296,8 +296,8 @@ def test_should_fail_to_update_nonexistent_label(labels_api):
     assert "message" in body
     assert body["message"] == "Not Found"
 
-    # Assert 3 — Schema Validation
-    validate(instance=body, schema=LABEL_ERROR_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(body, LABEL_ERROR_SCHEMA)
 
     # Assert 4 — No resource data in body
     assert "id" not in body

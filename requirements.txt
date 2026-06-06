@@ -7,3 +7,4 @@ flake8
 pep8-naming
 pytest-html
 pytest-cov
+pytest-xdist
