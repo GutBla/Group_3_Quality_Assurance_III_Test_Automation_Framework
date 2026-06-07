@@ -1,7 +1,6 @@
 import pytest
 
-from data.label_data import (ASSIGN_LABELS_PAYLOAD, CREATE_LABEL_PAYLOAD,
-                             CREATE_LABEL_PAYLOAD_NO_NAME, LABEL_UPDATED_NAME,
+from data.label_data import (CREATE_LABEL_PAYLOAD, CREATE_LABEL_PAYLOAD_NO_NAME,
                              UPDATE_LABEL_PAYLOAD)
 from utils.schema_validator import validate_schema
 from utils.schemas import (ASSIGN_LABELS_SCHEMA, LABEL_ERROR_SCHEMA,
