@@ -25,4 +25,4 @@ def pytest_runtest_makereport(item, call):
     report = outcome.get_result()
     if report.when == "call" and report.failed:
         if item.config.getoption("--fail-fast", default=False):
-            pytest.exit("Stopping after first failure (--fail-fast enabled)", returncode=1)
+            pytest.exit("Stopping after first failure", returncode=1)

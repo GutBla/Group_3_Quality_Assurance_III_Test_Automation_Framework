@@ -29,7 +29,7 @@ def test_should_create_label_successfully(labels_api):
     assert body["color"] == payload["color"]
     assert body["default"] is False
 
-    # Assert 3 — Schema Validation (soft assertion: schema mismatch is reported as failure, not crash)
+    # Assert 3 — Schema Validation (soft assertion)
     assert validate_schema(body, LABEL_SCHEMA)
 
     # Assert 4 — Data Integrity via GET
