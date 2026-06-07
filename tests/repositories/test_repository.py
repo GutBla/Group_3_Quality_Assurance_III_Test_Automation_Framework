@@ -1,8 +1,8 @@
 import time
 import uuid
 import pytest
-from jsonschema import validate
 
+from utils.schema_validator import validate_schema
 from utils.schemas import (
     CREATE_REPO_SCHEMA,
     UPDATE_REPO_SCHEMA,
@@ -39,8 +39,8 @@ def test_should_create_repository_successfully(repo_api, repository):
     assert response_body["private"] == payload["private"]
     assert response_body["has_issues"] == payload["has_issues"]
 
-    # Assert 3 — Schema Validation
-    validate(instance=response_body, schema=CREATE_REPO_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(response_body, CREATE_REPO_SCHEMA)
 
     # Assert 4 — Integrity Check via GET
     get_response = repo_api.get_repo(response_body["name"])
@@ -74,8 +74,8 @@ def test_should_update_repository_description(repo_api, repository):
     assert response_body["description"] == payload["description"]
     assert response_body["private"] == payload["private"]
 
-    # Assert 3 — Schema Validation
-    validate(instance=response_body, schema=UPDATE_REPO_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(response_body, UPDATE_REPO_SCHEMA)
 
     # Assert 4 — Integrity Check via GET
     get_response = repo_api.get_repo(repository)
@@ -103,8 +103,8 @@ def test_should_change_repository_visibility_to_private(repo_api, repository):
     assert response_body["private"] is True
     assert response_body["visibility"] == "private"
 
-    # Assert 3 — Schema Validation
-    validate(instance=response_body, schema=UPDATE_REPO_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(response_body, UPDATE_REPO_SCHEMA)
 
     # Assert 4 — Integrity Check via GET
     get_response = repo_api.get_repo(repository)
@@ -151,8 +151,8 @@ def test_should_fail_when_creating_duplicate_repository(repo_api, repository):
     # Assert 2 — Response Body
     assert "already exists" in response_body["errors"][0]["message"]
 
-    # Assert 3 — Schema Validation
-    validate(instance=response_body, schema=ERROR_REPO_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(response_body, ERROR_REPO_SCHEMA)
 
 
 @pytest.mark.functional
@@ -173,8 +173,8 @@ def test_should_list_authenticated_user_repositories(repo_api, repository):
     assert isinstance(response_body, list)
     assert len(response_body) > 0
 
-    # Assert 3 — Schema Validation
-    validate(instance=response_body, schema=LIST_REPOS_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(response_body, LIST_REPOS_SCHEMA)
 
     # Assert 4 — Integrity
     repo_names = [r["name"] for r in response_body]
@@ -197,7 +197,7 @@ def test_should_get_repository_contributors(repo_api, repository):
     if response.status_code == 200:
         response_body = response.json()
         assert isinstance(response_body, list)
-        validate(instance=response_body, schema=CONTRIBUTORS_SCHEMA)
+        assert validate_schema(response_body, CONTRIBUTORS_SCHEMA)
 
     # Assert 4 — Integrity
     get_response = repo_api.get_repo(repository)
@@ -227,8 +227,8 @@ def test_should_create_repository_with_wiki_disabled(repo_api, repository):
     assert response_body["has_wiki"] is False
     assert response_body["name"] == repository
 
-    # Assert 3 — Schema Validation
-    validate(instance=response_body, schema=CREATE_REPO_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(response_body, CREATE_REPO_SCHEMA)
 
     # Assert 4 — Integrity Check via GET
     get_response = repo_api.get_repo(repository)
@@ -254,8 +254,8 @@ def test_should_disable_issues_on_existing_repository(repo_api, repository):
     # Assert 2 — Response Body
     assert response_body["has_issues"] is False
 
-    # Assert 3 — Schema Validation
-    validate(instance=response_body, schema=UPDATE_REPO_SCHEMA)
+    # Assert 3 — Schema Validation (soft assertion)
+    assert validate_schema(response_body, UPDATE_REPO_SCHEMA)
 
     # Assert 4 — Integrity Check via GET
     get_response = repo_api.get_repo(repository)

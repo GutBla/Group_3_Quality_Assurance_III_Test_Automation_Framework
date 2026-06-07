@@ -1,7 +1,6 @@
 import re
 
 import pytest
-from jsonschema import validate
 
 from data.issue_data import (CLOSE_ISSUE_PAYLOAD, CREATE_COMMENT_PAYLOAD,
                              CREATE_ISSUE_PAYLOAD, INVALID_AUTH_HEADERS,
@@ -9,6 +8,7 @@ from data.issue_data import (CLOSE_ISSUE_PAYLOAD, CREATE_COMMENT_PAYLOAD,
                              MISSING_TITLE_ISSUE_PAYLOAD,
                              NON_EXISTENT_REPO_NAME, UPDATE_ISSUE_PAYLOAD)
 from utils.logger import logger
+from utils.schema_validator import validate_schema
 from utils.schemas import (CREATE_COMMENT_SCHEMA, CREATE_ISSUE_SCHEMA,
                            ERROR_NOT_FOUND_SCHEMA,
                            ERROR_VALIDATION_ISSUE_SCHEMA,
@@ -39,12 +39,9 @@ def test_should_create_issue_successfully(github_api):
     assert response_body["title"] == payload["title"]
     assert response_body["body"] == payload["body"]
 
-    # Assert 3 — Schema Validation
+    # Assert 3 — Schema Validation (soft assertion)
     logger.info("Validating response schema against CREATE_ISSUE_SCHEMA")
-    validate(
-        instance=response_body,
-        schema=CREATE_ISSUE_SCHEMA
-    )
+    assert validate_schema(response_body, CREATE_ISSUE_SCHEMA)
 
     # Assert 4 — Integrity Check via GET
     logger.info(f"Executing integrity check via GET for issue #{issue_number}")
@@ -89,12 +86,9 @@ def test_should_fail_to_create_issue_when_title_is_missing(github_api):
         re.IGNORECASE
     )
 
-    # Assert 3 — Schema Validation
+    # Assert 3 — Schema Validation (soft assertion)
     logger.info("Validating error response schema")
-    validate(
-        instance=response_body,
-        schema=ERROR_VALIDATION_ISSUE_SCHEMA
-    )
+    assert validate_schema(response_body, ERROR_VALIDATION_ISSUE_SCHEMA)
 
     # Assert 4 — Data Integrity Check
     logger.info("Executing integrity check via GET")
@@ -134,12 +128,9 @@ def test_should_update_issue_successfully(github_api, issue):
     assert response_body["title"] == payload["title"]
     assert response_body["body"] == payload["body"]
 
-    # Assert 3 — Schema Validation
+    # Assert 3 — Schema Validation (soft assertion)
     logger.info("Validating schema against UPDATE_ISSUE_SCHEMA")
-    validate(
-        instance=response_body,
-        schema=UPDATE_ISSUE_SCHEMA
-    )
+    assert validate_schema(response_body, UPDATE_ISSUE_SCHEMA)
 
     # Assert 4 — Data Integrity via GET
     logger.info("Executing integrity check via GET to verify persistence")
@@ -179,12 +170,9 @@ def test_should_fail_to_update_issue_when_id_is_invalid(github_api):
     assert "message" in response_body
     assert "Not Found" in response_body["message"]
 
-    # Assert 3 — Schema Validation
+    # Assert 3 — Schema Validation (soft assertion)
     logger.info("Validating 404 error response schema")
-    validate(
-        instance=response_body,
-        schema=ERROR_NOT_FOUND_SCHEMA
-    )
+    assert validate_schema(response_body, ERROR_NOT_FOUND_SCHEMA)
 
     # Assert 4 — Data Integrity Check via GET
     logger.info("Executing integrity check: GET should also return 404")
@@ -222,12 +210,9 @@ def test_should_close_issue_successfully(github_api, issue):
     assert response_body["state"] == "closed"
     assert response_body["number"] == issue_number
 
-    # Assert 3 — Schema Validation
+    # Assert 3 — Schema Validation (soft assertion)
     logger.info("Validating issue response schema against UPDATE_ISSUE_SCHEMA")
-    validate(
-        instance=response_body,
-        schema=UPDATE_ISSUE_SCHEMA
-    )
+    assert validate_schema(response_body, UPDATE_ISSUE_SCHEMA)
 
     # Assert 4 — Data Integrity Check via GET
     logger.info("Executing integrity check via GET to verify persistence")
@@ -269,12 +254,9 @@ def test_should_fail_to_create_issue_when_token_is_invalid(github_api):
         "Verifying error message matches GitHub standard for bad credentials")
     assert response_body["message"] == "Bad credentials"
 
-    # Assert 3 — Schema Validation
+    # Assert 3 — Schema Validation (soft assertion)
     logger.info("Validating response schema against UNAUTHORIZED_ERROR_SCHEMA")
-    validate(
-        instance=response_body,
-        schema=UNAUTHORIZED_ERROR_SCHEMA
-    )
+    assert validate_schema(response_body, UNAUTHORIZED_ERROR_SCHEMA)
 
 
 @pytest.mark.negative
@@ -301,12 +283,9 @@ def test_should_fail_to_create_issue_when_title_exceeds_length_limit(
     assert response_body["errors"][0]["field"] == "title"
     assert response_body["errors"][0]["code"] == "invalid"
 
-    # Assert 3 — Schema Validation
-    logger.info("Validating response schema against UNAUTHORIZED_ERROR_SCHEMA")
-    validate(
-        instance=response_body,
-        schema=ERROR_VALIDATION_SCHEMA
-    )
+    # Assert 3 — Schema Validation (soft assertion)
+    logger.info("Validating response schema against ERROR_VALIDATION_SCHEMA")
+    assert validate_schema(response_body, ERROR_VALIDATION_SCHEMA)
 
 
 @pytest.mark.negative
@@ -333,12 +312,9 @@ def test_should_fail_to_create_issue_when_repo_does_not_exist(github_api):
     logger.info("Verifying error message matches GitHub standard for Not Found")
     assert response_body["message"] == "Not Found"
 
-    # Assert 3 — Schema Validation
+    # Assert 3 — Schema Validation (soft assertion)
     logger.info("Validating response schema against ERROR_NOT_FOUND_SCHEMA")
-    validate(
-        instance=response_body,
-        schema=ERROR_NOT_FOUND_SCHEMA
-    )
+    assert validate_schema(response_body, ERROR_NOT_FOUND_SCHEMA)
 
 
 @pytest.mark.functional
@@ -364,12 +340,9 @@ def test_should_add_comment_to_existing_issue_successfully(github_api, issue):
     logger.info("Verifying comment body contains matching payload data")
     assert response_body["body"] == payload["body"]
 
-    # Assert 3 — Schema Validation
+    # Assert 3 — Schema Validation (soft assertion)
     logger.info("Validating response schema against CREATE_COMMENT_SCHEMA")
-    validate(
-        instance=response_body,
-        schema=CREATE_COMMENT_SCHEMA
-    )
+    assert validate_schema(response_body, CREATE_COMMENT_SCHEMA)
 
 
 @pytest.mark.functional
@@ -396,12 +369,9 @@ def test_should_reopen_closed_issue_successfully(github_api, closed_issue):
     assert response_body["state"] == "open"
     assert response_body["number"] == issue_number
 
-    # Assert 3 — Schema Validation
+    # Assert 3 — Schema Validation (soft assertion)
     logger.info("Validating response schema against CREATE_ISSUE_SCHEMA")
-    validate(
-        instance=response_body,
-        schema=CREATE_ISSUE_SCHEMA
-    )
+    assert validate_schema(response_body, CREATE_ISSUE_SCHEMA)
 
     # Assert 4 — Integrity Check via GET
     logger.info(f"Executing integrity check via GET for issue #{issue_number}")
