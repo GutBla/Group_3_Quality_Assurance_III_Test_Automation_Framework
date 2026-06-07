@@ -79,6 +79,7 @@ def test_should_update_label_successfully(label, labels_api):
     # Arrange
     original_name = label
     payload = UPDATE_LABEL_PAYLOAD
+    labels_api.delete_label(payload["new_name"])
 
     # Act
     response = labels_api.update_label(original_name, payload)
@@ -101,6 +102,10 @@ def test_should_update_label_successfully(label, labels_api):
     assert get_response.status_code == 200
     assert get_body["name"] == payload["new_name"]
     assert get_body["color"] == payload["color"]
+
+    # Cleanup — fixture teardown deletes original_name which no longer exists
+    # after rename, so we clean up the renamed label here
+    labels_api.delete_label(payload["new_name"])
 
 
 @pytest.mark.acceptance
