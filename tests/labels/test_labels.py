@@ -113,13 +113,12 @@ def test_should_update_label_successfully(label, labels_api):
 def test_should_assign_label_to_issue(label, labels_api, issue):
     """HLTC-10: Asignar etiqueta existente a un issue"""
 
-    # Arrange — update the label first so its name matches
-    # ASSIGN_LABELS_PAYLOAD
-    from data.label_data import UPDATE_LABEL_PAYLOAD
-    labels_api.update_label(label, UPDATE_LABEL_PAYLOAD)
+    # Arrange — use the unique label name from fixture directly to avoid
+    # race conditions with the static updated-label-sergio name
+    label_name = label
 
     # Act
-    response = labels_api.add_labels_to_issue(issue, ASSIGN_LABELS_PAYLOAD)
+    response = labels_api.add_labels_to_issue(issue, [label_name])
     body = response.json()
 
     # Assert 1 — Status Code
@@ -127,7 +126,7 @@ def test_should_assign_label_to_issue(label, labels_api, issue):
 
     # Assert 2 — Response Body
     label_names = [lbl["name"] for lbl in body]
-    assert LABEL_UPDATED_NAME in label_names
+    assert label_name in label_names
 
     # Assert 3 — Schema Validation (soft assertion)
     assert validate_schema(body, ASSIGN_LABELS_SCHEMA)
@@ -138,7 +137,7 @@ def test_should_assign_label_to_issue(label, labels_api, issue):
 
     assert get_response.status_code == 200
     issue_label_names = [lbl["name"] for lbl in get_body["labels"]]
-    assert LABEL_UPDATED_NAME in issue_label_names
+    assert label_name in issue_label_names
 
 
 @pytest.mark.functional
