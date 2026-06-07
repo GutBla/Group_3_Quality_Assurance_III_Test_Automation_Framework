@@ -26,8 +26,15 @@ class GitHubRepositoriesAPI:
         url = f"{self.base_url}/repos/{self.username}/{repo_name}"
         return self.client.delete(url)
 
-    def list_user_repos(self):
-        return self.client.get(f"{self.base_url}/user/repos")
+    def list_user_repos(self, per_page=100, sort="created", direction="desc"):
+        return self.client.get(
+            f"{self.base_url}/user/repos",
+            params={
+                "per_page": per_page,
+                "sort": sort,
+                "direction": direction
+            }
+        )
 
     def get_contributors(self, repo_name):
         url = f"{self.base_url}/repos/{self.username}/{repo_name}/contributors"

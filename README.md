@@ -252,13 +252,14 @@ Terminal: El reporte de cobertura se mostrará automáticamente en la consola al
 HTML: Puedes visualizar un reporte detallado abriendo el archivo reports/coverage/index.html en tu navegador.
 
 
-## 📊 Continuous Testing — Daily Runs
+## Continuous Testing — Daily Runs
 
 Ejecuciones diarias del pipeline de CT durante los últimos 5 días.
 Cada ejecución se activa mediante un push o manualmente a través de GitHub Actions.
 
 | Day   | Date       | Branch                | Total Tests | Passed | Failed | Duration | Status |
 |-------|------------|-----------------------|-------------|--------|--------|----------|--------|
-| Day 1 | 03-06-2026 | `ct/day-1-03-06-2026` | 52 | 52     | 0      | 01:16 | ✅ |
-| Day 2 | 04-06-2026 | `ct/day-2-04-06-2026` | 52 | 50     | 2      | 00:51 | ⚠️ |
-| Day 3 | 05-06-2026 | `ct/day-2-05-06-2026` | 52 | 51     | 1      | 00:51 | ⚠️ |
+| Day 1 | 03-06-2026 | `ct/day-1-03-06-2026` | 52 | 52     | 0      | 01:16    | ✅ |
+| Day 2 | 04-06-2026 | `ct/day-2-04-06-2026` | 52 | 50     | 2      | 00:51    | ⚠️ |
+| Day 3 | 05-06-2026 | `ct/day-3-05-06-2026` | 52 | 51     | 1      | 00:18    | ⚠️ |
+| Day 4 | 06-06-2026 | `ct/day-4-06-06-2026` | 52 | 52     | 0      | 00:17    | ✅ |
