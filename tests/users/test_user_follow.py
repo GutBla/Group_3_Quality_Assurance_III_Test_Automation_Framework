@@ -6,6 +6,7 @@ from utils.logger import logger
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
+@pytest.mark.xdist_group("follow")
 def test_should_follow_user_successfully(github_user_api):
     """HLTC-22: Seguir a un usuario autenticado"""
     target = FOLLOW_USERNAME
@@ -26,6 +27,7 @@ def test_should_follow_user_successfully(github_user_api):
 
 @pytest.mark.functional
 @pytest.mark.regression
+@pytest.mark.xdist_group("follow")
 def test_should_check_following_user_successfully(github_user_api):
     """HLTC-23: Verificar si el usuario autenticado sigue a otro"""
     target = FOLLOW_USERNAME
@@ -46,6 +48,7 @@ def test_should_check_following_user_successfully(github_user_api):
 @pytest.mark.functional
 @pytest.mark.acceptance
 @pytest.mark.smoke
+@pytest.mark.xdist_group("follow")
 def test_should_unfollow_user_successfully(github_user_api):
     """HLTC-24: Dejar de seguir a un usuario"""
     target = FOLLOW_USERNAME

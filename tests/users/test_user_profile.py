@@ -1,9 +1,6 @@
 import datetime
 import re
-
 import pytest
-from jsonschema import validate
-
 from data.user_data import (
     DISPOSABLE_EMAIL,
     INVALID_AUTH_HEADERS,
@@ -13,6 +10,7 @@ from data.user_data import (
     get_update_profile_payload,
 )
 from utils.logger import logger
+from utils.schema_validator import validate_schema
 from utils.schemas import (
     AUTH_USER_SCHEMA,
     EMAIL_ERROR_SCHEMA,
@@ -49,7 +47,7 @@ def test_should_get_authenticated_user(github_user_api):
     assert body["login"] != ""
     assert isinstance(body["id"], int)
     logger.info("Validando schema contra AUTH_USER_SCHEMA")
-    validate(instance=body, schema=AUTH_USER_SCHEMA)
+    assert validate_schema(body, AUTH_USER_SCHEMA)
 
 
 @pytest.mark.negative
@@ -68,7 +66,7 @@ def test_should_reject_unauthorized_access(github_user_api):
     logger.info("Verificando que el mensaje indica credenciales invalidas")
     assert "bad credentials" in body["message"].lower()
     logger.info("Validando schema contra UNAUTHORIZED_ERROR_SCHEMA")
-    validate(instance=body, schema=UNAUTHORIZED_ERROR_SCHEMA)
+    assert validate_schema(body, UNAUTHORIZED_ERROR_SCHEMA)
 
 
 @pytest.mark.functional
@@ -94,7 +92,7 @@ def test_should_update_profile_successfully(github_user_api, profile_restore):
         logger.info("Verificando que bio no esta vacio")
         assert body["bio"] != ""
         logger.info("Validando schema contra UPDATE_PROFILE_SCHEMA")
-        validate(instance=body, schema=UPDATE_PROFILE_SCHEMA)
+        assert validate_schema(body, UPDATE_PROFILE_SCHEMA)
     logger.info("Ejecutando verificacion de integridad via GET")
     get_response = github_user_api.get_authenticated_user()
     get_body = get_response.json()
@@ -134,7 +132,7 @@ def test_should_ignore_protected_fields_when_updating_profile(
     assert "login" in body
     assert "id" in body
     logger.info("Validando schema contra UPDATE_PROFILE_SCHEMA")
-    validate(instance=body, schema=UPDATE_PROFILE_SCHEMA)
+    assert validate_schema(body, UPDATE_PROFILE_SCHEMA)
 
 
 @pytest.mark.functional
@@ -156,7 +154,7 @@ def test_should_get_public_user_by_username(github_user_api):
     logger.info("Verificando que id es un numero")
     assert isinstance(body["id"], int)
     logger.info("Validando schema contra PUBLIC_USER_SCHEMA")
-    validate(instance=body, schema=PUBLIC_USER_SCHEMA)
+    assert validate_schema(body, PUBLIC_USER_SCHEMA)
 
 
 @pytest.mark.functional
@@ -184,7 +182,7 @@ def test_should_update_editable_fields_successfully(github_user_api, profile_res
     assert "location" in body
     assert "hireable" in body
     logger.info("Validando schema contra UPDATE_PROFILE_SCHEMA")
-    validate(instance=body, schema=UPDATE_PROFILE_SCHEMA)
+    assert validate_schema(body, UPDATE_PROFILE_SCHEMA)
     logger.info("Ejecutando verificacion de integridad via GET")
     get_response = github_user_api.get_authenticated_user()
     get_body = get_response.json()
@@ -211,7 +209,7 @@ def test_should_reject_disposable_email(github_user_api):
     logger.info("Verificando que el mensaje de error no esta vacio")
     assert body["message"] != ""
     logger.info("Validando schema contra EMAIL_ERROR_SCHEMA")
-    validate(instance=body, schema=EMAIL_ERROR_SCHEMA)
+    assert validate_schema(body, EMAIL_ERROR_SCHEMA)
 
 
 @pytest.mark.functional

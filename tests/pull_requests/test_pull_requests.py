@@ -1,8 +1,5 @@
 import re
-
 import pytest
-from jsonschema import validate
-
 from config.config import REPO_NAME, USERNAME
 from data.pull_request_data import (
     INVALID_AUTH_HEADERS,
@@ -10,6 +7,7 @@ from data.pull_request_data import (
     get_dynamic_title_payload,
 )
 from utils.logger import logger
+from utils.schema_validator import validate_schema
 from utils.schemas import (
     PR_LABELS_SCHEMA,
     PR_NOT_FOUND_SCHEMA,
@@ -20,7 +18,6 @@ from utils.schemas import (
 )
 
 PR_NUMBER = 1
-
 RESIDUAL_PR_PATTERNS = [
     re.compile(r"Título actualizado \d+"),
     re.compile(r"Cuerpo modificado \d+"),
@@ -48,7 +45,7 @@ def test_should_update_pr_title_successfully(pr_api, pr_state):
     logger.info("Verificando que el título no está vacío")
     assert body["title"] != ""
     logger.info("Validando schema de respuesta contra UPDATE_PR_SCHEMA")
-    validate(instance=body, schema=UPDATE_PR_SCHEMA)
+    assert validate_schema(body, UPDATE_PR_SCHEMA)
     logger.info("Ejecutando verificación de integridad vía GET")
     get_response = pr_api.get_pull_request(PR_NUMBER)
     get_body = get_response.json()
@@ -78,7 +75,7 @@ def test_should_update_pr_body_successfully(pr_api, pr_state):
     logger.info("Verificando que el cuerpo no está vacío")
     assert body["body"] != ""
     logger.info("Validando schema de respuesta contra UPDATE_PR_SCHEMA")
-    validate(instance=body, schema=UPDATE_PR_SCHEMA)
+    assert validate_schema(body, UPDATE_PR_SCHEMA)
     logger.info("Ejecutando verificación de integridad vía GET")
     get_response = pr_api.get_pull_request(PR_NUMBER)
     get_body = get_response.json()
@@ -108,7 +105,7 @@ def test_should_add_label_to_pr_successfully(pr_api, pr_temp_label):
     logger.info("Verificando que al menos una etiqueta está presente")
     assert len(body) > 0
     logger.info("Validando schema de respuesta contra PR_LABELS_SCHEMA")
-    validate(instance=body, schema=PR_LABELS_SCHEMA)
+    assert validate_schema(body, PR_LABELS_SCHEMA)
     logger.info("Ejecutando verificación de integridad vía GET labels")
     get_response = pr_api.get_labels(PR_NUMBER)
     get_body = get_response.json()
@@ -139,7 +136,7 @@ def test_should_close_pr_successfully(pr_api, pr_state):
     logger.info("Verificando que el número del PR no cambió")
     assert body["number"] == PR_NUMBER
     logger.info("Validando schema de respuesta contra UPDATE_PR_SCHEMA")
-    validate(instance=body, schema=UPDATE_PR_SCHEMA)
+    assert validate_schema(body, UPDATE_PR_SCHEMA)
     logger.info("Ejecutando verificación de integridad vía GET")
     get_response = pr_api.get_pull_request(PR_NUMBER)
     get_body = get_response.json()
@@ -168,7 +165,7 @@ def test_should_fail_to_add_empty_label_list(pr_api):
         for keyword in ["validation", "invalid", "no subschema"]
     ), f"Mensaje de error inesperado: {body['message']}"
     logger.info("Validando schema de respuesta contra PR_VALIDATION_ERROR_SCHEMA")
-    validate(instance=body, schema=PR_VALIDATION_ERROR_SCHEMA)
+    assert validate_schema(body, PR_VALIDATION_ERROR_SCHEMA)
 
 
 @pytest.mark.functional
@@ -192,7 +189,7 @@ def test_should_get_pull_request_successfully(pr_api):
     logger.info("Verificando que el estado es 'open' o 'closed'")
     assert body["state"] in ["open", "closed"]
     logger.info("Validando schema de respuesta contra PULL_REQUEST_SCHEMA")
-    validate(instance=body, schema=PULL_REQUEST_SCHEMA)
+    assert validate_schema(body, PULL_REQUEST_SCHEMA)
 
 
 @pytest.mark.negative
@@ -212,7 +209,7 @@ def test_should_fail_to_get_pr_with_invalid_token(pr_api):
     logger.info("Verificando que el mensaje indica credenciales incorrectas")
     assert body["message"].lower() == "bad credentials"
     logger.info("Validando schema de respuesta contra UNAUTHORIZED_ERROR_SCHEMA")
-    validate(instance=body, schema=UNAUTHORIZED_ERROR_SCHEMA)
+    assert validate_schema(body, UNAUTHORIZED_ERROR_SCHEMA)
 
 
 @pytest.mark.negative
@@ -230,7 +227,7 @@ def test_should_return_404_for_nonexistent_pr(pr_api):
     logger.info("Verificando que el mensaje indica 'Not Found'")
     assert "Not Found" in body["message"]
     logger.info("Validando schema de respuesta contra PR_NOT_FOUND_SCHEMA")
-    validate(instance=body, schema=PR_NOT_FOUND_SCHEMA)
+    assert validate_schema(body, PR_NOT_FOUND_SCHEMA)
     logger.info("Verificando que la respuesta no contiene campo 'id'")
     assert "id" not in body
 
@@ -252,7 +249,7 @@ def test_should_list_pull_requests_successfully(pr_api):
         assert "number" in first_pr
         assert "title" in first_pr
         assert "state" in first_pr
-        validate(instance=first_pr, schema=PULL_REQUEST_SCHEMA)
+        assert validate_schema(first_pr, PULL_REQUEST_SCHEMA)
     logger.info(f"Total de PRs encontrados: {len(body)}")
 
 
