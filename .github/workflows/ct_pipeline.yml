@@ -65,17 +65,17 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt pytest-cov pytest-html pytest-xdist
-    - name: Run Tests
+- name: Run Tests
       run: |
         mkdir -p reports
-          
+
         python -m pytest tests/unit/ -v \
           --junitxml=reports/junit_unit.xml \
           --cov=services/ \
           --cov=utils/ \
           --cov-report=xml:reports/coverage.xml \
           --cov-report=html:reports/coverage
-          
+
         python -m pytest tests/ --ignore=tests/unit/ -v \
           --html=reports/report.html \
           --self-contained-html \
@@ -84,7 +84,8 @@ jobs:
           --cov=utils/ \
           --cov-append \
           --cov-report=xml:reports/coverage.xml \
-          --cov-report=html:reports/coverage
+          --cov-report=html:reports/coverage \
+          --cov-fail-under=80
     - name: Upload Reports
       if: always()
       uses: actions/upload-artifact@v4
